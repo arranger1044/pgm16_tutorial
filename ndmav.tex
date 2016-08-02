@@ -1,25 +1,87 @@
-\documentclass{beamer}
+\documentclass[xcolor={usenames,dvipsnames,svgnames}, compress]{beamer}
+
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage{colortbl}
+\usepackage{ifxetex}
+\usepackage{amsmath}
+\usepackage[style=authoryear-comp]{biblatex}
+\usepackage[no-math]{fontspec}
+
+\definecolor{untractable_red}{RGB}{209, 25, 25}
+\definecolor{tractable_green}{RGB}{0, 153, 51}
+
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\usetheme{enziteto}
+
+\setbeamertemplate{headline}{}
+
+\addbibresource{../referomnia/referomnia.bib}
 
 \title{Learning Sum-Product Networks}
 \author{Nicola Di Mauro \and Antonio Vergari}
-\date{September 2016}
+% \date{September 2016}
+\institute{Università degli Studi di Bari}
+\department{Dipartimento di Informatica}
+\laboratory{LACAM}
+\group{Machine Learning}
+\institutelogo{\includegraphics[width=25pt]{figures/unibaba}}
+\lablogo{\includegraphics[width=35pt]{figures/lacam}}
+
+\footnotesize \let\small\footnotesize
 
 \begin{document}
 
 \begin{frame}
-\maketitle
+  \setbeamertemplate{headline}{}
+  \setbeamertemplate{footline}{}
+  \titlepage
 \end{frame}
 
-\begin{frame}
-\frametitle{The need for SPN}
+
+\begin{frame}[t]
+  \frametitle{The need for SPNs}
+  \framesubtitle{Why should you work on SPNs?}
 \begin{itemize}
-\item tractable inference
+\item exact tractable inference
+  \item NN for which structure learning is easy
 \end{itemize}
 \end{frame}
 
+\section{Representation}
+{\setbeamertemplate{headline}{}
+  \begin{frame}
+    \sectionpage
+  \end{frame}
+}
+
 \begin{frame}
-\frametitle{Representation}
+  \frametitle{Density estimation}
 \end{frame}
+
+\begin{frame}
+  \frametitle{(Different kinds of) Inference}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Tractable Probabilistic Models}
+\end{frame}
+
+\section{Inference}
+{\setbeamertemplate{headline}{}
+  \begin{frame}
+    \sectionpage
+  \end{frame}
+}
+
+
+\section{Interpretation}
+{\setbeamertemplate{headline}{}
+  \begin{frame}
+    \sectionpage
+  \end{frame}
+}
 
 \begin{frame}
 \frametitle{Interpretation}
@@ -34,44 +96,72 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{Arithmetic Circuits}
-\begin{itemize}
-\item SPNs are a special case of ACs
-\end{itemize}
+  \frametitle{Arithmetic Circuits}
+  Differences with ACs:
+  \begin{itemize}
+  \item probabilistic semantics
+    \begin{itemize}
+    \item learning
+      \item sampling
+    \end{itemize}
+    \item no shared weights
+  \end{itemize}
 \end{frame}
 
+
+\section{Learning}
+{\setbeamertemplate{headline}{}
+  \begin{frame}
+    \sectionpage
+  \end{frame}
+}
+
 \begin{frame}
-\frametitle{Inference(s)}
+  \frametitle{Structure Learning}
 \end{frame}
 
 \begin{frame}
 \frametitle{Parameter Learning}
 \end{frame}
 
-\begin{frame}
-\frametitle{Structure Learning}
-\end{frame}
-
-\begin{frame}
-\frametitle{SPN Understanding}
-\end{frame}
-
-\begin{frame}
-\frametitle{(SPN-based) Representation Learning}
-\end{frame}
-
+\section{Representation Learning}
+{\setbeamertemplate{headline}{}
+  \begin{frame}
+    \sectionpage
+  \end{frame}
+}
+\section{Applications}
+{\setbeamertemplate{headline}{}
+  \begin{frame}
+    \sectionpage
+  \end{frame}
+}
 
 \begin{frame}
 \frametitle{Applications}
 \end{frame}
 
+
 \begin{frame}
 \frametitle{Open Problems and Future Investigations}
 \end{frame}
 
+\section{References}
+{\setbeamertemplate{headline}{}
+  \begin{frame}
+    \sectionpage
+  \end{frame}
+}
 
-
-
-
+\begin{frame} [allowframebreaks]
+  \setbeamertemplate{bibliography item}{}
+  \setlength\bibitemsep{8pt}
+  \printbibliography
+\end{frame}
 
 \end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% TeX-engine: xetex
+%%% End:
