@@ -1,8 +1,11 @@
-\documentclass{beamer}
+\documentclass[10pt,t]{beamer}
 
 \title{Learning Sum-Product Networks}
 \author{Nicola Di Mauro \and Antonio Vergari}
 \date{September 2016}
+
+\setbeamerfont{footnote}{size=\scriptsize}
+\addtobeamertemplate{footnote}{}{\vspace{6pt}}
 
 \begin{document}
 
@@ -12,9 +15,19 @@
 
 \begin{frame}
 \frametitle{The need for SPN}
+Sum-Product Networks (SPNs) are a type of probabilistic model\footnote{H. Poon
+  and P. Domingos, \emph{Sum-Product Network: a New Deep Architecture}, UAI 2011}
 \begin{itemize}
-\item tractable inference
+\item for Pobabilistic Graphical Models (PGMs) there exist multi-purpose
+  inference tools
+\begin{itemize}
+\item the computational
+effort scales unproportional to the complexity of the graph
+\item solution: using approximate inference
 \end{itemize}
+\end{itemize}
+SPNs represent probability distributions and a corresponding exact inference
+machine for the represented distribution at the same time 
 \end{frame}
 
 \begin{frame}
@@ -37,6 +50,7 @@
 \frametitle{Arithmetic Circuits}
 \begin{itemize}
 \item SPNs are a special case of ACs
+\item Learning Sum-Product Networks with Direct and Indirect Variable Interactions
 \end{itemize}
 \end{frame}
 
@@ -64,6 +78,12 @@
 \begin{frame}
 \frametitle{Applications}
 \end{frame}
+
+\begin{frame}
+\frametitle{Code}
+\end{frame}
+
+
 
 \begin{frame}
 \frametitle{Open Problems and Future Investigations}
