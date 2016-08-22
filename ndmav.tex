@@ -1,10 +1,23 @@
-\documentclass[10pt,t]{beamer}
+\documentclass[10pt, t, xcolor={usenames,dvipsnames,svgnames}, compress]{beamer}
+
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage{colortbl}
+\usepackage{ifxetex}
+\usepackage{amsmath}
+\usepackage[style=authoryear-comp]{biblatex}
+\usepackage[no-math]{fontspec}
+
+\definecolor{untractable_red}{RGB}{209, 25, 25}
+\definecolor{tractable_green}{RGB}{0, 153, 51}
 
 \usetheme{enziteto}
 
 \setbeamertemplate{headline}{}
 
 \newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\addbibresource{../referomnia/referomnia.bib}
 
 \title{Learning Sum-Product Networks}
 \author{Nicola Di Mauro \and Antonio Vergari}
@@ -18,8 +31,8 @@
 
 %\footnotesize \let\small\footnotesize
 
-%\setbeamerfont{footnote}{size=\scriptsize}
-\addtobeamertemplate{footnote}{}{\vspace{6pt}}
+\setbeamerfont{footnote}{size=\scriptsize}
+\addtobeamertemplate{footnote}{}{\vspace{16pt}}
 
 \begin{document}
 
@@ -57,7 +70,7 @@ machine for the represented distribution at the same time
 
 \section{Representation}
 {\setbeamertemplate{headline}{}
-  \begin{frame}
+  \begin{frame}[c]
     \sectionpage
   \end{frame}
 }
@@ -99,7 +112,7 @@ machine for the represented distribution at the same time
 
 \section{Inference}
 {\setbeamertemplate{headline}{}
-  \begin{frame}
+  \begin{frame}[c]
     \sectionpage
   \end{frame}
 }
@@ -119,7 +132,7 @@ machine for the represented distribution at the same time
 
 \section{Interpretation}
 {\setbeamertemplate{headline}{}
-  \begin{frame}
+  \begin{frame}[c]
     \sectionpage
   \end{frame}
 }
@@ -239,7 +252,7 @@ machine for the represented distribution at the same time
 
 \section{Learning}
 {\setbeamertemplate{headline}{}
-  \begin{frame}
+  \begin{frame}[c]
     \sectionpage
   \end{frame}
 }
@@ -410,47 +423,257 @@ machine for the represented distribution at the same time
 \end{frame}
 
 \begin{frame}
-\frametitle{Parameter Learning}
+  \frametitle{Parameter Learning}
+  Non convex optimization, solvable with iterative methods like: GD,
+  EM,\dots\par\bigskip
+
+  Use backpropagation ($\rightarrow$ differential approach) to compute
+  $\nabla_{\mathbf{w}} S(\mathbf{x})$\par\bigskip
+
+  Hard/Soft gradients\par\bigskip
+
+  Some issues:
+  \begin{itemize}
+  \item vanishing gradients
+    \item hyperparameter choices
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Hard/Soft Parameter Learning}
+  \begin{table}
+    \centering
+    \begin{tabular}{l c c}
+      &\textbf{soft}& \textbf{hard}\\
+      \textsf{Generative Gradient} &$\frac{\partial
+                                     S(\mathbf{x})}{\partial w_{pc}} =
+                                     S_{c}(\mathbf{x})\frac{\partial
+                                     S(\mathbf{x})}{\partial S_{p}(\mathbf{x})}$
+                    &
+                      $\frac{\sharp\{w_{pc}\in
+                      \mathsf{MPE-path}(\mathbf{x})\}}{w_{pc}}$\\
+      \textsf{Discriminative Gradient} & $\frac{1}{S(\mathbf{y}|\mathbf{x})}\frac{\partial
+                                         S(\mathbf{y}|\mathbf{x})}{\partial
+                                         w_{pc}} - \frac{1}{S(\mathbf{*}|\mathbf{x})}\frac{\partial
+                                         S(\mathbf{*}|\mathbf{x})}{\partial
+                                         w_{pc}}$ &
+                                                    $\frac{\sharp\{w_{pc}\in
+                                                    \mathsf{MPE-path}(\mathbf{y}|\mathbf{x})\}
+                                                    - \sharp\sharp\{w_{pc}\in
+                                                    \mathsf{MPE-path}(\mathbf{1}|\mathbf{x})\}}{w_{pc}}$\\
+      \textsf{Generative Posterior} & $p(H_{p}=c|\mathbf{x})\propto \frac{1}{S(\mathbf{x})}\frac{\partial
+                                      S(\mathbf{x})}{\partial S_{p}(\mathbf{x})}S_{c}(\mathbf{x})w_{pc}$ & $p(H_{p}=c|\mathbf{x})=
+                                                                                             \begin{cases}
+                                                                                               1
+                                                                                               \text{if}
+                                                                                               w
+                                                                                               \in W
+                                                                                               \\
+                                                                                               0 \text{otherwise}
+                                                                                             \end{cases}
+$\\
+    \end{tabular}
+  \end{table}
 \end{frame}
 
 \begin{frame}
   \frametitle{Bayesian Parameter Learning}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[t]
   \frametitle{Parameter Learning VS LearnSPN}
-  Collapsed Variational Inference is useless : D
+  \begin{table}
+    \centering
+    \scriptsize
+    \setlength{\tabcolsep}{3pt}  
+    \begin{tabular}{l r r r r r r r}
+      \toprule
+      & \textsf{LearnSPN}\footcite{Gens2013} & \textsf{LearnSPN-b}\footcite{Vergari2015} & \textsf{CVB-SPN}\footcite{Zhao2016a} & \textsf{OBMM}\footcite{Rashwan2016} & \textsf{SGD}\footcite{Rashwan2016} & \textsf{EM}\footcite{Rashwan2016} & \textsf{SEG}\footcite{Rashwan2016} \\
+      \midrule
+      \textbf{NLTCS} & -6.11 & -6.05 & -6.08 & -6.07 & -8.76 & -6.31 & -6.85\\
+      \textbf{MSNBC} & -6.11& -6.04& -6.29& -6.03& -6.81 & -6.64 & -6.74 \\
+      \textbf{KDDCup2k} & -2.18& -2.14& -2.14& -2.14& 44.53 & -2.20 & -2.34\\
+      \textbf{Plants} & -12.98& -12.81& -12.86& -15.14& -21.50 & -17.68 & -33.47\\
+      \textbf{Audio} & -40.50& -40.57& -40.36& -40.70& -49.35 & -42.55 & -46.31\\
+      \textbf{Jester} & -53.48& -53.53& -54.26& -53.86& 63.89 & -54.26 & -59.48\\
+      \textbf{Netflix} & -57.33& -57.73& -60.69& -57.99& 64.27 & -59.35 & -64.48\\
+      \textbf{Accidents} & -30.04& -29.34& -29.55& -42.66& 53.69 & -43.54 & -45.59\\
+      \textbf{Retail} & -11.04& -10.94& -10.91& -11.42& -97.11 & -11.42 & -14.94\\
+      \textbf{Pumsb-star} & -24.78& -23.31& -25.93& -45.27& -128.48 & -46.54 & -51.84\\
+      \textbf{DNA} & -82.52& -81.91& -86.73& -99.61& -100.70 & -100.10 & -105.25 \\
+      \textbf{Kosarek} & -10.99& -10.72& -10.70& -11.22&34.64 & -11.87 & -17.71 \\
+      \textbf{MSWeb} & -10.25& -9.83& -9.89& -11.33& -59.63 & -11.36 & -20.69\\
+      \textbf{Book} & -35.89& -34.30& -34.44& -35.55& -249.28 & -36.13 & -42.95\\
+      \textbf{EachMovie} & -52.49& -51.36& -52.63& -59.50& -227.05 & -64.76 & -84.82\\
+      \textbf{WebKB} & -158.20& -154.28& -161.46& -165.57& -338.01 & -169.64 & -179.34\\
+      \textbf{Reuters-52} & -85.07& -83.34& -85.45& -108.01& -407.96& -108.10 & -108.42\\
+      \textbf{20-Newsgrp} & -155.93& -152.85& -155.61& -158.01& -312.12 & -160.41 & -167.89\\
+      \textbf{BBC} & -250.69& -247.30& -251.23& -275.43& -462.96 & -274.82 & -276.97\\
+      \textbf{Ad} & -19.73& -16.23& -19.00& -63.81& -638.43 & -63.83 & -64.11\\
+      \bottomrule
+    \end{tabular}
+    \label{tab:model-accs}
+  \end{table}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Parameter Learning}
+  \framesubtitle{Why learning parameters}
+  
 \end{frame}
 
 \section{Representation Learning}
 {\setbeamertemplate{headline}{}
-  \begin{frame}
+  \begin{frame}[c]
     \sectionpage
   \end{frame}
 }
 
 \begin{frame}
   \frametitle{Extracting Embeddings}
-  Problem extracting embeddings
+  \framesubtitle{Exploiting SPNs as feature extractors}
+
+  Given an SPN $S$, generate a dense vector
+  $$\mathbf{e}^{i} =f_{S}(\mathbf{x}^{i})$$ 
+  
+  Issues with SPNs as NNs:
+  \begin{itemize}
+  \item layer-wise extraction may be arbitrary
+  \item power law distribution of nodes by scopes
+    \item scope lengths as proxy for feature abstraction levels (see filter visualizations)
+  \end{itemize}
+  
+  How to extract embeddings?
+  \begin{itemize}
+  \item from node outputs (one query) 
+    \begin{itemize}
+    \item all (non-leaf) nodes
+    \item sum/product nodes only
+    \item with a certain scope length
+      \item aggregating node outputs by scope
+    \end{itemize}
+  \item from several queries evaluations (root outputs)
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Supervised classification}
-  
+  \framesubtitle{Experimental settings}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Filtering Embeddings}
-  Filtering embeddings by:
-  \begin{itemize}
-  \item node type
-  \item scope
-    \item scope length
-  \end{itemize}
+  \frametitle{Embeddings (I)}
+  \begin{table}[!t]
+    \centering
+    \small
+    \caption[datasets]{Test set accuracy scores for the embeddings
+      extracted with the best \textsf{SPN},
+      \textsf{RBM} models and with the baseline \textsf{LR} model on all
+      datasets. Bold values denote significantly better scores
+      than all the others for a dataset.}
+    \setlength{\tabcolsep}{3pt}  
+    \begin{tabular}{l c c c c c c c}
+      \toprule
+      
+      & \textsf{LR} & \textsf{SPN-I} & \textsf{SPN-II} & \textsf{SPN-III} & \textsf{RBM-5h} & \textsf{RBM-1k} & \textsf{RBM-5k} \\
+      % &\emph{+ L2 reg}  & 500& 100& 50& 500& 1000& 5000\\
+      % &  & ($d=227$)& ($d=5977$)& ($d=12669$)& & & \\
+      \midrule
+      \textsf{REC} & 69.28 & 77.31& \textbf{97.77}& 97.66& 94.22& 96.10& 96.36\\
+      \midrule
+      \textsf{CON} & 53.48 & 67.48& 78.31& \textbf{84.69}& 67.55& 75.37& 79.15\\
+      \midrule
+      \textsf{OCR} & 75.58 & 82.60& \textbf{89.95}& \textbf{89.94}& 86.07& 87.96& 88.76\\
+      \midrule
+      \textsf{CAL} & 62.67& 59.17 & 65.19& 66.62& 67.36& \textbf{68.88}& 67.71\\
+      \midrule
+      \textsf{BMN} & 90.62& 95.15& \textbf{97.66}& 97.59& 96.09& 96.80& 97.47\\
+      \bottomrule
+    \end{tabular}
+    \label{tab:model-accs}
+  \end{table}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Embeddings (II)}
+  \begin{table}[!t]
+    \caption[datasets]{Test set accuracy scores for the embeddings
+      extracted with \textsf{SPN} models and filtered by node
+      type. Results for \textsf{SPN-III} embeddings filtered by \textsf{S}mall
+      , \textsf{M}edium and \textsf{L}arge scope
+      lengths are reported in columns 8-10.
+      Bold values denote significantly better scores than all the others.
+      $\blacktriangle$ indicates a better score than an RBM embedding
+      with greater or equal size. $\triangledown$ indicates worse
+      scores than an RBM embedding with smaller or equal size.}
+    \centering
+    \small
+    \setlength{\tabcolsep}{3pt}  
+    \begin{tabular}{l c c c c c c | c c c}
+      \toprule
+      & \multicolumn{2}{c}{\textsf{SPN-I}} &
+                                             \multicolumn{2}{c}{\textsf{SPN-II}}
+      & \multicolumn{2}{c}{\textsf{SPN-III}} & \multicolumn{3}{c}{\textsf{SPN-III}}\\
+      
+      &sum  & prod& sum& prod& sum& prod & \textsf{S} & \textsf{M} & \textsf{L}\\
+      % &  & (227)& (5977)& (12669)& & \\
+      \midrule
+      \textsf{REC} & 72.46& 62.25& $\mathbf{98.03}^{\blacktriangle}$& $97.06^{\blacktriangle}$& $\mathbf{98.00}^{\blacktriangle}$& $97.04^{\blacktriangle}$ & 88.73&$\mathbf{98.45}^{\blacktriangle}$& 93.91\\
+      \midrule
+      \textsf{CON} & 62.36& 64.03& $77.13^{\blacktriangle}$& $76.07^{\blacktriangle}$& $\mathbf{83.59}^{\blacktriangle}$& $82.06^{\blacktriangle}$ &$70.51^{\triangledown}$&77.18&$\mathbf{83.32}^{\blacktriangle}$\\
+      \midrule
+      \textsf{OCR} & 74.19& 81.58& $89.73^{\blacktriangle}$& $88.78^{\blacktriangle}$& $\mathbf{90.02}^{\blacktriangle}$& 89.32 & $87.22^{\triangledown}$& $\mathbf{89.29}^{\blacktriangle}$& $88.19^{\blacktriangle}$\\
+      % & (32) & (621)&  (5466)& & & \\
+      \midrule
+      \textsf{CAL} & 38.19& 56.95& 62.64& 64.80& $\mathbf{66.58}^{\triangledown}$& $66.40^{\triangledown}$& $63.37^{\triangledown}$& $\mathbf{66.23}^{\triangledown}$& $66.10$\\
+      % & (554 )& (16483)& (31420)& & & \\
+      \midrule
+      \textsf{BMN} & 93.50& 94.75& $97.67$& $96.90^{\triangledown}$& \textbf{97.80}& $97.20^{\triangledown}$ & $96.02^{\triangledown}$& $\mathbf{97.42^{\triangledown}}$& 97.38\\
+      \bottomrule
+    \end{tabular}
+    \label{tab:model-filter-accs}
+  \end{table}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Embeddings (III)}
+  \begin{table}[!t]
+    \caption[datasets]{Test set accuracy scores for the embeddings
+      extracted with \textsf{SPN} models by aggregating node outputs
+      with the same scope.
+      Results for when leaves are not counted in the aggregarion
+      (\textsf{no-leaves} columns) are reported alongside the case in which they are
+      considered (\textsf{leaves} columns).
+      Bold values denote significantly better scores than all the others
+      for each dataset.
+      $\blacktriangle$ indicates a better score than an RBM embedding
+      with greater or equal size. $\triangledown$ indicates worse
+      scores than an RBM embedding with smaller or equal size.}
+    \centering
+    \small
+    \setlength{\tabcolsep}{3pt}  
+    \begin{tabular}{l c c c c c c}
+      \toprule
+      & \multicolumn{2}{c}{\textsf{SPN-I}} &
+                                             \multicolumn{2}{c}{\textsf{SPN-II}}
+      & \multicolumn{2}{c}{\textsf{SPN-III}}\\
+      
+      &no-leaves  & leaves& no-leaves& leaves& no-leaves& leaves\\
+      \midrule
+      \textsf{REC} & 72.47 & $75.92^{\triangledown}$ & $\mathbf{97.94}^{\blacktriangle}$ & $\mathbf{97.99}^{\blacktriangle}$ & $\mathbf{97.94}^{\blacktriangle}$ & $\mathbf{98.02}^{\blacktriangle}$ \\
+      \midrule
+      \textsf{CON} & 62.35 & $66.49^{\triangledown}$ & $77.21^{\blacktriangle}$ & 78.05 & $\mathbf{83.52}^{\blacktriangle}$ & $\mathbf{83.84}^{\blacktriangle}$ \\
+      \midrule
+      \textsf{OCR} & 74.32 & 81.85 & $89.71^{\blacktriangle}$ & $89.68^{\blacktriangle}$ & $\mathbf{89.90}^{\blacktriangle}$ & $\mathbf{89.91}^{\blacktriangle}$ \\
+      \midrule
+      \textsf{CAL} & 38.10 & $63.19^{\triangledown}$  & 62.59 & $62.76^{\triangledown}$ & $\mathbf{66.49}^{\triangledown}$ & $\mathbf{66.58}^{\triangledown}$ \\
+      \midrule
+      \textsf{BMN} & 93.51 & $94.83^{\triangledown}$ & $97.64^{\blacktriangle}$ & $97.62^{\blacktriangle}$ & $\mathbf{97.80}$ & $\mathbf{97.80}$ \\
+      \bottomrule
+    \end{tabular}
+    \label{tab:model-scope-aggr}
+  \end{table}
 \end{frame}
 
 
@@ -480,18 +703,20 @@ machine for the represented distribution at the same time
 
 \section{Applications}
 {\setbeamertemplate{headline}{}
-  \begin{frame}
+  \begin{frame}[c]
     \sectionpage
   \end{frame}
 }
 
 \begin{frame}
   \frametitle{Applications I: computer vision}
+  
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Applications II: language modeling}
+  \frametitle{Applications II: language modeling}
+  
 \end{frame}
 
 \begin{frame}
@@ -500,6 +725,7 @@ machine for the represented distribution at the same time
 
 \begin{frame}
   \frametitle{Applications IV: speech}
+  \footfullcitenomarkleft{Peharz2014a}
 \end{frame}
 
 
@@ -509,7 +735,7 @@ machine for the represented distribution at the same time
 
 \section{References}
 {\setbeamertemplate{headline}{}
-  \begin{frame}
+  \begin{frame}[c]
     \sectionpage
   \end{frame}
 }
