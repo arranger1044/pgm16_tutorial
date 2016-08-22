@@ -1,35 +1,23 @@
-\documentclass[xcolor={usenames,dvipsnames,svgnames}, compress]{beamer}
+\documentclass[10pt,t]{beamer}
 
-\usepackage{booktabs}
-\usepackage{dcolumn}
-\usepackage{colortbl}
-\usepackage{ifxetex}
-\usepackage{amsmath}
-\usepackage[style=authoryear-comp]{biblatex}
-\usepackage[no-math]{fontspec}
-
-\definecolor{untractable_red}{RGB}{209, 25, 25}
-\definecolor{tractable_green}{RGB}{0, 153, 51}
-
-\newcommand{\argmax}{\operatornamewithlimits{argmax}}
-
-\usetheme{enziteto}
+%\usetheme{enziteto}
 
 \setbeamertemplate{headline}{}
 
-\addbibresource{../referomnia/referomnia.bib}
-
 \title{Learning Sum-Product Networks}
 \author{Nicola Di Mauro \and Antonio Vergari}
-% \date{September 2016}
-\institute{Università degli Studi di Bari}
-\department{Dipartimento di Informatica}
-\laboratory{LACAM}
-\group{Machine Learning}
-\institutelogo{\includegraphics[width=25pt]{figures/unibaba}}
-\lablogo{\includegraphics[width=35pt]{figures/lacam}}
+\date{September 2016}
+%\institute{Università degli Studi di Bari}
+%\department{Dipartimento di Informatica}
+%\laboratory{LACAM}
+%\group{Machine Learning}
+%\institutelogo{\includegraphics[width=25pt]{figures/unibaba}}
+%\lablogo{\includegraphics[width=35pt]{figures/lacam}}
 
-\footnotesize \let\small\footnotesize
+%\footnotesize \let\small\footnotesize
+
+\setbeamerfont{footnote}{size=\scriptsize}
+\addtobeamertemplate{footnote}{}{\vspace{6pt}}
 
 \begin{document}
 
@@ -39,6 +27,20 @@
   \titlepage
 \end{frame}
 
+\begin{frame}
+\frametitle{The need for SPN}
+Sum-Product Networks (SPNs) are a type of probabilistic model\footnote{H. Poon
+  and P. Domingos, \emph{Sum-Product Network: a New Deep Architecture}, UAI 2011}
+\begin{itemize}
+\item for Pobabilistic Graphical Models (PGMs) there exist multi-purpose
+  inference tools
+\begin{itemize}
+\item the computational
+effort scales unproportional to the complexity of the graph
+\item solution: using approximate inference
+\end{itemize}
+\end{itemize}
+\end{frame}
 
 \begin{frame}[t]
   \frametitle{The need for SPNs}
@@ -47,6 +49,8 @@
 \item exact tractable inference
   \item NN for which structure learning is easy
 \end{itemize}
+SPNs represent probability distributions and a corresponding exact inference
+machine for the represented distribution at the same time 
 \end{frame}
 
 \section{Representation}
@@ -465,7 +469,7 @@
 
 \begin{frame}
   \frametitle{Encoding/Decoding Embeddings}
-  MPN as autoencoders\footnotenomarkleft{Vergari et al. Encoding and Decoding
+  MPN as autoencoders\footnote{Vergari et al. Encoding and Decoding
     Representations with Sum-Product Networks, 2016, to appear}.
 \end{frame}
 
@@ -510,19 +514,20 @@
 
 \begin{frame}
   \frametitle{awesome-spn}
-  A curated and structured list of resources about SPNs\footnote{Inspired by the \href{SPN page}{http://spn.cs.washington.edu/} at the Washington University}.\par
+  A curated and structured list of resources about SPNs\footnote{Inspired by the
+    SPN page {http://spn.cs.washington.edu/} at the Washington  University}.
+
   \url{https://github.com/arranger1044/awesome-spn}
 \end{frame}
 
-\begin{frame} [allowframebreaks]
-  \setbeamertemplate{bibliography item}{}
-  \setlength\bibitemsep{8pt}
-  \printbibliography
-\end{frame}
+%\begin{frame} [allowframebreaks]
+%  \setbeamertemplate{bibliography item}{}
+%  \setlength\bibitemsep{8pt}
+%  \printbibliography
+%\end{frame}
+
+
+
 
 \end{document}
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: t
-%%% TeX-engine: xetex
-%%% End:
+
