@@ -62,6 +62,17 @@
 
 \begin{frame}
   \frametitle{(Different kinds of) Inference}
+  Different kinds of queries:
+  \begin{itemize}
+  \item $p(\mathbf{X})$ (evidence)
+  \item $p(\mathbf{E}), \mathbf{E}\subset\mathbf{X}$ (marginals)
+  \item $p(\mathbf{Q}|\mathbf{E}), \mathbf{Q},
+    \mathbf{E}\subset\mathbf{X}, \mathbf{Q}\cap \mathbf{E}=\emptyset$ (conditionals)
+  \item
+    $\arg\max_{\mathbf{q}\sim\mathbf{Q}}p(\mathbf{q}|\mathbf{E})$
+    (MPE assignment)
+    \item complex queries
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -133,9 +144,77 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}[t]
+  \frametitle{SPNs as NNs (I)}
+  SPNs are a particular kind of \emph{\textbf{labelled}
+    \textbf{constrained} and \textbf{fully probabilistic}}
+  neural networks.\par\bigskip
+  
+  \textbf{Labelled}: each neuron is associated a \emph{scope}\par
+  \textbf{Constrained}: completeness and decomposability determine
+  network topology.\par
+  \textbf{Fully probabilistic:} each valid sub-SPN is still a
+  valid-SPN.\footfullcitenomarkleft{Vergari2016a}\par\bigskip
+  
+  SPNs provide a direct encoding of the input space into a deep
+  architecture $\rightarrow$ \emph{\textbf{visualizing representations}} (back) into the \emph{\textbf{input space}}.
+\end{frame}
+
+\begin{frame}
+  \frametitle{SPNs as NNs (II)}
+  \small
+  A classic MLP hidden layer computes the function:
+  $$h(\mathbf{x}) =\sigma(\mathbf{W}\mathbf{x}+ \mathbf{b})$$
+
+  SPNs can be reframed as \textit{DAGs} of MLPs, each sum layer
+  computing:
+  $$\mathbf{S}(\mathbf{x}) =
+  \log(\mathbf{W}\mathbf{x})$$
+  and product layers computing:
+  $$\mathbf{S}(\mathbf{x}) = \exp(\mathbf{P}\mathbf{x})$$
+  where
+  $\mathbf{W}\in\mathbb{R}_{+}^{s\times r}$ and $\mathbf{P}\in\{0,
+  1\}^{s\times r}$ are the weight matrices:
+  \begin{equation*}
+    \mathbf{W}_{(ij)}= \begin{cases}
+      w_{ij} &\text{if $i\rightarrow j$}\\
+      0& \text{otherwise}
+    \end{cases}\quad\quad\mathbf{P}_{(ij)}=
+    \begin{cases}
+      1 &\text{if $i\rightarrow j$}\\
+      0& \text{otherwise}
+    \end{cases}
+  \end{equation*}\footfullcitenomarkleft{Vergari2016a}
+\end{frame}
+
+\begin{frame}
+  \frametitle{SPNs as NNs (III)}
+  \begin{center}
+    \includegraphics[width=0.8\columnwidth]{figures/layered-spn.pdf}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{SPNs as NNs (IV): filters}
+  \small
+  Learned features as images maximizing neuron activations~\parencite{Erhan2009}:
+  $$\mathbf{x}^{*} = \argmax_{\mathbf{x},
+    ||\mathbf{x}||=\gamma}h_{ij}(\mathbf{x};\boldsymbol\theta).$$
+  With SPNs, joint solution as an MPE assignment for all nodes (linear time):
+  $$\mathbf{x}^{*}_{|\mathsf{sc}(n)} =
+  \argmax_{\mathbf{x}}S_{n}(\mathbf{x}_{|\mathsf{sc}(n)};
+  \mathbf{w})$$.
+  \begin{center}
+    \vspace{-15pt}
+    \includegraphics[width=0.9\linewidth]{figures/filters.jpg}
+  \end{center}
+  \footfullcitenomarkleft{Vergari2016a}
+  $\rightarrow$ \emph{scope length} ($|\mathsf{sc}(n)|$) correlates with feature abstraction level
+\end{frame}
+
 \begin{frame}
   \frametitle{SPNs as BNs I}
-  Zhao
+  Zhao and Poupart
 \end{frame}
 
 \begin{frame}
@@ -143,6 +222,14 @@
   Peharz
 \end{frame}
 
+\begin{frame}
+  \frametitle{Myths about SPNs}
+ \textbf{SPNs are PGMs}. false
+
+ \textbf{SPNs are convolutional NNs}. false
+
+  SPNs 
+\end{frame}
 
 \section{Learning}
 {\setbeamertemplate{headline}{}
@@ -152,7 +239,116 @@
 }
 
 \begin{frame}
+  \small
   \frametitle{Structure Learning}
+  Structure matters
+
+  Alternatives:
+  \begin{itemize}
+  \item handcrafted structure, then weight learning~\parencite{Poon2011}
+  \item random structures, then weight learning~\parencite{Rashwan2016}
+    \item learned from data
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Why Structure Quality Matters}
+
+  \footnotesize
+  
+  Tractable inference is guaranteed \emph{if the network size is polynomial} in \#
+  vars.\par\bigskip
+
+  Smaller networks, faster inference (comparing network sizes is better than comparing inference times).\par\bigskip
+
+  \emph{Deeper} networks are possibly \emph{more expressively efficient}~\emph{\parencite{Martens2014,Zhao2015}}.\par\bigskip
+
+  Structural simplicity as a bias: overcomplex networks may not generalize well.\par\bigskip
+  
+  Structure quality desiderata: \textbf{\textbf{smaller}} but \textbf{\textbf{accurate}}, \textbf{\emph{deeper}} but not
+  wider, SPNs.
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{LearnSPN (I)}
+  \footnotesize
+  Build a tree-like SPN by recursively split the data matrix:
+
+  \begin{itemize}
+  \item splitting columns into pairs by a greedy \textbf{\emph{G Test}} based
+    procedure with threshold $\rho$:
+    \[
+      G(X_i, X_j) =  2\sum_{x_i \sim X_i}\sum_{x_j \sim X_j}c(x_i, x_j)\cdot \log\frac{c(x_i, x_j)\cdot |T|}{c(x_i)c(x_j)}
+    \]
+  \item clustering instances into $|C|$ sets with \textbf{\emph{online Hard-EM}} with cluster penalty
+    $\lambda$:
+    \[\begin{array}{cc}
+        Pr(\mathbf{X})= \sum_{C_i \in \mathbf{C}}\prod_{X_j \in \mathbf{X}}Pr(X_j|C_i)Pr(C_i)\\
+        % & Pr(C_i) \propto e^{-\lambda |\mathbf{C}|\cdot |\mathbf{X}|}\\
+      \end{array}\]
+    weights are estimated as cluster proportions
+  \item if there are less than $m$ instances, put a \textbf{\emph{naive
+        factorization}} over leaves
+  \item each univariate distribution get \emph{\textbf{ML estimation}} smoothed by $\alpha$  
+  \end{itemize}\par\bigskip
+
+  Hyperparameter space: $\{\rho, \lambda, m, \alpha\}$.
+  
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{LearnSPN (II)}
+  \footnotesize
+  \onslide<1-4>{\begin{minipage}[t]{0.3\linewidth}
+      \begin{center}
+        \only<1>{\includegraphics[width=0.8\linewidth]{figures/grid-0}}
+        \only<2-4>{\includegraphics[width=0.715\linewidth]{figures/grid-1}}
+      \end{center}
+    \end{minipage}}\hspace{10pt}\onslide<3-4>{\begin{minipage}[t]{0.3\linewidth}
+      \begin{center}
+        \includegraphics[width=0.72\linewidth]{figures/grid-2}
+      \end{center}
+    \end{minipage}}\hspace{10pt}\onslide<4>{\begin{minipage}[t]{0.3\linewidth}
+      \begin{center}
+        \includegraphics[width=0.735\linewidth]{figures/grid-3}
+      \end{center}
+    \end{minipage}}\\
+  \vspace{15pt}
+  \onslide<2-4>{\raisebox{0pt}{\begin{minipage}[t]{0.3\linewidth}
+        \begin{center}
+          \includegraphics[width=0.715\linewidth]{figures/learnspn-1}
+        \end{center}
+      \end{minipage}}}\hspace{5pt}\onslide<3-4>{\raisebox{-25pt}{\begin{minipage}[t]{0.3\linewidth}
+        \begin{center}
+          \includegraphics[width=0.83\linewidth]{figures/learnspn-2}
+        \end{center}
+      \end{minipage}}}\hspace{4pt}\onslide<4>{\raisebox{-22pt}{\begin{minipage}[t]{0.3\linewidth}
+        \begin{center}
+          \includegraphics[width=1.0\linewidth]{figures/learnspn-3}
+        \end{center}
+      \end{minipage}}}
+\end{frame}
+
+\begin{frame}
+  \frametitle{LearnSPN (III)}
+  \footnotesize
+  
+  \textsf{LearSPN} performs two interleaved \textbf{\emph{greedy
+      hierarchical}} divisive \textbf{\emph{clustering}}
+  processes (co-clutering on the data matrix).\par\bigskip
+
+  Fast and simple. But both processes never look back and are
+  committed to the choices they take.\par\bigskip
+
+  Online EM does not need to specify the number of clusters $k$ in
+  advance. But overcomplex structures are learned by exploding the number of sum
+  node children.\par\bigskip
+
+  Tractable leaf estimation. But naive factorization independence
+  assumptions may be too strong.\par\bigskip
+
+  ML estimations are effective. But they are not robust to noise, they can overfit the training set easily.
 \end{frame}
 
 \begin{frame}
@@ -161,10 +357,50 @@
 
 \begin{frame}
   \frametitle{LearnSPN-b}
+  Observation: each clustering process benefits from the other one improvements/highly suffers
+  from other's mistakes.\par\bigskip
+
+  Idea: slowing down the processes by limiting the number of
+  nodes to split into. \textsf{SPN-B}, variant of \textsf{LearnSPN} that uses EM
+  for mixture modeling with
+  $k=2$ to cluster rows.
+
+  No need for $\lambda$ anymore.\par\bigskip
+
+  \raisebox{45pt}{\begin{minipage}[t]{0.65\linewidth}
+      Objectives:
+      \begin{itemize}
+      \item not committing to complex structures too early
+      \item same expressive power as LearnSPN
+      \item reducing node out fan increases the depth
+      \item same accuracy, smaller networks
+      \end{itemize}
+    \end{minipage}}\hspace{-5pt}\begin{minipage}[t]{0.3\linewidth}
+    \begin{center}
+      \includegraphics[width=0.9\linewidth]{figures/learnspn-4.pdf}
+    \end{center}
+  \end{minipage}
 \end{frame}
 
 \begin{frame}
-  \frametitle{New Structure Learning Tendencies}
+  \frametitle{LearnSPN-b: depth VS size}
+
+  \begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[width=0.5\linewidth]{figures/nltcs-depth.pdf}
+      \includegraphics[width=0.5\linewidth]{figures/plants-depth.pdf}
+      \caption{Comparing network sizes and depths while varying the max
+        number of sum node children splits ($k\in\{10, 4, 2\}$). Each dot is an experiment
+        in the grid search hyperparameter space performed by
+        \textsf{SPN-B} on NLTCS (left) and Plants (right).}
+    \end{center}
+  \end{figure}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{New Tendencies in Structure Learning}
+  Pruning and compressing
 \end{frame}
 
 \begin{frame}
@@ -193,18 +429,38 @@
 
 \begin{frame}
   \frametitle{Extracting Embeddings}
+  Problem extracting embeddings
 \end{frame}
 
 \begin{frame}
-  \frametitle{Classification}
+  \frametitle{Supervised classification}
+  
 \end{frame}
 
 \begin{frame}
   \frametitle{Filtering Embeddings}
+  Filtering embeddings by:
+  \begin{itemize}
+  \item node type
+  \item scope
+    \item scope length
+  \end{itemize}
 \end{frame}
+
+
 
 \begin{frame}
   \frametitle{Random Marginal Queries}
+  Generate embeddings by asking several random queries to a black box
+  density estimator.\par
+  Eg. marginals: $e^{i}_{j}=P_{\theta}(\mathbf{Q}_{j}=\mathbf{x}^{i}_{\mathbf{Q}_{j}})$,
+  according to estimator $\theta$ where $\mathbf{Q}_{j}\subseteq\mathbf{X}, j=\,\dots,k$.
+  \begin{center}
+    \includegraphics[width=1.0\linewidth]{figures/lines-wide}
+  \end{center}
+  \footfullcitenomarkleft{Vergari2016a}
+  % Two general extraction schemes: random query construction and random
+  % `patch' estimation
 \end{frame}
 
 \begin{frame}
