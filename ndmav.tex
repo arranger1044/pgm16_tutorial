@@ -1,27 +1,29 @@
 \documentclass[10pt,t]{beamer}
 
-%\usetheme{enziteto}
+\usetheme{enziteto}
 
 \setbeamertemplate{headline}{}
+
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
 
 \title{Learning Sum-Product Networks}
 \author{Nicola Di Mauro \and Antonio Vergari}
 \date{September 2016}
-%\institute{Università degli Studi di Bari}
-%\department{Dipartimento di Informatica}
-%\laboratory{LACAM}
-%\group{Machine Learning}
-%\institutelogo{\includegraphics[width=25pt]{figures/unibaba}}
-%\lablogo{\includegraphics[width=35pt]{figures/lacam}}
+\institute{Università degli Studi di Bari}
+\department{Dipartimento di Informatica}
+\laboratory{LACAM}
+\group{Machine Learning}
+\institutelogo{\includegraphics[width=25pt]{figures/unibaba}}
+\lablogo{\includegraphics[width=35pt]{figures/lacam}}
 
 %\footnotesize \let\small\footnotesize
 
-\setbeamerfont{footnote}{size=\scriptsize}
+%\setbeamerfont{footnote}{size=\scriptsize}
 \addtobeamertemplate{footnote}{}{\vspace{6pt}}
 
 \begin{document}
 
-\begin{frame}
+\begin{frame}[c]
   \setbeamertemplate{headline}{}
   \setbeamertemplate{footline}{}
   \titlepage
@@ -531,3 +533,9 @@ machine for the represented distribution at the same time
 
 \end{document}
 
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% TeX-engine: xetex
+%%% End:
