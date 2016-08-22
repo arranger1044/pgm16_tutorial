@@ -1,8 +1,20 @@
 \documentclass[10pt,t]{beamer}
 
+%\usetheme{enziteto}
+
+\setbeamertemplate{headline}{}
+
 \title{Learning Sum-Product Networks}
 \author{Nicola Di Mauro \and Antonio Vergari}
 \date{September 2016}
+%\institute{Università degli Studi di Bari}
+%\department{Dipartimento di Informatica}
+%\laboratory{LACAM}
+%\group{Machine Learning}
+%\institutelogo{\includegraphics[width=25pt]{figures/unibaba}}
+%\lablogo{\includegraphics[width=35pt]{figures/lacam}}
+
+%\footnotesize \let\small\footnotesize
 
 \setbeamerfont{footnote}{size=\scriptsize}
 \addtobeamertemplate{footnote}{}{\vspace{6pt}}
@@ -10,7 +22,9 @@
 \begin{document}
 
 \begin{frame}
-\maketitle
+  \setbeamertemplate{headline}{}
+  \setbeamertemplate{footline}{}
+  \titlepage
 \end{frame}
 
 \begin{frame}
@@ -26,13 +40,76 @@ effort scales unproportional to the complexity of the graph
 \item solution: using approximate inference
 \end{itemize}
 \end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+  \frametitle{The need for SPNs}
+  \framesubtitle{Why should you work on SPNs?}
+\begin{itemize}
+\item exact tractable inference
+  \item NN for which structure learning is easy
+\end{itemize}
 SPNs represent probability distributions and a corresponding exact inference
 machine for the represented distribution at the same time 
 \end{frame}
 
+\section{Representation}
+{\setbeamertemplate{headline}{}
+  \begin{frame}
+    \sectionpage
+  \end{frame}
+}
+
 \begin{frame}
-\frametitle{Representation}
+  \frametitle{Density estimation}
 \end{frame}
+
+\begin{frame}
+  \frametitle{(Different kinds of) Inference}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Tractable Probabilistic Models}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Sum-Product Networks}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Scopes}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Structural Properties}
+\end{frame}
+
+\section{Inference}
+{\setbeamertemplate{headline}{}
+  \begin{frame}
+    \sectionpage
+  \end{frame}
+}
+
+\begin{frame}
+  \frametitle{Complete evidence}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Marginal inference}
+\end{frame}
+
+\begin{frame}
+  \frametitle{MPE inference}
+\end{frame}
+
+
+\section{Interpretation}
+{\setbeamertemplate{headline}{}
+  \begin{frame}
+    \sectionpage
+  \end{frame}
+}
 
 \begin{frame}
 \frametitle{Interpretation}
@@ -42,20 +119,56 @@ machine for the represented distribution at the same time
 \end{itemize}
 \end{frame}
 
+
 \begin{frame}
 \frametitle{Network Polynomials}
 \end{frame}
 
 \begin{frame}
-\frametitle{Arithmetic Circuits}
-\begin{itemize}
-\item SPNs are a special case of ACs
-\item Learning Sum-Product Networks with Direct and Indirect Variable Interactions
-\end{itemize}
+  \frametitle{Arithmetic Circuits}
+  Differences with ACs:
+  \begin{itemize}
+  \item probabilistic semantics
+    \begin{itemize}
+    \item learning
+      \item sampling
+    \end{itemize}
+    \item no shared weights
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Inference(s)}
+  \frametitle{SPNs as BNs I}
+  Zhao
+\end{frame}
+
+\begin{frame}
+  \frametitle{SPNs as BNs II}
+  Peharz
+\end{frame}
+
+
+\section{Learning}
+{\setbeamertemplate{headline}{}
+  \begin{frame}
+    \sectionpage
+  \end{frame}
+}
+
+\begin{frame}
+  \frametitle{Structure Learning}
+\end{frame}
+
+\begin{frame}
+  \frametitle{LearnSPN}
+\end{frame}
+
+\begin{frame}
+  \frametitle{LearnSPN-b}
+\end{frame}
+
+\begin{frame}
+  \frametitle{New Structure Learning Tendencies}
 \end{frame}
 
 \begin{frame}
@@ -63,35 +176,102 @@ machine for the represented distribution at the same time
 \end{frame}
 
 \begin{frame}
-\frametitle{Structure Learning}
+  \frametitle{Hard/Soft Parameter Learning}
 \end{frame}
 
 \begin{frame}
-\frametitle{SPN Understanding}
+  \frametitle{Bayesian Parameter Learning}
 \end{frame}
 
 \begin{frame}
-\frametitle{(SPN-based) Representation Learning}
+  \frametitle{Parameter Learning VS LearnSPN}
+  Collapsed Variational Inference is useless : D
+\end{frame}
+
+\section{Representation Learning}
+{\setbeamertemplate{headline}{}
+  \begin{frame}
+    \sectionpage
+  \end{frame}
+}
+
+\begin{frame}
+  \frametitle{Extracting Embeddings}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Classification}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Filtering Embeddings}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Random Marginal Queries}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Encoding/Decoding Embeddings}
+  MPN as autoencoders\footnote{Vergari et al. Encoding and Decoding
+    Representations with Sum-Product Networks, 2016, to appear}.
+\end{frame}
+
+
+
+
+\section{Applications}
+{\setbeamertemplate{headline}{}
+  \begin{frame}
+    \sectionpage
+  \end{frame}
+}
+
+\begin{frame}
+  \frametitle{Applications I: computer vision}
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Applications}
+\frametitle{Applications II: language modeling}
 \end{frame}
 
 \begin{frame}
-\frametitle{Code}
+  \frametitle{Applications III: activity recognition}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Applications IV: speech}
+\end{frame}
 
 
 \begin{frame}
-\frametitle{Open Problems and Future Investigations}
+\frametitle{Trends \& What to do next}
 \end{frame}
 
+\section{References}
+{\setbeamertemplate{headline}{}
+  \begin{frame}
+    \sectionpage
+  \end{frame}
+}
 
+\begin{frame}
+  \frametitle{awesome-spn}
+  A curated and structured list of resources about SPNs\footnote{Inspired by the
+    SPN page {http://spn.cs.washington.edu/} at the Washington  University}.
+
+  \url{https://github.com/arranger1044/awesome-spn}
+\end{frame}
+
+%\begin{frame} [allowframebreaks]
+%  \setbeamertemplate{bibliography item}{}
+%  \setlength\bibitemsep{8pt}
+%  \printbibliography
+%\end{frame}
 
 
 
 
 \end{document}
+
