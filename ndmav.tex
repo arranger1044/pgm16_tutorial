@@ -510,10 +510,10 @@ machine for the represented distribution at the same time
 \begin{frame}
   \frametitle{Parameter Learning}
   Non convex optimization, solvable with iterative methods like: GD,
-  EM,\dots and their online variants\par\bigskip
+  EG, EM,\dots and their online variants\par\bigskip
 
-  Use backpropagation ($\rightarrow$ differential approach) to compute
-  $\nabla_{\mathbf{w}} S(\mathbf{x})$\par\bigskip
+  Classical approach: use backpropagation ($\rightarrow$ differential approach) to compute
+  the gradient $\nabla_{\mathbf{w}} S(\mathbf{x})$\par\bigskip
 
   Hard/Soft gradients\par\bigskip
 
@@ -530,40 +530,49 @@ machine for the represented distribution at the same time
 \end{frame}
 
 \begin{frame}
-  \frametitle{Hard/Soft Parameter Learning}
+  \frametitle{Hard/Soft Parameter Updating}
   \begin{table}
     \centering
-    \begin{tabular}{l c c}
-      &\textbf{soft}& \textbf{hard}\\
-      \textsf{Generative Gradient} &$\frac{\partial
-                                     S(\mathbf{x})}{\partial w_{pc}} =
-                                     S_{c}(\mathbf{x})\frac{\partial
-                                     S(\mathbf{x})}{\partial S_{p}(\mathbf{x})}$
-                    &
-                      $\frac{\sharp\{w_{pc}\in
-                      \mathsf{MPE-path}(\mathbf{x})\}}{w_{pc}}$\\
-      \textsf{Discriminative Gradient} & $\frac{1}{S(\mathbf{y}|\mathbf{x})}\frac{\partial
-                                         S(\mathbf{y}|\mathbf{x})}{\partial
-                                         w_{pc}} - \frac{1}{S(\mathbf{*}|\mathbf{x})}\frac{\partial
-                                         S(\mathbf{*}|\mathbf{x})}{\partial
-                                         w_{pc}}$ &
+    \begin{tabular}{l c}
+      & $\Delta w_{pc}$\\
+      \toprule
+      \textsf{\textbf{Soft Gradient}}&\\
+      \textsf{\emph{Generative}} ($\nabla_{w_{pc}}
+      S(\mathbf{x})$) & $ S_{c}(\mathbf{x})\nabla_{S_{p}(\mathbf{x})}
+                         S(\mathbf{x})$\\
+      \textsf{\emph{Discriminative}} ($\nabla_{w_{pc}}\log
+      S(\mathbf{y}|\mathbf{x})$) &
+                                   $\frac{\nabla_{w_{pc}}S(\mathbf{y}|\mathbf{x})}{S(\mathbf{y}|\mathbf{x})}  - \frac{\nabla_{w_{pc}}S(\mathbf{*}|\mathbf{x})}{S(\mathbf{*}|\mathbf{x})}$\\
+      \textsf{\textbf{Hard Gradient}}& \\
+      \textsf{\emph{Generative}} ($\nabla_{w_{pc}}
+      \log M(\mathbf{x})$)                   &
+                      % $\frac{\sharp\{w_{pc}\in
+                      % \mathsf{MPE-path}(\mathbf{x})\}}{w_{pc}}$\\
+      $\frac{\sharp\{w_{pc}\in W_{\mathbf{x}}\}}{w_{pc}}$\\
+      \textsf{\emph{Discriminative}}
+      ($\nabla_{w_{pc}}\log
+      M(\mathbf{y}|\mathbf{x})$)
+                      &
                                                     $\frac{\sharp\{w_{pc}\in
-                                                    \mathsf{MPE-path}(\mathbf{y}|\mathbf{x})\}
+                        W_{(\mathbf{y}|\mathbf{x})}\}
                                                     - \sharp\sharp\{w_{pc}\in
-                                                    \mathsf{MPE-path}(\mathbf{1}|\mathbf{x})\}}{w_{pc}}$\\
-      \textsf{Generative Posterior} & $p(H_{p}=c|\mathbf{x})\propto \frac{1}{S(\mathbf{x})}\frac{\partial
-                                      S(\mathbf{x})}{\partial S_{p}(\mathbf{x})}S_{c}(\mathbf{x})w_{pc}$ & $p(H_{p}=c|\mathbf{x})=
+                        W_{(\mathbf{1}|\mathbf{x})}\}}{w_{pc}}$\\
+      \midrule
+      \textsf{\textbf{Soft} Posterior}\footfullcite{Peharz2016} ($p(H_{p}=c|\mathbf{x})$) & $\propto \frac{1}{S(\mathbf{x})}\frac{\partial
+                                      S(\mathbf{x})}{\partial
+                                                                  S_{p}(\mathbf{x})}S_{c}(\mathbf{x})w_{pc}$ \\
+      \textsf{\textbf{Hard} Posterior} ($p(H_{p}=c|\mathbf{x})$) & $=
                                                                                              \begin{cases}
                                                                                                1
                                                                                                \text{if}
-                                                                                               w
-                                                                                               \in W
+                                                                                               w_{pc}
+                                                                                               \in W_{\mathbf{x}}
                                                                                                \\
                                                                                                0 \text{otherwise}
                                                                                              \end{cases}
 $\\
     \end{tabular}
-  \end{table}
+  \end{table}\footfullcitenomarkleft{Gens2012}
 \end{frame}
 
 \begin{frame}
