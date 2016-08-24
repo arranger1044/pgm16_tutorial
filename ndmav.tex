@@ -5,7 +5,7 @@
 \usepackage{colortbl}
 \usepackage{ifxetex}
 \usepackage{amsmath}
-\usepackage[style=authoryear-comp]{biblatex}
+\usepackage[style=authoryear-icomp, maxcitenames=2]{biblatex}
 \usepackage[no-math]{fontspec}
 
 \definecolor{untractable_red}{RGB}{209, 25, 25}
@@ -258,43 +258,55 @@ machine for the represented distribution at the same time
 }
 
 \begin{frame}
-  \small
-  \frametitle{Structure Learning}
-  Structure matters
+  %\small
+  \frametitle{Learning SPNs}
 
-  Alternatives:
+  \textbf{Parameter learning:} estimate $\mathbf{w}$ from data
+  considering an SPN as a
+  latent RV model, or as a NN\par\bigskip
+
+  \textbf{Structure learning:} build the network from data by assigning
+  scores to tentative structures or by exploiting constraints\par\bigskip
+
+  How to learn a ``complete'' SPN:
   \begin{itemize}
-  \item handcrafted structure, then weight learning~\parencite{Poon2011}
-  \item random structures, then weight learning~\parencite{Rashwan2016}
-    \item learned from data
+  \item handcrafted structure, then parameter learning~\parencite{Poon2011,Gens2012}
+  \item random structures, then parameter learning~\parencite{Rashwan2016}
+  \item structure learning, then parameter learning (fine tuning)~\parencite{Zhao2016a}
+  \item learn both weight and structure at the same time~\parencite{Gens2013,Rooshenas2014,Vergari2015,Adel2015}\dots  
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Why Structure Quality Matters}
+  \frametitle{Structure Learning}
 
-  \footnotesize
+  \textbf{Score vs constraint based search.}
+  No closed form for likelihood scores, need
+  heuristics~\parencite{Rooshenas2014}.\par
+  No need for it by exploiting the inner nodes probabilistic semantics\par\bigskip
   
-  Tractable inference is guaranteed \emph{if the network size is polynomial} in \#
-  vars.\par\bigskip
+  \textbf{Learning graph vs tree structures}:
+  Easier to learn a tree SPN (sometimes SPT) with greedy
+  approaches. Graph SPNs may be more compact and expressive efficient.\par\bigskip
 
-  Smaller networks, faster inference (comparing network sizes is better than comparing inference times).\par\bigskip
+  \textbf{Top-down vs bottom-up approaches}: iteratively cluster data
+  matrix (top-down) or start by the marginal RVs (bottom-up)\par\bigskip
 
-  \emph{Deeper} networks are possibly \emph{more expressively efficient}~\emph{\parencite{Martens2014,Zhao2015}}.\par\bigskip
-
-  Structural simplicity as a bias: overcomplex networks may not generalize well.\par\bigskip
-  
-  Structure quality desiderata: \textbf{\textbf{smaller}} but \textbf{\textbf{accurate}}, \textbf{\emph{deeper}} but not
-  wider, SPNs.
+  \textbf{LearnSPN}~\parencite{Gens2013} is a \emph{\textbf{greedy}}, \emph{\textbf{top down}}, \emph{\textbf{constraint
+  based}} learner for \emph{\textbf{tree}} SPNs\par
+  $\rightarrow$ First principled top-down learner, inspired many algorithms and
+  variations.
+  $\rightarrow$ Surprisingly simple and accurate.
 \end{frame}
+
+
 
 \begin{frame}[t]
   \frametitle{LearnSPN (I)}
-  \footnotesize
-  Build a tree-like SPN by recursively split the data matrix:
+  Build a tree SPN by recursively split the data matrix:
 
   \begin{itemize}
-  \item splitting columns into pairs by a greedy \textbf{\emph{G Test}} based
+  \item splitting columns into pairs by a greedy \textbf{\emph{G Test}}-based
     procedure with threshold $\rho$:
     \[
       G(X_i, X_j) =  2\sum_{x_i \sim X_i}\sum_{x_j \sim X_j}c(x_i, x_j)\cdot \log\frac{c(x_i, x_j)\cdot |T|}{c(x_i)c(x_j)}
@@ -312,8 +324,6 @@ machine for the represented distribution at the same time
   \end{itemize}\par\bigskip
 
   Hyperparameter space: $\{\rho, \lambda, m, \alpha\}$.
-  
-
 \end{frame}
 
 \begin{frame}
@@ -350,28 +360,45 @@ machine for the represented distribution at the same time
 \end{frame}
 
 \begin{frame}
-  \frametitle{LearnSPN (III)}
+  \frametitle{Tweaking LearnSPN}
 %  \footnotesize
   
-  \textsf{LearnSPN} performs two interleaved \textbf{\emph{greedy
-      hierarchical}} divisive \textbf{\emph{clustering}}
+  \textsf{LearnSPN} performs two interleaved greedy
+  \textbf{\emph{hierarchical divisive clustering}}
   processes (co-clutering on the data matrix).\par\bigskip
 
   Fast and simple. But both processes never look back and are
-  committed to the choices they take.\par\bigskip
+  committed to the choices they take \emph{$\rightarrow$ slow down the two
+  processes}\par\bigskip
 
   Online EM does not need to specify the number of clusters $k$ in
   advance. But overcomplex structures are learned by exploding the number of sum
-  node children.\par\bigskip
+  node children \emph{$\rightarrow$ look for deeper networks}\par\bigskip
 
-  Tractable leaf estimation. But naive factorization independence
-  assumptions may be too strong.\par\bigskip
+  Tractable leaf estimation. But too strong naive factorization independence
+  assumptions, hard to regularize \emph{$\rightarrow$ learn tree
+    distributions as leaves}\par\bigskip
 
-  ML estimations are effective. But they are not robust to noise, they can overfit the training set easily.
+  ML estimations are effective. But they are not robust to noise, they
+  can overfit the training set easily
+  \emph{$\rightarrow$ learn bagged sum nodes}
 \end{frame}
 
 \begin{frame}
-  \frametitle{LearnSPN}
+  \frametitle{Why Structure Quality Matters}
+
+  Tractable inference is guaranteed \emph{if the network size is polynomial} in $|\mathbf{X}|$.\par\bigskip
+
+  Network \emph{\textbf{size}} influences inference complexity: smaller networks,
+  faster inference!\par
+  $\rightarrow$ Comparing network sizes is better than comparing inference times\par\bigskip
+
+  Network \emph{\textbf{depth}} influences \emph{expressive efficiency}~\emph{\parencite{Martens2014,Zhao2015}}.\par\bigskip
+
+  Structural simplicity as a bias: overcomplex networks may not generalize well.\par\bigskip
+  
+  Structure quality desiderata: \textbf{\textbf{smaller}} but \textbf{\textbf{accurate}}, \textbf{\emph{deeper}} but not
+  wider, SPNs.
 \end{frame}
 
 \begin{frame}
@@ -379,53 +406,111 @@ machine for the represented distribution at the same time
   Observation: each clustering process benefits from the other one improvements/highly suffers
   from other's mistakes.\par\bigskip
 
-  Idea: slowing down the processes by limiting the number of
-  nodes to split into. \textsf{SPN-B}, variant of \textsf{LearnSPN} that uses EM
-  for mixture modeling with
-  $k=2$ to cluster rows.
+  Idea: slow them down the processes by limiting the number of
+  nodes to split to the minimum.
+  \textsf{LearnSPN-b}, binary splitting $k=2$.\par%\bigskip
 
-  No need for $\lambda$ anymore.\par\bigskip
+  $\rightarrow$ one hyperparameter less, $\lambda$.\par%\bigskip
+  $\rightarrow$ not committing to complex structures too early\par
+  $\rightarrow$ reducing node out fan increases the depth\par
+  $\rightarrow$ same expressive power as LearnSPN structures\par
+  $\rightarrow$ statistically same (or better) accuracy, smaller
+  networks\par%\bigskip
+  \begin{center}
+    \raisebox{19pt}{\includegraphics[width=0.23\linewidth]{figures/learnspn-1.pdf}}
+    \raisebox{30pt}{\hspace{20pt}\Huge$=$\hspace{10pt}}
+    \includegraphics[width=0.3\linewidth]{figures/learnspn-4.pdf}
+  \end{center}
 
-  \raisebox{45pt}{\begin{minipage}[t]{0.65\linewidth}
-      Objectives:
-      \begin{itemize}
-      \item not committing to complex structures too early
-      \item same expressive power as LearnSPN
-      \item reducing node out fan increases the depth
-      \item same accuracy, smaller networks
-      \end{itemize}
-    \end{minipage}}\hspace{-5pt}\begin{minipage}[t]{0.3\linewidth}
-    \begin{center}
-      \includegraphics[width=0.9\linewidth]{figures/learnspn-4.pdf}
-    \end{center}
-  \end{minipage}
-\end{frame}
+  % \raisebox{45pt}{\begin{minipage}[t]{0.65\linewidth}
+%       Objectives:
+%       \begin{itemize}
+%       \item not committing to complex structures too early
+%       \item same expressive power as LearnSPN
+%       \item reducing node out fan increases the depth
+%       \item statistically same (or better) accuracy, smaller networks
+%       \end{itemize}
+%     \end{minipage}}\hspace{-5pt}\begin{minipage}[t]{0.3\linewidth}
+%     \begin{center}
+%       \includegraphics[width=0.9\linewidth]{figures/learnspn-4.pdf}
+%     \end{center}
+%   \end{minipage}\footfullcitenomark{Vergari2015}
+%
+  \end{frame}
 
 \begin{frame}
   \frametitle{LearnSPN-b: depth VS size}
-
   \begin{figure}[htbp]
     \begin{center}
       \includegraphics[width=0.5\linewidth]{figures/nltcs-depth.pdf}
       \includegraphics[width=0.5\linewidth]{figures/plants-depth.pdf}
-      \caption{Comparing network sizes and depths while varying the max
+      \caption{\footnotesize
+        Network sizes VS depths while varying the max
         number of sum node children splits ($k\in\{10, 4, 2\}$). Each dot is an experiment
         in the grid search hyperparameter space performed by
-        \textsf{SPN-B} on NLTCS (left) and Plants (right).}
+        \textsf{LearnSPN-b} on NLTCS (left) and Plants (right).}
     \end{center}
   \end{figure}
-
 \end{frame}
 
 \begin{frame}
-  \frametitle{New Tendencies in Structure Learning}
-  Pruning and compressing
+  \frametitle{LearnSPN-b: best ll VS size}
+
+  \begin{figure}[htbp]
+    \begin{center}
+      \includegraphics[width=0.65\linewidth]{figures/edges-comp.pdf}
+      \caption{\footnotesize
+        Comparing network sizes
+        for the networks scoring the best log-likelihoods in the grid
+        search as obtained by \textsf{LearnSPN}, \textsf{LearnSPN-b} and
+        \textsf{LearnSPN-bT} for each dataset.}
+    \end{center}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Other variations on LearnSPN}
+  \textbf{ACs modeling leaves} by performing a greedy score
+  search.
+  \emph{\textbf{ID-SPN}} best log-likelihood learner (but lots of
+  hyperparameters).\par
+  Freely available in the \textsf{Libra}\footnote{http://libra.cs.uoregon.edu/} toolkit.~\parencite{Rooshenas2014}\par\bigskip
+  
+  Looking for \textbf{correlations instead of independencies} via matrix
+  factorizations.\par
+  Splitting matrix rows and columns at the same time: SPN-SVD.\par
+  It can cope with continuous data~\parencite{Adel2015}\par\bigskip
+  
+  Post-learning \textbf{mergining sub-SPNs} that model ``similar'' distributions.\par
+  Reducing network sizes~\parencite{Rahman2016}.\par\bigskip
+
+  Learning Relational SPNs on \textbf{first order data}
+  represented in Tractable Markov Logic (TML), LearnRSPN~\parencite{Nath2015}.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Other Tendencies in Structure Learning}
+  \textbf{Learning deterministic structures} which enable closed form
+  log-likelihood and weight estimation.\par
+  Selective SPNs, enabling efficient Stochastic Local
+  Search~\parencite{Peharz2014b}.\par
+  Mixing latent and deterministic mixtures as sum
+  nodes (a Cutset Network is an
+  SPN!).~\parencite{Rahman2016}\par\bigskip
+  
+  \textbf{Learning DAGs} structures instead of trees.\par
+  Substituting sub-structures with more complex ones by cloning mixtures.~\parencite{Dennis2015}\par\bigskip
+  
+  \textbf{Template learning} for sequence
+  models.
+  Stochastic local search over well defined constrained structures.
+  Dynamic SPNs~\parencite{Melibari2016c}\emph{$\rightarrow$ PGM'16!}\par\bigskip
 \end{frame}
 
 \begin{frame}
   \frametitle{Parameter Learning}
   Non convex optimization, solvable with iterative methods like: GD,
-  EM,\dots\par\bigskip
+  EM,\dots and their online variants\par\bigskip
 
   Use backpropagation ($\rightarrow$ differential approach) to compute
   $\nabla_{\mathbf{w}} S(\mathbf{x})$\par\bigskip
@@ -437,6 +522,11 @@ machine for the represented distribution at the same time
   \item vanishing gradients
     \item hyperparameter choices
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{``Hard'' gradients}
+  
 \end{frame}
 
 \begin{frame}
