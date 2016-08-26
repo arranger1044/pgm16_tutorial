@@ -509,24 +509,60 @@ machine for the represented distribution at the same time
 
 \begin{frame}
   \frametitle{Parameter Learning}
-  Non convex optimization, solvable with iterative methods like: GD,
-  EG, EM,\dots and their online variants\par\bigskip
+  Non convex optimization, solvable with (online) iterative methods
+  (e.g. SGD)\par\bigskip
 
-  Classical approach: use backpropagation ($\rightarrow$ differential approach) to compute
-  the gradient $\nabla_{\mathbf{w}} S(\mathbf{x})$\par\bigskip
+  Classical approach: compute the gradient $\nabla_{\mathbf{w}}
+  S(\mathbf{x})$\par
+  $\rightarrow$ use backpropagation (differential
+  approach\footfullcite{Darwiche2003})\par
+  \begin{enumerate}
+  \item $\nabla_{S(\mathbf{x})} S(\mathbf{x})\leftarrow 1$ start from
+    the root
+  \item if $n$ is a sum node, $\forall_{c\in\mathsf{ch}(n)}$:\par
+    $\nabla_{S_{c}(\mathbf{x})}S(\mathbf{x})\leftarrow
+    \nabla_{S_{c}(\mathbf{x})}S(\mathbf{x}) + w_{nc}\nabla_{S_{n}(\mathbf{x})}S(\mathbf{x})$ 
+  \item if $n$ is a product node, $\forall_{c\in\mathsf{ch}(n)}$:\par
+    $\nabla_{S_{c}(\mathbf{x})}S(\mathbf{x})\leftarrow
+    \nabla_{S_{c}(\mathbf{x})}S(\mathbf{x}) + \nabla_{S_{n}(\mathbf{x})}S(\mathbf{x})\prod_{k\in\mathsf{ch}(n)\setminus\{c\}}S_{k}(\mathbf{x})$
+  \end{enumerate}
+  \par%\bigskip
 
-  Hard/Soft gradients\par\bigskip
+  %Hard/Soft gradients\par\bigskip
 
-  Some issues:
+  Issues:
   \begin{itemize}
-  \item vanishing gradients
-    \item hyperparameter choices
+  \item vanishing gradients: depth is a major problem for \emph{soft} gradients
+  \item hyperparameter choices
+    \begin{itemize}
+    \item adaptive learning rate scheduling algos not employed yet!
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{``Hard'' gradients}
-  
+  \begin{minipage}{0.45\linewidth}
+    
+  \end{minipage}\begin{minipage}{0.55\linewidth}
+    From SPN $S$ to MPN $M$\par\bigskip
+    \
+    \begin{itemize}
+    \item forward (bottom-up) prop $\mathbf{x}^{i}$
+    \item backprop as MPE descent
+    \item ``count'' the weights in the path $W_{\mathbf{x}^{i}}$
+      $\nabla_{w_{pc}}
+      \log M(\mathbf{x})=\frac{\sharp\{w_{pc}\in W_{\mathbf{x}}\}}{w_{pc}}$
+    \end{itemize}\bigskip
+
+    Gradient is ``hard'', does not vanishes regardless network
+    depth\par
+    Much fewer parameters get updated/per instance\par
+    $\rightarrow$ slower convergence
+    
+  \end{minipage}
+  \footfullcitenomarkleft{Poon2011}
+  \footfullcitenomarkleft{Gens2012}
 \end{frame}
 
 \begin{frame}
@@ -577,6 +613,23 @@ $\\
 
 \begin{frame}
   \frametitle{Bayesian Parameter Learning}
+  Learning in a Bayesian setting is computing the posterior $p(\mathbf{w}|\{\mathbf{x}^{i}\}_{i=1}^{m})$ having
+  a prior $p(\mathbf{w})$:
+  % p(\mathbf{w}|\{\mathbf{x}^{i}\}_{i=1}^{m})\propto p(\mathbf{w})p(\{\mathbf{x}^{i}\}_{i=1}^{m}|\mathbf{w})\par
+  $$p(\mathbf{w}|\{\mathbf{x}^{i}\}_{i=1}^{t+1})\propto
+  p(\mathbf{w}|\{\mathbf{x}^{i}\}_{i=1}^{t})p(\mathbf{x}^{t+1}|\mathbf{w})$$
+  $p(\mathbf{w})$ modeled as a product of Dirichlet,
+  $p(\mathbf{x}^{t+1}|\mathbf{w})$ is an exponential sum of monomials, $\rightarrow$ the posterior
+  becomes a mixture of products of Dirichlets growing exponentially in
+  the data and sum nodes!\par\bigskip
+
+  \textbf{Online Bayesian Moment Matching} (OBMM): computing first two
+  moments to approximate the intractable posterior, efficiently for
+  tree SPNs~\parencite{Rashwan2016}\par\bigskip
+
+  \textbf{Collapse Variational Inference} (CVB-SPN) to optimize a
+  logarithmic lower bound efficiently~\parencite{Zhao2016a}.
+  
 \end{frame}
 
 \begin{frame}[t]
@@ -591,7 +644,7 @@ $\\
       \midrule
       \textbf{NLTCS} & -6.11 & -6.05 & -6.08 & -6.07 & -8.76 & -6.31 & -6.85\\
       \textbf{MSNBC} & -6.11& -6.04& -6.29& -6.03& -6.81 & -6.64 & -6.74 \\
-      \textbf{KDDCup2k} & -2.18& -2.14& -2.14& -2.14& 44.53 & -2.20 & -2.34\\
+      \textbf{KDDCup2k} & -2.18& -2.14& -2.14& -2.14& -44.53 & -2.20 & -2.34\\
       \textbf{Plants} & -12.98& -12.81& -12.86& -15.14& -21.50 & -17.68 & -33.47\\
       \textbf{Audio} & -40.50& -40.57& -40.36& -40.70& -49.35 & -42.55 & -46.31\\
       \textbf{Jester} & -53.48& -53.53& -54.26& -53.86& 63.89 & -54.26 & -59.48\\
@@ -619,7 +672,41 @@ $\\
 \begin{frame}
   \frametitle{Parameter Learning}
   \framesubtitle{Why learning parameters}
-  
+  \begin{table}
+    \centering
+    \scriptsize
+    \setlength{\tabcolsep}{3pt}  
+    \begin{tabular}{l r r r r r r}
+      \toprule
+      & \textsf{LearnSPN}& \textsf{OBMM} & \textsf{ODMM} & \textsf{SGB} & \textsf{OEM} & \textsf{OEG} \\
+      \midrule
+      \textbf{KOS} & -444.55 & \textbf{-422.19} & -437.30 & -3492.9 & -538.21 & -657.13\\
+      \textbf{NIPS} & - &  \textbf{-1691.87}& -1709.04& -7411.20& -1756.06 & -3134.59 \\
+      \textbf{ENRON} & - &\textbf{-518.842}& -522.45& -13961.40& -554.97 & -14193.90\\
+      \textbf{NyTIMES} & - & -1503.65& -1559.39& -43153.60& \textbf{-1189.39} & -6318.71\\
+      \bottomrule
+    \end{tabular}
+    \label{tab:model-accs}
+  \end{table}
+
+  \begin{table}
+    \centering
+    \scriptsize
+    \setlength{\tabcolsep}{3pt}  
+    \begin{tabular}{l r r r r r r}
+      \toprule
+      & \textsf{LearnSPN}& \textsf{OBMM} & \textsf{ODMM} & \textsf{SGB} & \textsf{OEM} & \textsf{OEG} \\
+      \midrule
+      \textbf{KOS} & 1439.11 & 89.40 & \textbf{8.66} & 162.98 & 59.49 & 155.34\\
+      \textbf{NIPS} & - &  139.50& \textbf{9.43}& 180.25& 64.62 & 178.35 \\
+      \textbf{ENRON} & - &2018.05& \textbf{580.63}& 876.18& 694.17 & 883.12\\
+      \textbf{NyTIMES} & - & 12091.7& \textbf{1643.60}& 5626.33& 5540.40 & 6895.00\\
+      \bottomrule
+    \end{tabular}
+    \label{tab:model-accs}
+  \end{table}
+
+  \footfullcitenomarkleft{Rashwan2016}
 \end{frame}
 
 \section{Representation Learning}
