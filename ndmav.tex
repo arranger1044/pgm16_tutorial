@@ -16,6 +16,11 @@
 \setbeamertemplate{headline}{}
 
 \newcommand{\argmax}{\operatornamewithlimits{argmax}}
+\newcommand{\highlight}[2][yellow]{\mathchoice%
+  {\colorbox{#1}{\textcolor{white}{$\displaystyle#2$}}}%
+  {\colorbox{#1}{\textcolor{white}{$\textstyle#2$}}}%
+  {\colorbox{#1}{\textcolor{white}{$\scriptstyle#2$}}}%
+  {\colorbox{#1}{\textcolor{white}{$\scriptscriptstyle#2$}}}}%
 
 \addbibresource{../referomnia/referomnia.bib}
 
@@ -759,41 +764,192 @@ $\\
 
 \begin{frame}
   \frametitle{Extracting Embeddings}
+  \framesubtitle{From deep neural networks}
+  \begin{minipage}{0.38\linewidth}
+    \begin{center}
+      \only<1>{\includegraphics[width=.9\columnwidth]{figures/dnn-eval-emb-I}}
+      \only<2>{\includegraphics[width=.9\columnwidth]{figures/dnn-eval-emb-II}}
+    \end{center}
+  \end{minipage}\hfill\begin{minipage}[t]{0.6\linewidth}
+    \vspace{-80pt}
+    Build an embedding $\mathbf{e}^{i}\in\mathbb{R}^{d}$ for sample
+    $$\mathbf{x}^{i}=\langle 0,1,0,1,1,1 \rangle$$
+    \only<2>{by evaluating the network and collecting the last layer(s) activations
+      \footnotesize\begin{align*}
+        \mathbf{e}^{i}= \langle&\highlight[orange]{-3.5},\highlight[orange]{.55},\highlight[orange]{-4.2},\highlight[orange]{2.01},\highlight[orange]{1.89},\highlight[orange]{-1.5}\rangle
+      \end{align*}}
+
+  \end{minipage}
+  \footfullcitenomarkleft{Bengio2012}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Extracting Embeddings}
   \framesubtitle{Exploiting SPNs as feature extractors}
 
-  Given an SPN $S$, generate a dense vector
-  $$\mathbf{e}^{i} =f_{S}(\mathbf{x}^{i})$$ 
+  Given an SPN $S$, a filtering criterion $f$, generate a dense vector
+  for each sample $\mathbf{x}^{i}$
+  $$\mathbf{e}^{i} =f_{S}(\mathbf{x}^{i})$$
   
   Issues with SPNs as NNs:
   \begin{itemize}
   \item layer-wise extraction may be arbitrary
   \item power law distribution of nodes by scopes
     \item scope lengths as proxy for feature abstraction levels (see filter visualizations)
-  \end{itemize}
-  
-  How to extract embeddings?
-  \begin{itemize}
-  \item from node outputs (one query) 
-    \begin{itemize}
-    \item all (non-leaf) nodes
-    \item sum/product nodes only
-    \item with a certain scope length
-      \item aggregating node outputs by scope
     \end{itemize}
-  \item from several queries evaluations (root outputs)
-  \end{itemize}
+
+    Which filtering criterion to employ?\par
+    Which interpretation for the extracted features?
+  \footfullcitenomarkleft{Vergari2016a}  
+  
+  % How to extract embeddings?
+  % \begin{itemize}
+  % \item from node outputs (one query) 
+  %   \begin{itemize}
+  %   \item all (non-leaf) nodes
+  %   \item sum/product nodes only
+  %   \item with a certain scope length
+  %     \item aggregating node outputs by scope
+  %   \end{itemize}
+  % \item from several queries evaluations (root outputs)
+  % \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Supervised classification}
-  \framesubtitle{Experimental settings}
+  \frametitle{Extracting embeddings}
+  \framesubtitle{Inner node activations}
+  \begin{minipage}{0.4\linewidth}
+    \begin{center}
+      \only<1>{\includegraphics[width=.85\columnwidth]{figures/spn-eval-emb-I}}
+      \only<2>{\includegraphics[width=.86\columnwidth]{figures/spn-eval-emb-II}}
+    \end{center}
+  \end{minipage}\hfill\begin{minipage}[t]{0.55\linewidth}
+    \vspace{-80pt}
+    Build an embedding $\mathbf{e}^{i}\in\mathbb{R}^{d}$ for sample
+    $$\mathbf{x}^{i}=\langle 0,1,0,1,1,1 \rangle$$
+    \only<2>{by evaluating $S(\mathbf{x}^{i})$ and collecting inner node
+    (\colorbox{orange}{\textcolor{white}{sum}}, \colorbox{blue}{\textcolor{white}{product}} but not for
+    \colorbox{purple}{\textcolor{white}{leaf}} nodes) activations
+    \begin{align*}
+    \mathbf{e}^{i}= \langle&\highlight[orange]{.55},\highlight[blue]{.66},\highlight[orange]{.55},\highlight[blue]{.66},\highlight[orange]{.55},\highlight[blue]{.66},\\
+                   &\highlight[orange]{.55},\highlight[blue]{.66},\highlight[orange]{.55},\highlight[blue]{.66},\highlight[orange]{.55},\highlight[blue]{.66},\\
+      &\highlight[orange]{.55},\highlight[blue]{.66}  \rangle
+  \end{align*}}
+
+  \end{minipage}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Extracting embeddings}
+  \framesubtitle{Filtering by type}
+  \begin{minipage}{0.4\linewidth}
+    \begin{center}
+      \includegraphics[width=.86\columnwidth]{figures/spn-eval-emb-II}
+    \end{center}
+  \end{minipage}\hfill\begin{minipage}[t]{0.55\linewidth}
+    \vspace{-80pt}
+    Build embeddings $\mathbf{e}^{i}_{\mathsf{sum}}, \mathbf{e}^{i}_{\mathsf{prod}}$ for sample
+    $$\mathbf{x}^{i}=\langle 0,1,0,1,1,1 \rangle$$
+    by evaluating $S(\mathbf{x}^{i})$ and collecting
+    inner node activations filtered by node type
+      \begin{align*}
+        \mathbf{e}^{i}_{\mathsf{sum}}= \langle&\highlight[orange]{.55},\highlight[orange]{.66},\highlight[orange]{.55},\highlight[orange]{.66},\highlight[orange]{.55},\highlight[orange]{.66}\rangle\\
+        \mathbf{e}^{i}_{\mathsf{prod}}=\langle  &\highlight[blue]{.55},\highlight[blue]{.66},\highlight[blue]{.55},\highlight[blue]{.66},\highlight[blue]{.55},\highlight[blue]{.66},\\
+                               &\highlight[blue]{.55},\highlight[blue]{.66}  \rangle
+      \end{align*}
+
+  \end{minipage}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Extracting embeddings}
+  \framesubtitle{Filtering by scope length}
+  \begin{minipage}{0.4\linewidth}
+    \begin{center}
+      \includegraphics[width=.86\columnwidth]{figures/spn-eval-emb-II}
+    \end{center}
+  \end{minipage}\hfill\begin{minipage}[t]{0.55\linewidth}
+    \vspace{-80pt}
+    Build embeddings $\mathbf{e}^{i}_{|\mathsf{sc}(n)|=k}\in \mathbb{R}^{d}$ for sample
+    $$\mathbf{x}^{i}=\langle 0,1,0,1,1,1 \rangle$$
+    by evaluating $S(\mathbf{x}^{i})$ and collecting
+    inner node activations filtered by scope length
+    \begin{align*}
+      \mathbf{e}^{i}_{|\mathsf{sc}(n)|=2}=
+      \langle&\highlight[orange]{.55},\highlight[orange]{.66},\highlight[orange]{.55},\highlight[orange]{.66},\highlight[orange]{.55},\\ & \highlight[orange]{.66},\highlight[orange]{.66}\rangle\\
+      \mathbf{e}^{i}_{|\mathsf{sc}(n)|=4}=\langle  &\highlight[blue]{.55},\highlight[blue]{.66},\highlight[blue]{.55},\highlight[blue]{.66} \rangle\\
+      \mathbf{e}^{i}_{|\mathsf{sc}(n)|=6}=\langle  &\highlight[blue]{.55},\highlight[blue]{.66},\highlight[blue]{.55} \rangle
+    \end{align*}
+
+  \end{minipage}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Extracting embeddings}
+  \framesubtitle{Aggregating by scope}
+  \begin{minipage}{0.4\linewidth}
+    \begin{center}
+      \only<1>{\includegraphics[width=.85\columnwidth]{figures/spn-eval-emb-III}}
+      \only<2>{\includegraphics[width=.86\columnwidth]{figures/spn-eval-emb-IV}}
+    \end{center}
+  \end{minipage}\hfill\begin{minipage}[t]{0.55\linewidth}
+    \vspace{-80pt}
+    Build an embedding $\mathbf{e}^{i}\in\mathbb{R}^{d}$ for sample
+    $$\mathbf{x}^{i}=\langle 0,1,0,1,1,1 \rangle$$
+    \only<1>{by adding fictitious \textcolor{red}{sum} nodes over unique scopes}
+    \only<2>{by adding fictitious sum nodes over
+      unique scopes, then evaluating $S(\mathbf{x}^{i})$ and collecting they
+      activations from  \colorbox{red}{\textcolor{white}{inner}}
+      nodes,  and even \colorbox{purple}{\textcolor{white}{leaves}} 
+      \begin{align*}
+        \mathbf{e}^{i}_{\mathsf{w/o-leaves}}=
+        \langle&\highlight[red]{.55},\highlight[red]{.66},\highlight[red]{.55},\highlight[red]{.66}\rangle \\
+        \mathbf{e}^{i}_{\mathsf{w-leaves}}=
+        \langle&\highlight[red]{.55},\highlight[red]{.66},\highlight[red]{.55},\highlight[red]{.66}\\
+&\highlight[purple]{.55},\highlight[purple]{.66},\highlight[purple]{.55},\highlight[purple]{.66}\rangle \\
+      \end{align*}}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Extracting embeddings}
+  \framesubtitle{Random marginal queries}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Supervised classification}
+  \framesubtitle{Experimental settings to evaluate embeddings}
+
+  Extract embeddings unsupervisedly on $\mathbf{X}$, then train a
+  logistic regressor on them to predict $Y$.\par\bigskip
+  
+  Five image datasets: \textsf{REC}, \textsf{CON}, \textsf{OCR},
+  \textsf{CAL}, \textsf{BMN}.\par\bigskip
+  
+  Grid search with \textsf{LearnSPN-b} for three models with different
+  capacities:
+  \textsf{SPN-I}, \textsf{SPN-II} and \textsf{SPN-III} for $m\in\{500,100,50\}$.\par\bigskip
+
+  Compare them against RBM models: \textsf{RBM-5h}, \textsf{RBM-1k}
+  and \textsf{RBM-5k} with 500, 1000 and 5000 hidden
+  units.\par\bigskip
+
+  Compare them against other tractable PGMs: mixtures of 3, 15, 30
+  Chow-Liu trees.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Scope distribution}
+  
+\end{frame}
+
 
 \begin{frame}
   \frametitle{Embeddings (I)}
   \begin{table}[!t]
     \centering
-    \small
+    \footnotesize
     \caption[datasets]{Test set accuracy scores for the embeddings
       extracted with the best \textsf{SPN},
       \textsf{RBM} models and with the baseline \textsf{LR} model on all
@@ -825,6 +981,7 @@ $\\
 \begin{frame}
   \frametitle{Embeddings (II)}
   \begin{table}[!t]
+    \footnotesize
     \caption[datasets]{Test set accuracy scores for the embeddings
       extracted with \textsf{SPN} models and filtered by node
       type. Results for \textsf{SPN-III} embeddings filtered by \textsf{S}mall
@@ -866,6 +1023,7 @@ $\\
 \begin{frame}
   \frametitle{Embeddings (III)}
   \begin{table}[!t]
+    \footnotesize
     \caption[datasets]{Test set accuracy scores for the embeddings
       extracted with \textsf{SPN} models by aggregating node outputs
       with the same scope.
