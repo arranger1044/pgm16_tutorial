@@ -44,29 +44,44 @@
 
 \begin{frame}
 \frametitle{The need for SPN}
-Sum-Product Networks (SPNs) are a type of probabilistic model\footnote{H. Poon
-  and P. Domingos, \emph{Sum-Product Network: a New Deep Architecture}, UAI 2011}
+  \framesubtitle{Why should you work on SPNs?}
+
+Probabilistic modeling of data aims at
 \begin{itemize}
-\item for Pobabilistic Graphical Models (PGMs) there exist multi-purpose
-  inference tools
-\begin{itemize}
-\item the computational
-effort scales unproportional to the complexity of the graph
-\item solution: using approximate inference
+  \item representing probability distributions \emph{compactly}
+  \item computing their marginals and modes \emph{efficiently} (inference)
+  \item learning them \emph{accurately}
 \end{itemize}
+A solution is to use Probabilistic Graphical Models (PGMs).
+%$P(X) = \frac{1}{Z}\prod_k \phi_k(x_{\{k\}})$
+%with $Z = \sum_x \prod_k \phi_k(x_{\{k\}})$.
+
+However, PGMs are limited in
+\begin{itemize}
+\item representing compact distributions
+\item having intractable exact inference in the worst case 
+  \begin{itemize}
+  \item falling back on approximate inference
+  \end{itemize}
+\item requiring and exponential sample size (wrt the number of variables)
+\item learning the structure since it requires inference
 \end{itemize}
 \end{frame}
 
-\begin{frame}[t]
-  \frametitle{The need for SPNs}
+\begin{frame}
+\frametitle{The need for SPN (II)}
   \framesubtitle{Why should you work on SPNs?}
+
+Sum-Product Networks (SPNs) are a type of probabilistic model\footnote{H. Poon
+  and P. Domingos, \emph{Sum-Product Network: a New Deep Architecture}, UAI 2011}
 \begin{itemize}
-\item exact tractable inference
-  \item NN for which structure learning is easy
+\item a deep model with multiple layer of hidden variables
+\item tractable exact inference 
 \end{itemize}
 SPNs represent probability distributions and a corresponding exact inference
 machine for the represented distribution at the same time 
 \end{frame}
+
 
 \section{Representation}
 {\setbeamertemplate{headline}{}
