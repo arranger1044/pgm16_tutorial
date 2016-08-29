@@ -115,14 +115,96 @@ machine for the represented distribution at the same time
 
 \begin{frame}
   \frametitle{Sum-Product Networks}
+\begin{definition}[Sum-Product Network]
+  A \emph{Sum-Product Network} (SPN) $S$ over RVs $\mathbf X$ is a
+  rooted weighted DAG (network) consisting of
+  distribution \emph{leaves} (network inputs),  \emph{sum} and \emph{product}
+  nodes (inner nodes).
+  Let $\mathsf{ch}(n)$ be the set of all the child (input) nodes of
+  a node $n$ and $\mathsf{pa}(n)$ the set of all its parent (output) nodes.
+  % Each node $n$ has associated a \emph{scope},
+  % $\mathsf{sc}(n)\subseteq\mathbf{X}$.
+  % For a leaf $n$, $\mathsf{sc}(n)$ is the set of r.v. over which a
+  % tractable, possibly unnormalized, distribution $\phi_{n}$ is defined.
+  A leaf $n$ defines a tractable, possibly unnormalized, distribution
+  $\phi_{n}$ over some RVs in $\mathbf X$.
+  %The scope of an inner node $n$ is defined as $\mathsf{sc}(n)=\bigcup_{c\in\mathsf{ch}(n)}\mathsf{sc}(c)$.
+  A nonnegative weight $w_{nc}$ is associated to each edge linking a sum node
+  $n$ to $c\in\mathsf{ch}(n)$.
+  We indicate with $\mathbf{w}$ the set of all
+  weights in the network $S$ (network parameters).
+  $S_{n}$ denotes the sub-network rooted at node $n$ and parametrized
+  by $\mathbf{w}_{n}$, comprising all descendant nodes of $n$,
+  recursively defined as the children of $n$ and their descendants.
+\end{definition}
 \end{frame}
 
 \begin{frame}
   \frametitle{Scopes}
+\begin{definition}[Scope]
+  Let $S$ be an SPN over RVs $\mathbf{X}$. 
+  The \emph{scope} of a node $n$ in $S$ is denoted as $\mathsf{sc}(n)\subseteq\mathbf{X}$.
+  The scope of a leaf node $n$ is defined as the set of RVs over which
+  $\phi_{n}$ is defined.
+  The scope of an inner node $n$ is defined as
+  $\mathsf{sc}(n)=\bigcup_{c\in\mathsf{ch}(n)}\mathsf{sc}(c)$.
+  The scope of $S$ is the scope of its root, i.e. $\mathbf{X}$.
+\end{definition}
+
+\begin{definition}[SPN evaluation]
+  Let $S$ be an SPN over RVs $\mathbf{X}$ with parameters $\mathbf{w}$
+  and $S_{n}$ be the sub-network rooted at node $n$.
+  For each $\mathbf{x}\sim \mathbf{X}$,
+  $S_{n}(\mathbf{x}_{|\mathsf{sc}(n)})$ and $S_{n}(\mathbf{x})$ are
+  the same notation to indicate the output value of node $n$ after
+  $\mathbf{X=x}$ is observed as the network input.
+  Then, $S_{n}(\mathbf{x})$ can be computed as follows:
+  \begin{equation}
+    \label{eq:eval}
+    S_{n}(\mathbf{x}) = \begin{cases}
+      \phi_{n}( \mathsf{sc}(n) =\mathbf{x}_{|\mathsf{sc}(n)}), & \text{if $n$ is a
+        leaf node} \\
+      \sum_{c\in \mathsf{ch}(n)}w_{nc}S_{c}(\mathbf{x})& \text{if $n$ is a sum node}\\
+      \prod_{c\in \mathsf{ch}(n)}S_{c}(\mathbf{x})& \text{if $n$ is a product node}.
+    \end{cases}
+  \end{equation}
+  The value of the whole network, i.e. $S(\mathbf{x})$, corresponds to
+  the value of its root.
+\end{definition}
+
 \end{frame}
 
 \begin{frame}
   \frametitle{Structural Properties}
+If a network $S$ is \emph{valid}, evaluating it corresponds to
+evaluate a joint unnormalized probability distribution
+$p_{\mathbf{X}}$.
+That is, $\forall\mathbf{x},S(\mathbf{x})/Z=p(\mathbf{X = x})$, where $Z$ is the
+normalizing \emph{partition} function defined as
+$Z=\sum_{\mathbf{x}\sim \mathbf{X}}S(\mathbf{x})$.
+%
+This actually is possible since a complete and decomposable SPN
+correctly compiles the
+\emph{extended network polynomial} encoding
+the distribution $p_{\mathbf{X}}$~\cite{Peharz2015a}.
+%
+To satisfy validity, it is sufficient for a network to be
+\emph{complete} and \emph{decomposable}~\cite{Darwiche2009,Poon2011}.
+
+\begin{definition}[Completeness, decomposability and validity]
+  Let $S$ be an SPN and let $\mathbf S_{\oplus}$ (resp. $\mathbf S_{\otimes}$) be the set of all sum
+  (resp. product) nodes in $S$.
+\begin{enumerate}  
+\item    $S$ is \emph{complete} iff $\forall n\in
+  \mathbf S_{\oplus},\forall c_{1}, c_{2}\in \mathsf{ch}(n):
+  \mathsf{sc}(c_{1})=\mathsf{sc}(c_{2})$.
+\item    $S$ is \emph{decomposable} iff $\forall n\in
+  \mathbf S_{\otimes},\forall c_{1}, c_{2}\in \mathsf{ch}(n), c_{1}\neq c_{2}:
+  \mathsf{sc}(c_{1})\cap\mathsf{sc}(c_{2})=\emptyset$.
+\item    If $S$ is complete and decomposable, then it is \emph{valid}.
+\end{enumerate}  
+  \end{definition}
+
 \end{frame}
 
 \section{Inference}
@@ -134,14 +216,78 @@ machine for the represented distribution at the same time
 
 \begin{frame}
   \frametitle{Complete evidence}
+
+Complete evidence inference consists of a single bottom-up
+(feedforward) evaluation of the network and proceeds according to
+Eq. \ref{eq:eval}.
+%
+Therefore, it is guaranteed to be tractable
+as long as the network size is polynomial in $|\mathbf{X}|$.
+
 \end{frame}
 
 \begin{frame}
   \frametitle{Marginal inference}
+
+Exact marginal inference can be computed with the same time complexity if the
+validity property holds~\cite{Poon2011}: the network can be evaluated
+in a similar fashion as for the complete evidence case.
+%
+To compute a marginal query like $p(\mathbf{Q=q}),
+\mathbf{Q}\subset\mathbf{X}$, one has to evaluate each leaf $n$ as:
+\begin{equation}
+  \label{eq:marg}
+  S_{n}(\mathbf{q}) = \begin{cases}
+    p(\mathsf{sc}(n) =\mathbf{q}_{|\mathsf{sc}(n)}) & \text{if $\mathsf{sc}(n)\subseteq\mathbf{Q}$} \\
+    1 & \text{otherwise}
+  \end{cases}
+\end{equation}
+and then propagate the outputs as before.
+%
+This mechanism highlights the recursive probabilistic interpretation
+of SPNs, in that each sub-network modeling a probability distribution
+over its own scope, shall output 1 as the probability of marginalizing
+over all the RVs that scope.
+%
+As a consequence, even conditional probability queries are also computable
+in tractable time, since $p(\mathbf{Q}|\mathbf{E}) = p(\mathbf{Q},
+\mathbf{E})/p(\mathbf{E})$, for $\mathbf{Q}, \mathbf{E}\subset\mathbf{X}$.
+%
+In addition to that, setting all leaf outputs to 1 equals to compute the \emph{partition function}
+$Z$ (whose value, for an unnormalized SPN, will differ from 1).
 \end{frame}
 
 \begin{frame}
   \frametitle{MPE inference}
+An approximation of MPE inference and the computation of an MPE
+assignment can be answered in linear time as
+well~\cite{Peharz2015b,Peharz2016}.
+
+Given an SPN $S$ over $\mathbf{X}$, to find an MPE assignment:
+\begin{equation}
+\mathbf{q}^{*}=\argmax_{\mathbf{q}\sim \mathbf{Q}}p(\mathbf{E},
+\mathbf{q})
+\label{eq:mpe-ass}
+\end{equation}
+for some RVs $\mathbf{E}, \mathbf{Q} \subset\mathbf{X},
+\mathbf{E}\cap\mathbf{Q}=\emptyset, \mathbf{E}\cup \mathbf{Q}=\mathbf{X}$,
+% \begin{equation}
+%   \label{eq:mpe}
+%   \mathbf{q}^{*}=\arg\max_{\mathbf{q}\sim \mathbf{Q}}p(\mathbf{E}, \mathbf{q})  
+% \end{equation}
+$S$ is transformed into a Max-Product Network (MPN) $M$.
+%
+$M$ is built by substituting each $n\in \mathbf S_{\oplus}$ for a max node computing
+$\max_{c\in\mathsf{ch}(n)}w_{nc}M_{n}$ instead.
+Then $M$ is evaluated bottom-up after setting all leaves $n$, $\mathsf{sc}(n)\subseteq
+\mathbf{Q}$, to output 1.
+A Viterbi-like top-down traversal traces back the MPE
+assignment for each RV in $\mathbf{Q}$.
+By starting from the root and following only the max output
+child branch of a max node and all the child branches
+of a product node~\cite{Poon2011a}, each instance determines a
+\emph{tree} path whose leaves MPE assignments union forms the
+query answer~\cite{Darwiche2009}.
 \end{frame}
 
 
