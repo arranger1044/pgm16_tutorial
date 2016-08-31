@@ -52,8 +52,7 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{The need for SPN}
-  \framesubtitle{Why should you work on SPNs?}
+\frametitle{The need for Tractable Inference}
 
 Probabilistic modeling of data aims at
 \begin{itemize}
@@ -103,9 +102,15 @@ machine for the represented distribution at the same time
 \begin{frame}
   \frametitle{Density estimation}
 
+Given a set of iid samples $\{\mathbf x_i\}_{i=1}^N$ the aim is to learn a
+representation of a distribution as normalized product of factors
+$$P(\mathbf X = \mathbf x) = \frac{1}{Z}\prod_k \phi_k(\mathbf x_{\{k\}})$$
+with $Z = \sum_x\prod_k \phi_k(\mathbf x_{\{k\}})$ the partition function.
+
 SPNs have been introduced as a general architecture efficiently encoding an
 unnormalized probability distribution $p_{\mathbf X}$ over a set of random 
 variables $\mathbf X = \{X_1 , \ldots, X_n \}$
+
 
 \end{frame}
 
@@ -131,18 +136,17 @@ learning probabilistic models for which inference is guaranteed to be tractable
 \begin{itemize}
 \item Graphical models
   \begin{itemize}
-  \item  graphical models with low treewidth
+  \item  graphical models with low treewidth and mixtures
   \item thin junction trees
-  \item mixtures models
   \end{itemize}
 \item Grammars
   \begin{itemize}
   \item probabilistic context-free grammars (PCFGs)
   \end{itemize}
-\item Computational graphs
+\item Computational graphs from Knowledge Compilation
 \begin{itemize}
 \item Arithmetic Circuits
-\item Probabilistic Sentential Decision Diagrams
+\item Sentential Decision Diagrams
 \end{itemize}
 \item Neural Networks
 \begin{itemize}
@@ -342,6 +346,56 @@ query answer~\cite{Darwiche2009}.
 
 \begin{frame}
 \frametitle{Network Polynomials}
+
+Let $\Phi(x) \geq 0$ an unnormalized probability distribution on Boolean
+variables.
+
+$x$ (resp. $\bar{x}$) denotes the indicator function $[x]$ (resp. $\bar{x}$) for
+the variable $X$.
+
+The network polinomial\customcite{Darwiche2003} of $\Phi(x)$ is $\sum_x \Phi(x) \Pi(x)$
+\begin{itemize}
+\item $\Pi(x)$ is the product of the indicators that have value 1 in state $x$
+\end{itemize}
+\begin{example}[Bernoulli distribution over $X$ with parameter $p$]
+$$px + (1-p)\bar{x}$$
+\end{example}
+\begin{example}[Bayes Network $X_1 \rightarrow X_2$]
+$$\theta_{x_1}\theta_{x_2|x_1}x_1x_2 +
+\theta_{x_1}\theta_{\bar{x}_2|x_1}x_1\bar{x}_2 + 
+\theta_{\bar{x}_1}\theta_{x_2|\bar{x}_1}\bar{x}_1x_2 +
+\theta_{\bar{x}_1}\theta_{\bar{x}_2|\bar{x}_1}\bar{x}_1\bar{x}_2$$
+with $\theta_{\cdot}=P(\cdot)$ 
+\end{example}
+\end{frame}
+
+\begin{frame}
+\frametitle{Network Polynomials (II)}
+\begin{itemize}
+\item The  network  polynomial  is  a  multilinear  function  of  the indicator
+variables
+\item The  unnormalized  probability  of  evidence $e$  (partial  instantiation  of $X$) 
+is  the  value  of  the network  polynomial  when  all  indicators  compatible  with
+$e$ are set to 1 and the remainder are set to 0
+
+\begin{example}
+$\Phi(X_1 = 1, X_3= 0)$ is the value of the network polynomial
+when $\bar{x}_1$ and $x_3$ are set to 0 and the remaining indicators
+are set to 1 throughout.
+\end{example}
+
+\item The partition function is the value of the network polynomial when all
+indicators are set to 1
+
+\item For any evidence $e$, the cost of computing $P(e) = \Phi(e)/Z$
+is linear in the size of the network polynomial
+
+\item The network polynomial has size exponential in the number
+of variables
+
+\item {\color{red}it is possible to represent and evaluate it
+in polynomial space and time using an AC or an SPN}
+\end{itemize}
 \end{frame}
 
 \begin{frame}
