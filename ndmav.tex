@@ -5,7 +5,7 @@
 \usepackage{colortbl}
 \usepackage{ifxetex}
 \usepackage{amsmath}
-\usepackage[style=authoryear-icomp, maxcitenames=2]{biblatex}
+\usepackage[backend=bibtex,style=authoryear-icomp, maxcitenames=2]{biblatex}
 \usepackage[no-math]{fontspec}
 
 \definecolor{untractable_red}{RGB}{209, 25, 25}
@@ -25,9 +25,10 @@
 \addbibresource{../referomnia/referomnia.bib}
 
 \title{Learning Sum-Product Networks}
-\author{Nicola Di Mauro \and Antonio Vergari}
-\date{September 2016}
-\institute{Università degli Studi di Bari}
+\author{\small Nicola Di Mauro \and Antonio Vergari}
+\date{\scriptsize International Conference on Probabilistic Graphical Models\\
+ Lugano, Switzerland, 6-9 September 2016}
+\institute{\scriptsize Università degli Studi di Bari}
 \department{Dipartimento di Informatica}
 \laboratory{LACAM}
 \group{Machine Learning}
@@ -36,8 +37,11 @@
 
 %\footnotesize \let\small\footnotesize
 
+\renewcommand*{\thefootnote}{[\arabic{footnote}]}
+
 \setbeamerfont{footnote}{size=\scriptsize}
-\addtobeamertemplate{footnote}{}{\vspace{16pt}}
+%\addtobeamertemplate{footnote}{}{\vspace{16pt}}
+\newcommand{\customcite}[1]{\footnote{\scriptsize \citeauthor{#1}, \citetitle{#1}, \citeyear{#1}}}
 
 \begin{document}
 
@@ -71,14 +75,14 @@ However, PGMs are limited in
 \item requiring and exponential sample size (wrt the number of variables)
 \item learning the structure since it requires inference
 \end{itemize}
+Exact inference in a tractable model may be better than performing 
 \end{frame}
 
 \begin{frame}
 \frametitle{The need for SPN (II)}
   \framesubtitle{Why should you work on SPNs?}
 
-Sum-Product Networks (SPNs) are a type of probabilistic model\footnote{H. Poon
-  and P. Domingos, \emph{Sum-Product Network: a New Deep Architecture}, UAI 2011}
+Sum-Product Networks (SPNs) are a type of probabilistic model\customcite{Poon2011}
 \begin{itemize}
 \item a deep model with multiple layer of hidden variables
 \item tractable exact inference 
@@ -230,10 +234,10 @@ $Z=\sum_{\mathbf{x}\sim \mathbf{X}}S(\mathbf{x})$
 
 Complete and decomposable SPN correctly compiles the
 \emph{extended network polynomial} encoding
-the distribution $p_{\mathbf{X}}$~\cite{Peharz2015a}.
+the distribution $p_{\mathbf{X}}$~\customcite{Peharz2015a}.
 
 To satisfy validity, it is sufficient for a network to be
-\emph{complete} and \emph{decomposable}~\cite{Darwiche2009,Poon2011}.
+\emph{complete} and \emph{decomposable}~\footcite{Darwiche2009,Poon2011}.
 
 \end{frame}
 
