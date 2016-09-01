@@ -243,7 +243,7 @@ Complete and decomposable SPN correctly compiles the
 the distribution $p_{\mathbf{X}}$~\customcite{Peharz2015a}.
 
 To satisfy validity, it is sufficient for a network to be
-\emph{complete} and \emph{decomposable}~\footcite{Darwiche2009,Poon2011}.
+\emph{complete} and \emph{decomposable}\customcite{Darwiche2009}\customcite{Poon2011}.
 
 \end{frame}
 
@@ -272,7 +272,7 @@ as long as the network size is polynomial in $|\mathbf{X}|$.
   \frametitle{Marginal inference}
 
 Exact marginal inference can be computed with the same time complexity if the
-validity property holds~\cite{Poon2011}
+validity property holds\customcite{Poon2011}
 
 To compute a marginal query like $p(\mathbf{Q=q}),
 \mathbf{Q}\subset\mathbf{X}$, one has to evaluate each leaf $n$ as:
@@ -302,7 +302,7 @@ $Z$
   \frametitle{MPE inference}
 An approximation of MPE inference and the computation of an MPE
 assignment can be answered in linear time as
-well~\cite{Peharz2015b,Peharz2016}.
+well\customcite{Peharz2015b}\customcite{Peharz2016}
 
 Given an SPN $S$ over $\mathbf{X}$:
 \begin{equation}
@@ -322,9 +322,9 @@ $\max_{c\in\mathsf{ch}(n)}w_{nc}M_{n}$
 assignment for each RV in $\mathbf{Q}$
 \item starting from the root and following only the max output
 child branch of a max node and all the child branches
-of a product node~\cite{Poon2011a}, each instance determines a
+of a product node\customcite{Poon2011a}, each instance determines a
 \emph{tree} path whose leaves MPE assignments union forms the
-query answer~\cite{Darwiche2009}.
+query answer\customcite{Darwiche2009}.
 \end{itemize}
 \end{frame}
 
@@ -498,7 +498,7 @@ capture all of the interactions among the observable variables
   \textbf{Constrained}: completeness and decomposability determine
   network topology.\par
   \textbf{Fully probabilistic:} each valid sub-SPN is still a
-  valid-SPN.\footfullcitenomarkleft{Vergari2016a}\par\bigskip
+  valid-SPN.\customcite{Vergari2016a}\par\bigskip
   
   SPNs provide a direct encoding of the input space into a deep
   architecture $\rightarrow$ \emph{\textbf{visualizing representations}} (back) into the \emph{\textbf{input space}}.
@@ -528,7 +528,7 @@ capture all of the interactions among the observable variables
       1 &\text{if $i\rightarrow j$}\\
       0& \text{otherwise}
     \end{cases}
-  \end{equation*}\footfullcitenomarkleft{Vergari2016a}
+  \end{equation*}\customcite{Vergari2016a}
 \end{frame}
 
 \begin{frame}
@@ -541,7 +541,7 @@ capture all of the interactions among the observable variables
 \begin{frame}
   \frametitle{SPNs as NNs (IV): filters}
   \small
-  Learned features as images maximizing neuron activations~\parencite{Erhan2009}:
+  Learned features as images maximizing neuron activations\customcite{Erhan2009}:
   $$\mathbf{x}^{*} = \argmax_{\mathbf{x},
     ||\mathbf{x}||=\gamma}h_{ij}(\mathbf{x};\boldsymbol\theta).$$
   With SPNs, joint solution as an MPE assignment for all nodes (linear time):
@@ -552,7 +552,7 @@ capture all of the interactions among the observable variables
     \vspace{-15pt}
     \includegraphics[width=0.9\linewidth]{figures/filters.jpg}
   \end{center}
-  \footfullcitenomarkleft{Vergari2016a}
+  \customcite{Vergari2016a}
   $\rightarrow$ \emph{scope length} ($|\mathsf{sc}(n)|$) correlates with feature abstraction level
 \end{frame}
 
@@ -583,22 +583,20 @@ capture all of the interactions among the observable variables
 }
 
 \begin{frame}
-  %\small
-  \frametitle{Learning SPNs}
-
+\frametitle{Learning SPNs}
   \textbf{Parameter learning:} estimate $\mathbf{w}$ from data
   considering an SPN as a
-  latent RV model, or as a NN\par\bigskip
+  latent RV model, or as a NN
 
   \textbf{Structure learning:} build the network from data by assigning
-  scores to tentative structures or by exploiting constraints\par\bigskip
+  scores to tentative structures or by exploiting constraints
 
   How to learn a ``complete'' SPN:
   \begin{itemize}
-  \item handcrafted structure, then parameter learning~\parencite{Poon2011,Gens2012}
-  \item random structures, then parameter learning~\parencite{Rashwan2016}
-  \item structure learning, then parameter learning (fine tuning)~\parencite{Zhao2016a}
-  \item learn both weight and structure at the same time~\parencite{Gens2013,Rooshenas2014,Vergari2015,Adel2015}\dots  
+  \item handcrafted structure, then parameter learning\customcite{Poon2011}\customcite{Gens2012}
+  \item random structures, then parameter learning\customcite{Rashwan2016}
+  \item structure learning, then parameter learning (fine tuning)\customcite{Zhao2016a}
+  \item learn both weight and structure at the same time\customcite{Gens2013}\customcite{Rooshenas2014}\customcite{Vergari2015}\customcite{Adel2015}\dots  
   \end{itemize}
 \end{frame}
 
@@ -607,7 +605,7 @@ capture all of the interactions among the observable variables
 
   \textbf{Score vs constraint based search.}
   No closed form for likelihood scores, need
-  heuristics~\parencite{Rooshenas2014}.\par
+  heuristics\customcite{Rooshenas2014}.\par
   No need for it by exploiting the inner nodes probabilistic semantics\par\bigskip
   
   \textbf{Learning graph vs tree structures}:
@@ -617,7 +615,7 @@ capture all of the interactions among the observable variables
   \textbf{Top-down vs bottom-up approaches}: iteratively cluster data
   matrix (top-down) or start by the marginal RVs (bottom-up)\par\bigskip
 
-  \textbf{LearnSPN}~\parencite{Gens2013} is a \emph{\textbf{greedy}}, \emph{\textbf{top down}}, \emph{\textbf{constraint
+  \textbf{LearnSPN}\customcite{Gens2013} is a \emph{\textbf{greedy}}, \emph{\textbf{top down}}, \emph{\textbf{constraint
   based}} learner for \emph{\textbf{tree}} SPNs\par
   $\rightarrow$ First principled top-down learner, inspired many algorithms and
   variations.
@@ -718,7 +716,7 @@ capture all of the interactions among the observable variables
   faster inference!\par
   $\rightarrow$ Comparing network sizes is better than comparing inference times\par\bigskip
 
-  Network \emph{\textbf{depth}} influences \emph{expressive efficiency}~\emph{\parencite{Martens2014,Zhao2015}}.\par\bigskip
+  Network \emph{\textbf{depth}} influences \emph{expressive efficiency}\customcite{Martens2014}\customcite{Zhao2015}\par\bigskip
 
   Structural simplicity as a bias: overcomplex networks may not generalize well.\par\bigskip
   
@@ -799,18 +797,18 @@ capture all of the interactions among the observable variables
   search.
   \emph{\textbf{ID-SPN}} best log-likelihood learner (but lots of
   hyperparameters).\par
-  Freely available in the \textsf{Libra}\footnote{http://libra.cs.uoregon.edu/} toolkit.~\parencite{Rooshenas2014}\par\bigskip
+  Freely available in the \textsf{Libra}\footnote{http://libra.cs.uoregon.edu/} toolkit\customcite{Rooshenas2014}\par\bigskip
   
   Looking for \textbf{correlations instead of independencies} via matrix
   factorizations.\par
   Splitting matrix rows and columns at the same time: SPN-SVD.\par
-  It can cope with continuous data~\parencite{Adel2015}\par\bigskip
+  It can cope with continuous data\customcite{Adel2015}\par\bigskip
   
   Post-learning \textbf{mergining sub-SPNs} that model ``similar'' distributions.\par
-  Reducing network sizes~\parencite{Rahman2016}.\par\bigskip
+  Reducing network sizes\customcite{Rahman2016}.\par\bigskip
 
   Learning Relational SPNs on \textbf{first order data}
-  represented in Tractable Markov Logic (TML), LearnRSPN~\parencite{Nath2015}.
+  represented in Tractable Markov Logic (TML), LearnRSPN\customcite{Nath2015}.
 \end{frame}
 
 \begin{frame}
@@ -818,18 +816,18 @@ capture all of the interactions among the observable variables
   \textbf{Learning deterministic structures} which enable closed form
   log-likelihood and weight estimation.\par
   Selective SPNs, enabling efficient Stochastic Local
-  Search~\parencite{Peharz2014b}.\par
+  Search\customcite{Peharz2014b}.\par
   Mixing latent and deterministic mixtures as sum
   nodes (a Cutset Network is an
-  SPN!).~\parencite{Rahman2016}\par\bigskip
+  SPN!)\customcite{Rahman2016}\par\bigskip
   
   \textbf{Learning DAGs} structures instead of trees.\par
-  Substituting sub-structures with more complex ones by cloning mixtures.~\parencite{Dennis2015}\par\bigskip
+  Substituting sub-structures with more complex ones by cloning mixtures\customcite{Dennis2015}\par\bigskip
   
   \textbf{Template learning} for sequence
   models.
   Stochastic local search over well defined constrained structures.
-  Dynamic SPNs~\parencite{Melibari2016c}\emph{$\rightarrow$ PGM'16!}\par\bigskip
+  Dynamic SPNs\customcite{Melibari2016c}\emph{$\rightarrow$ PGM'16!}\par\bigskip
 \end{frame}
 
 \begin{frame}
@@ -840,7 +838,7 @@ capture all of the interactions among the observable variables
   Classical approach: compute the gradient $\nabla_{\mathbf{w}}
   S(\mathbf{x})$\par
   $\rightarrow$ use backpropagation (differential
-  approach\footfullcite{Darwiche2003})\par
+  approach\customcite{Darwiche2003})\par
   \begin{enumerate}
   \item $\nabla_{S(\mathbf{x})} S(\mathbf{x})\leftarrow 1$ start from
     the root
@@ -866,7 +864,7 @@ capture all of the interactions among the observable variables
 \end{frame}
 
 \begin{frame}
-  \frametitle{``Hard'' gradients}
+  \frametitle{``Hard'' gradients   \customcite{Poon2011}\customcite{Gens2012}}
   \begin{minipage}{0.45\linewidth}
     
   \end{minipage}\begin{minipage}{0.55\linewidth}
@@ -886,12 +884,10 @@ capture all of the interactions among the observable variables
     $\rightarrow$ slower convergence
     
   \end{minipage}
-  \footfullcitenomarkleft{Poon2011}
-  \footfullcitenomarkleft{Gens2012}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Hard/Soft Parameter Updating}
+  \frametitle{Hard/Soft Parameter Updating \customcite{Gens2012}}
   \begin{table}
     \centering
     \begin{tabular}{l c}
@@ -919,7 +915,7 @@ capture all of the interactions among the observable variables
                                                     - \sharp\sharp\{w_{pc}\in
                         W_{(\mathbf{1}|\mathbf{x})}\}}{w_{pc}}$\\
       \midrule
-      \textsf{\textbf{Soft} Posterior}\footfullcite{Peharz2016} ($p(H_{p}=c|\mathbf{x})$) & $\propto \frac{1}{S(\mathbf{x})}\frac{\partial
+      \textsf{\textbf{Soft} Posterior}\customcite{Peharz2016} ($p(H_{p}=c|\mathbf{x})$) & $\propto \frac{1}{S(\mathbf{x})}\frac{\partial
                                       S(\mathbf{x})}{\partial
                                                                   S_{p}(\mathbf{x})}S_{c}(\mathbf{x})w_{pc}$ \\
       \textsf{\textbf{Hard} Posterior} ($p(H_{p}=c|\mathbf{x})$) & $=
@@ -933,7 +929,7 @@ capture all of the interactions among the observable variables
                                                                                              \end{cases}
 $\\
     \end{tabular}
-  \end{table}\footfullcitenomarkleft{Gens2012}
+  \end{table}
 \end{frame}
 
 \begin{frame}
@@ -950,10 +946,10 @@ $\\
 
   \textbf{Online Bayesian Moment Matching} (OBMM): computing first two
   moments to approximate the intractable posterior, efficiently for
-  tree SPNs~\parencite{Rashwan2016}\par\bigskip
+  tree SPNs\customcite{Rashwan2016}\par\bigskip
 
   \textbf{Collapse Variational Inference} (CVB-SPN) to optimize a
-  logarithmic lower bound (better than ELBO) efficiently (linear in $|S|$)~\parencite{Zhao2016a}.
+  logarithmic lower bound (better than ELBO) efficiently (linear in $|S|$)\customcite{Zhao2016a}.
   
 \end{frame}
 
@@ -964,9 +960,7 @@ $\\
     \scriptsize
     \setlength{\tabcolsep}{3pt}  
     \begin{tabular}{l r r r r r}
-      \toprule
-      & \textsf{CVB-SPN}\footcite{Zhao2016a} & \textsf{OBMM}\footcite{Rashwan2016} & \textsf{SGD}\footcite{Rashwan2016} & \textsf{EM}\footcite{Rashwan2016} & \textsf{SEG}\footcite{Rashwan2016} \\
-      \midrule
+      & \textsf{CVB-SPN}\customcite{Zhao2016a} & \textsf{OBMM}\customcite{Rashwan2016} & \textsf{SGD}\footnotemark[48] & \textsf{EM}\footnotemark[48] & \textsf{SEG}\footnotemark[48] \\
       \textbf{NLTCS}      & -6.08   & -6.07   & -8.76   & -6.31   & -6.85   \\
       \textbf{MSNBC}      & -6.29   & -6.03   & -6.81   & -6.64   & -6.74   \\
       \textbf{KDDCup2k}   & -2.14   & -2.14   & -44.53  & -2.20   & -2.34   \\
@@ -987,7 +981,6 @@ $\\
       \textbf{20-Newsgrp} & -155.61 & -158.01 & -312.12 & -160.41 & -167.89 \\
       \textbf{BBC}        & -251.23 & -275.43 & -462.96 & -274.82 & -276.97 \\
       \textbf{Ad}         & -19.00  & -63.81  & -638.43 & -63.83  & -64.11  \\
-      \bottomrule
     \end{tabular}
     \label{tab:model-accs}
   \end{table}
@@ -1001,9 +994,7 @@ $\\
     \scriptsize
     \setlength{\tabcolsep}{3pt}  
     \begin{tabular}{l r r r r r r r}
-      \toprule
-      & \textsf{LearnSPN}\footcite{Gens2013} & \textsf{LearnSPN-b}\footcite{Vergari2015} & \textsf{CVB-SPN}\footcite{Zhao2016a} & \textsf{OBMM}\footcite{Rashwan2016} & \textsf{SGD}\footcite{Rashwan2016} & \textsf{EM}\footcite{Rashwan2016} & \textsf{SEG}\footcite{Rashwan2016} \\
-      \midrule
+      & \textsf{LearnSPN}\customcite{Gens2013} & \textsf{LearnSPN-b}\customcite{Vergari2015} & \textsf{CVB-SPN}\customcite{Zhao2016a} & \textsf{OBMM}\customcite{Rashwan2016} & \textsf{SGD}\footnotemark[52] & \textsf{EM}\footnotemark[52] & \textsf{SEG}\footnotemark[52] \\
       \textbf{NLTCS}      & -6.11   & -6.05   & -6.08   & -6.07   & -8.76   & -6.31   & -6.85   \\
       \textbf{MSNBC}      & -6.11   & -6.04   & -6.29   & -6.03   & -6.81   & -6.64   & -6.74   \\
       \textbf{KDDCup2k}   & -2.18   & -2.14   & -2.14   & -2.14   & -44.53  & -2.20   & -2.34   \\
@@ -1022,18 +1013,16 @@ $\\
       \textbf{WebKB}      & -158.20 & -154.28 & -161.46 & -165.57 & -338.01 & -169.64 & -179.34 \\
       \textbf{Reuters-52} & -85.07  & -83.34  & -85.45  & -108.01 & -407.96 & -108.10 & -108.42 \\
       \textbf{20-Newsgrp} & -155.93 & -152.85 & -155.61 & -158.01 & -312.12 & -160.41 & -167.89 \\
-      \textbf{BBC}        & -250.69 & -247.30 & -251.23 & -275.43 & -462.96 & -274.82 & -276.97 \\
-      \textbf{Ad}         & -19.73  & -16.23  & -19.00  & -63.81  & -638.43 & -63.83  & -64.11  \\
-      \bottomrule
+%      \textbf{BBC}        & -250.69 & -247.30 & -251.23 & -275.43 & -462.96 & -274.82 & -276.97 \\
+%      \textbf{Ad}         & -19.73  & -16.23  & -19.00  & -63.81  & -638.43 & -63.83  & -64.11  \\
     \end{tabular}
     \label{tab:model-accs}
   \end{table}
-
 \end{frame}
 
 
 \begin{frame}
-  \frametitle{Why learning parameters only}
+  \frametitle{Why learning parameters only\customcite{Rashwan2016}}
   Even if simple, \textsf{LearnSPN} hardly scales on large datasets.\par
   $\rightarrow$ generate a random (but valid) structure, then optimize the weights
   \begin{table}
@@ -1071,8 +1060,6 @@ $\\
     \end{tabular}
     \label{tab:model-accs}
   \end{table}
-
-  \footfullcitenomarkleft{Rashwan2016}
 \end{frame}
 
 \section{Representation Learning}
@@ -1084,7 +1071,7 @@ $\\
 
 \begin{frame}
   \frametitle{Extracting Embeddings}
-  \framesubtitle{From deep neural networks}
+  \framesubtitle{From deep neural networks\customcite{Bengio2012}}
   \begin{minipage}{0.38\linewidth}
     \begin{center}
       \only<1>{\includegraphics[width=.9\columnwidth]{figures/dnn-eval-emb-I}}
@@ -1100,12 +1087,12 @@ $\\
       \end{align*}}
 
   \end{minipage}
-  \footfullcitenomarkleft{Bengio2012}
+  
 \end{frame}
 
 \begin{frame}
   \frametitle{Extracting Embeddings}
-  \framesubtitle{Exploiting SPNs as feature extractors}
+  \framesubtitle{Exploiting SPNs as feature extractors\customcite{Vergari2016a}  }
 
   Given an SPN $S$, a filtering criterion $f$, generate a dense vector
   for each sample $\mathbf{x}^{i}$
@@ -1120,7 +1107,7 @@ $\\
 
     Which filtering criterion to employ?\par
     Which interpretation for the extracted features?
-  \footfullcitenomarkleft{Vergari2016a}  
+  
   
   % How to extract embeddings?
   % \begin{itemize}
@@ -1384,7 +1371,7 @@ $\\
 
 
 \begin{frame}
-  \frametitle{Random Marginal Queries}
+  \frametitle{Random Marginal Queries\customcite{Vergari2016a}}
   Generate embeddings by asking several random queries to a black box
   density estimator.\par
   Eg. marginals: $e^{i}_{j}=P_{\theta}(\mathbf{Q}_{j}=\mathbf{x}^{i}_{\mathbf{Q}_{j}})$,
@@ -1392,7 +1379,7 @@ $\\
   \begin{center}
     \includegraphics[width=1.0\linewidth]{figures/lines-wide}
   \end{center}
-  \footfullcitenomarkleft{Vergari2016a}
+  
   % Two general extraction schemes: random query construction and random
   % `patch' estimation
 \end{frame}
@@ -1470,11 +1457,12 @@ $\\
   \url{https://github.com/arranger1044/awesome-spn}
 \end{frame}
 
-%\begin{frame} [allowframebreaks]
-%  \setbeamertemplate{bibliography item}{}
-%  \setlength\bibitemsep{8pt}
-%  \printbibliography
-%\end{frame}
+\begin{frame} [allowframebreaks]
+  \frametitle{bibliography}
+  \setbeamertemplate{bibliography item}{}
+  \setlength\bibitemsep{2pt}
+  \printbibliography
+\end{frame}
 
 
 
