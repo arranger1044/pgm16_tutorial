@@ -179,6 +179,10 @@ learning probabilistic models for which inference is guaranteed to be tractable
 \end{itemize}
 \end{itemize}
 \end{minipage}
+\begin{minipage}{0.3\textwidth}
+\centering
+\includegraphics[width=0.9\columnwidth]{figures/spn-mixture.pdf}
+\end{minipage}
 \end{frame}
 
 \begin{frame}
@@ -255,7 +259,7 @@ To satisfy validity, it is sufficient for a network to be
 }
 
 \begin{frame}
-  \frametitle{Complete evidence}
+\frametitle{Complete evidence}
 
 Complete evidence inference consists of a single bottom-up
 (feedforward) evaluation of the network and proceeds according to
@@ -267,6 +271,27 @@ as long as the network size is polynomial in $|\mathbf{X}|$.
 \caption{evaluation}
 \end{figure}
 \end{frame}
+
+\begin{frame}
+\frametitle{Complete evidence}
+\framesubtitle{Example}
+\onslide<1-8>{
+  \begin{minipage}[t]{0.49\textwidth}
+    \only<1>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval.pdf}}
+    \only<2-8>{\includegraphics[width=0.65\columnwidth]{figures/spn-eval.pdf}}
+  \end{minipage}
+  \begin{minipage}[t]{0.49\textwidth}
+    \only<2>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval-ev-1.pdf}}
+    \only<3>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval-ev-2.pdf}}
+    \only<4>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval-ev-3.pdf}}
+    \only<5>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval-ev-4.pdf}}
+    \only<6>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval-ev-5.pdf}}
+    \only<7>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval-ev-6.pdf}}
+    \only<8>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval-ev-7.pdf}}
+  \end{minipage}
+}
+\end{frame}
+
 
 \begin{frame}
   \frametitle{Marginal inference}
