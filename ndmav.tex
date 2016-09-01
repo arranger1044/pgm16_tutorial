@@ -13,6 +13,7 @@
 
 \usetheme{enziteto}
 
+
 \setbeamertemplate{headline}{}
 
 \newcommand{\argmax}{\operatornamewithlimits{argmax}}
@@ -336,10 +337,26 @@ query answer~\cite{Darwiche2009}.
 }
 
 \begin{frame}
-\frametitle{Interpretation}
+\frametitle{SPN interpretations}
+{\color{orange}\textbf{Probabilistic model}}
 \begin{itemize}
-\item probabilistic model
-\item deep feedforward neural network
+\item sum nodes in a valid network are probabilistic mixtures over their
+  children distributions whose coefficients are the children weights 
+\begin{itemize}
+\item a categorical latent RV $H_n$ can be associated to each sum node $n$,
+  having values in $\{1,\ldots, |\mathsf{ch}(n)|\}$
+\item the weights of a sum node $n$ can also be interpreted as the probabilities
+  of choosing the corresponding child branch from node $n$, having already taken
+  the path from the root up to $n$
+\end{itemize}
+\item since product nodes are evaluated as product of probability
+values, they identify factorizations over independent distributions  
+\end{itemize}
+{\color{orange}\textbf{Deep feedforward neural network}}
+\begin{itemize}
+\item SPNs  can  also  be  interpreted  as  a  particular  kind  of  feedforward  deep  Neural
+Networks  (NNs)  with  nonnegative  parameters,  where  the  leaf  distributions
+are input neurons whereas sum and product nodes are the hidden neurons
 \end{itemize}
 \end{frame}
 
@@ -350,7 +367,7 @@ query answer~\cite{Darwiche2009}.
 Let $\Phi(x) \geq 0$ an unnormalized probability distribution on Boolean
 variables.
 
-$x$ (resp. $\bar{x}$) denotes the indicator function $[x]$ (resp. $\bar{x}$) for
+$x$ (resp. $\bar{x}$) denotes the indicator function $[x]$ (resp. $[\bar{x}]$) for
 the variable $X$.
 
 The network polinomial\customcite{Darwiche2003} of $\Phi(x)$ is $\sum_x \Phi(x) \Pi(x)$
@@ -452,15 +469,23 @@ capture all of the interactions among the observable variables
 \item no searching within the sum-product network structure
 \end{itemize}
 \end{itemize}
-  Differences with ACs:
+\end{frame}
+
+\begin{frame}
+  \frametitle{Arithmetic Circuits (II)}
+  \framesubtitle{Differences with SPNs}
+
+{\color{blue}\textbf{probabilistic semantics of SPNs}}
   \begin{itemize}
-  \item probabilistic semantics
-    \begin{itemize}
-    \item learning
-      \item sampling
-    \end{itemize}
-    \item no shared weights
+  \item allows for direct structure learning schemes where the compilation
+    process is implicit
+  \item allows sampling from their encoded distribution (generative model)
   \end{itemize}
+{\color{blue}\textbf{no shared weights}}
+\begin{itemize}
+\item differently from ACs, it is not possible to have the same tied parameter
+  for many nodes in SPNs
+\end{itemize}
 \end{frame}
 
 \begin{frame}[t]
