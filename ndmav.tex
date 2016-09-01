@@ -90,12 +90,13 @@ inference in an intractable model
 \end{frame}
 
 \begin{frame}
-\frametitle{The need for SPN (II)}
+\frametitle{The need for SPN }
   \framesubtitle{Why should you work on SPNs?}
 
 Sum-Product Networks (SPNs) are a type of probabilistic model\customcite{Poon2011}
 \begin{itemize}
-\item a deep model with multiple layer of hidden variables
+\item a deep model with multiple layer of hidden variables\\ 
+  \hfill {\color{violet} $\rightarrow$ probabilistic semantics and NN interpretation}
 \item tractable exact inference 
 \end{itemize}
 SPNs represent probability distributions and a corresponding exact inference
@@ -116,11 +117,20 @@ machine for the represented distribution at the same time
 Given a set of iid samples $\{\mathbf x_i\}_{i=1}^N$ the aim is to learn a
 representation of a distribution as normalized product of factors
 $$P(\mathbf X = \mathbf x) = \frac{1}{Z}\prod_k \phi_k(\mathbf x_{\{k\}})$$
-with $Z = \sum_x\prod_k \phi_k(\mathbf x_{\{k\}})$ the partition function.
+with $Z = \sum_x\prod_k \phi_k(\mathbf x_{\{k\}})$ the partition function
+
+\vskip 0.5cm
+
+{\color{violet} \textbf{Unsupervised learning density estimators}}
+\begin{itemize}
+  \item Bayesian Networks
+  \item Markov Networks
+  \item \ldots
+\end{itemize}
 
 SPNs have been introduced as a general architecture efficiently encoding an
 unnormalized probability distribution $p_{\mathbf X}$ over a set of random 
-variables $\mathbf X = \{X_1 , \ldots, X_n \}$
+variables
 
 
 \end{frame}
@@ -129,13 +139,18 @@ variables $\mathbf X = \{X_1 , \ldots, X_n \}$
   \frametitle{(Different kinds of) Inference}
   Different kinds of queries:
   \begin{itemize}
-  \item $p(\mathbf{X})$ (evidence)
-  \item $p(\mathbf{E}), \mathbf{E}\subset\mathbf{X}$ (marginals)
+  \item $p(\mathbf{X})$ (evidence)\\
+    \hfill {\color{violet} $\rightarrow$ tractable for SPNs, hard in BNs (even approximate)}
+  \item $p(\mathbf{E}), \mathbf{E}\subset\mathbf{X}$ (marginals)\\
+    \hfill {\color{violet} $\rightarrow$ tractable for SPNs, hard in BNs}
   \item $p(\mathbf{Q}|\mathbf{E}), \mathbf{Q},
-    \mathbf{E}\subset\mathbf{X}, \mathbf{Q}\cap \mathbf{E}=\emptyset$ (conditionals)
+    \mathbf{E}\subset\mathbf{X}, \mathbf{Q}\cap \mathbf{E}=\emptyset$
+    (conditionals)\\
+    \hfill \hfill {\color{violet} $\rightarrow$ tractable for SPNs, hard in BNs}
   \item
     $\arg\max_{\mathbf{q}\sim\mathbf{Q}}p(\mathbf{q}|\mathbf{E})$
-    (MPE assignment)
+    (MPE assignment)\\
+    \hfill {\color{violet} $\rightarrow$ hard for both SPNs and BNs}
     \item complex queries
   \end{itemize}
 \end{frame}
@@ -197,6 +212,7 @@ learning probabilistic models for which inference is guaranteed to be tractable
 
 \begin{frame}
   \frametitle{Scopes}
+\begin{minipage}{0.55\textwidth}
   The \emph{scope} of a node $n$ in $S$ is denoted as
   $\mathsf{sc}(n)\subseteq\mathbf{X}$
 \begin{itemize}
@@ -206,6 +222,12 @@ learning probabilistic models for which inference is guaranteed to be tractable
   $\mathsf{sc}(n)=\bigcup_{c\in\mathsf{ch}(n)}\mathsf{sc}(c)$
 \item the scope of $S$ is the scope of its root, i.e. $\mathbf{X}$
 \end{itemize}
+\end{minipage}
+\begin{minipage}{0.44\textwidth}
+\begin{center}
+\includegraphics[width=0.7\columnwidth]{figures/spn-eval.pdf}
+\end{center}
+\end{minipage}
 \end{frame}
 
 \begin{frame}
@@ -215,18 +237,20 @@ learning probabilistic models for which inference is guaranteed to be tractable
   the same notation to indicate the output value of node $n$ after
   $\mathbf{X=x}$ is observed as the network input
 
-$S_{n}(\mathbf{x})$ can be computed as follows:
+\vskip 10pt
+
+$S_{n}(\mathbf{x})$ can be computed as follows
   \begin{equation}
     \label{eq:eval}
     S_{n}(\mathbf{x}) = \begin{cases}
       \phi_{n}( \mathsf{sc}(n) =\mathbf{x}_{|\mathsf{sc}(n)}), & \text{if $n$ is a
         leaf node} \\
       \sum_{c\in \mathsf{ch}(n)}w_{nc}S_{c}(\mathbf{x})& \text{if $n$ is a sum node}\\
-      \prod_{c\in \mathsf{ch}(n)}S_{c}(\mathbf{x})& \text{if $n$ is a product node}.
+      \prod_{c\in \mathsf{ch}(n)}S_{c}(\mathbf{x})& \text{if $n$ is a product node}
     \end{cases}
   \end{equation}
   The value of the whole network, i.e. $S(\mathbf{x})$, corresponds to
-  the value of its root.
+  the value of its root
 \end{frame}
 
 \begin{frame}
@@ -319,8 +343,6 @@ Even conditional probability queries are also computable
 in tractable time
 $$p(\mathbf{Q}|\mathbf{E}) = p(\mathbf{Q}, \mathbf{E})/p(\mathbf{E})$$
 
-As for ACs, setting all leaf outputs to 1 equals to compute the \emph{partition function}
-$Z$ 
 \end{frame}
 
 \begin{frame}
@@ -341,11 +363,9 @@ $Z$
 
 \begin{frame}
   \frametitle{MPE inference}
-An approximation of MPE inference and the computation of an MPE
-assignment can be answered in linear time as
+An approximation of MPE inference can be answered in linear time as
 well\customcite{Peharz2015b}\customcite{Peharz2016}
 
-Given an SPN $S$ over $\mathbf{X}$:
 \begin{equation}
 \mathbf{q}^{*}=\argmax_{\mathbf{q}\sim \mathbf{Q}}p(\mathbf{E},
 \mathbf{q})
@@ -359,13 +379,13 @@ for some RVs $\mathbf{E}, \mathbf{Q} \subset\mathbf{X},
 $\max_{c\in\mathsf{ch}(n)}w_{nc}M_{n}$
 \item $M$ is evaluated bottom-up after setting all leaves $n$, $\mathsf{sc}(n)\subseteq
 \mathbf{Q}$, to output 1
-\item a Viterbi-like top-down traversal traces back the MPE
+\item a top-down traversal traces back the MPE
 assignment for each RV in $\mathbf{Q}$
 \item starting from the root and following only the max output
 child branch of a max node and all the child branches
 of a product node\customcite{Poon2011a}, each instance determines a
 \emph{tree} path whose leaves MPE assignments union forms the
-query answer\customcite{Darwiche2009}.
+query answer\customcite{Darwiche2009}
 \end{itemize}
 \end{frame}
 
@@ -386,6 +406,8 @@ query answer\customcite{Darwiche2009}.
 \begin{frame}
 \frametitle{Partition function}
 \framesubtitle{Example}
+As for ACs, setting all leaf outputs to 1 equals to compute the \emph{partition function} 
+
 \begin{center}
 \onslide<1-2>{
     \only<1>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-part-1.pdf}}
