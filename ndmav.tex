@@ -5,6 +5,7 @@
 \usepackage{colortbl}
 \usepackage{ifxetex}
 \usepackage{amsmath}
+\usepackage{mathtools}
 \usepackage[style=authoryear-icomp, maxcitenames=2]{biblatex}
 \usepackage[no-math]{fontspec}
 
@@ -1202,6 +1203,7 @@ $\\
 \begin{frame}
   \frametitle{Embeddings (II)}
   \begin{table}[!t]
+    \centering
     \footnotesize
     \caption[datasets]{Test set accuracy scores for the embeddings
       extracted with \textsf{SPN} models and filtered by node
@@ -1212,8 +1214,6 @@ $\\
       $\blacktriangle$ indicates a better score than an RBM embedding
       with greater or equal size. $\triangledown$ indicates worse
       scores than an RBM embedding with smaller or equal size.}
-    \centering
-    \small
     \setlength{\tabcolsep}{3pt}  
     \begin{tabular}{l c c c c c c | c c c}
       \toprule
@@ -1244,6 +1244,7 @@ $\\
 \begin{frame}
   \frametitle{Embeddings (III)}
   \begin{table}[!t]
+    \centering
     \footnotesize
     \caption[datasets]{Test set accuracy scores for the embeddings
       extracted with \textsf{SPN} models by aggregating node outputs
@@ -1256,8 +1257,6 @@ $\\
       $\blacktriangle$ indicates a better score than an RBM embedding
       with greater or equal size. $\triangledown$ indicates worse
       scores than an RBM embedding with smaller or equal size.}
-    \centering
-    \small
     \setlength{\tabcolsep}{3pt}  
     \begin{tabular}{l c c c c c c}
       \toprule
@@ -1300,8 +1299,34 @@ $\\
 
 \begin{frame}
   \frametitle{Encoding/Decoding Embeddings}
-  MPN as autoencoders\footnote{Vergari et al. Encoding and Decoding
-    Representations with Sum-Product Networks, 2016, to appear}.
+  Treat an MPN as a sort of autoencoder:
+  \begin{itemize}
+  \item \textbf{encoding} a sample into an inner nodes embedding
+     \item \textbf{decoding} an embedding back into input space by MPE top
+      down traversal
+  \end{itemize}
+  \footfullcitenomarkleft{Vergari et al. Encoding and Decoding
+    Representations with Sum-Product Networks, 2016, to appear}
+
+
+  Evaluating in the \emph{Multi Label Classification} MLC case, where
+  $\mathbf{X}\rightarrow\mathbf{Y}$ is much harder than
+  $\mathbf{X}\rightarrow Y$.\par
+  Three proxy performance metrics: jaccard, hamming and exact match
+  scores.\par
+  Learning with Logistic Regression (LR)
+  and Ridge Regression (RR):
+  \begin{itemize}
+  \item $\mathbf{X}
+    \xmapsto{MPN}\mathbf{E}_{\mathbf{X}}\xrightarrow{LR}\mathbf{Y}$:
+    slight improvements
+  \item
+    $(\mathbf{X}\xrightarrow{RR}(\mathbf{Y}\xmapsto{MPN}\mathbf{E}_{\mathbf{Y}}))\xmapsto{MPN}\mathbf{Y}$:
+    huge improvements
+  \item
+    $((\mathbf{X}\xmapsto{MPN_{\mathbf{X}}}\mathbf{E}_{\mathbf{X}})\xrightarrow{RR}(\mathbf{Y}\xmapsto{MPN_{\mathbf{Y}}}\mathbf{E}_{\mathbf{Y}}))\xmapsto{MPN_{\mathbf{Y}}}\mathbf{Y}$:
+    harder to predict for RR alone
+  \end{itemize}
 \end{frame}
 
 
