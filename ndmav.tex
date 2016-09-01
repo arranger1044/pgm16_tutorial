@@ -15,6 +15,15 @@
 
 \setbeamertemplate{headline}{}
 
+\definecolor{lacamdarklilac5} {RGB} {51, 10, 102}
+\definecolor{violet} {RGB} {119, 111, 178}
+\definecolor{petroil2} {RGB} {36, 165, 175}
+\definecolor{petroil4} {RGB} {30, 132, 149}
+\definecolor{petroil6} {RGB} {23, 101, 115}
+\definecolor{gold2} {RGB} {255, 130, 0}
+\definecolor{gold4} {RGB} {250, 100, 0}
+\definecolor{gold6} {RGB} {245, 90, 0}
+
 \newcommand{\argmax}{\operatornamewithlimits{argmax}}
 \newcommand{\highlight}[2][yellow]{\mathchoice%
   {\colorbox{#1}{\textcolor{white}{$\displaystyle#2$}}}%
@@ -535,15 +544,15 @@ query answer~\cite{Darwiche2009}.
   \vspace{15pt}
   \onslide<2-4>{\raisebox{0pt}{\begin{minipage}[t]{0.3\linewidth}
         \begin{center}
-          \includegraphics[width=0.715\linewidth]{figures/learnspn-1}
+          \includegraphics[width=0.715\linewidth]{figures/learnspn-1-w}
         \end{center}
       \end{minipage}}}\hspace{5pt}\onslide<3-4>{\raisebox{-25pt}{\begin{minipage}[t]{0.3\linewidth}
         \begin{center}
-          \includegraphics[width=0.83\linewidth]{figures/learnspn-2}
+          \includegraphics[width=0.83\linewidth]{figures/learnspn-2-w}
         \end{center}
       \end{minipage}}}\hspace{4pt}\onslide<4>{\raisebox{-22pt}{\begin{minipage}[t]{0.3\linewidth}
         \begin{center}
-          \includegraphics[width=1.0\linewidth]{figures/learnspn-3}
+          \includegraphics[width=1.0\linewidth]{figures/learnspn-3-w}
         \end{center}
       \end{minipage}}}
 \end{frame}
@@ -606,9 +615,9 @@ query answer~\cite{Darwiche2009}.
   $\rightarrow$ statistically same (or better) accuracy, smaller
   networks\par%\bigskip
   \begin{center}
-    \raisebox{19pt}{\includegraphics[width=0.23\linewidth]{figures/learnspn-1.pdf}}
+    \raisebox{19pt}{\includegraphics[width=0.23\linewidth]{figures/learnspn-1-w.pdf}}
     \raisebox{30pt}{\hspace{20pt}\Huge$=$\hspace{10pt}}
-    \includegraphics[width=0.3\linewidth]{figures/learnspn-4.pdf}
+    \includegraphics[width=0.3\linewidth]{figures/learnspn-4-w.pdf}
   \end{center}
 
   % \raisebox{45pt}{\begin{minipage}[t]{0.65\linewidth}
@@ -1004,20 +1013,21 @@ $\\
   \framesubtitle{Inner node activations}
   \begin{minipage}{0.4\linewidth}
     \begin{center}
-      \only<1>{\includegraphics[width=.85\columnwidth]{figures/spn-eval-emb-I}}
-      \only<2>{\includegraphics[width=.86\columnwidth]{figures/spn-eval-emb-II}}
+      \only<1>{\includegraphics[width=.85\columnwidth]{figures/spn-emb}}
+      \only<2>{\includegraphics[width=.86\columnwidth]{figures/spn-emb-eval}}
     \end{center}
   \end{minipage}\hfill\begin{minipage}[t]{0.55\linewidth}
     \vspace{-80pt}
     Build an embedding $\mathbf{e}^{i}\in\mathbb{R}^{d}$ for sample
     $$\mathbf{x}^{i}=\langle 0,1,0,1,1,1 \rangle$$
     \only<2>{by evaluating $S(\mathbf{x}^{i})$ and collecting inner node
-    (\colorbox{orange}{\textcolor{white}{sum}}, \colorbox{blue}{\textcolor{white}{product}} but not for
-    \colorbox{purple}{\textcolor{white}{leaf}} nodes) activations
+    (\colorbox{gold4}{\textcolor{white}{sum}}, \colorbox{petroil4}{\textcolor{white}{product}} but not 
+    \colorbox{lacamdarklilac5}{\textcolor{white}{leaves}}) activations
+    \scriptsize
     \begin{align*}
-    \mathbf{e}^{i}= \langle&\highlight[orange]{.55},\highlight[blue]{.66},\highlight[orange]{.55},\highlight[blue]{.66},\highlight[orange]{.55},\highlight[blue]{.66},\\
-                   &\highlight[orange]{.55},\highlight[blue]{.66},\highlight[orange]{.55},\highlight[blue]{.66},\highlight[orange]{.55},\highlight[blue]{.66},\\
-      &\highlight[orange]{.55},\highlight[blue]{.66}  \rangle
+    \mathbf{e}^{i}= \langle&\highlight[gold6]{.02},\highlight[petroil6]{.01},\highlight[petroil6]{.013},\highlight[gold2]{.51},\highlight[gold4]{.2},\highlight[gold4]{.33},\\
+                   &\highlight[petroil2]{.19},\highlight[petroil2]{.89},\highlight[petroil4]{.27},\highlight[petroil4]{.34},\highlight[gold2]{.87},\highlight[gold2]{.11},\\
+      &\highlight[petroil2]{.3},\highlight[petroil2]{.44}  \rangle
   \end{align*}}
 
   \end{minipage}
@@ -1028,7 +1038,7 @@ $\\
   \framesubtitle{Filtering by type}
   \begin{minipage}{0.4\linewidth}
     \begin{center}
-      \includegraphics[width=.86\columnwidth]{figures/spn-eval-emb-II}
+      \includegraphics[width=.86\columnwidth]{figures/spn-emb-eval}
     \end{center}
   \end{minipage}\hfill\begin{minipage}[t]{0.55\linewidth}
     \vspace{-80pt}
@@ -1036,10 +1046,11 @@ $\\
     $$\mathbf{x}^{i}=\langle 0,1,0,1,1,1 \rangle$$
     by evaluating $S(\mathbf{x}^{i})$ and collecting
     inner node activations filtered by node type
+    \scriptsize
       \begin{align*}
-        \mathbf{e}^{i}_{\mathsf{sum}}= \langle&\highlight[orange]{.55},\highlight[orange]{.66},\highlight[orange]{.55},\highlight[orange]{.66},\highlight[orange]{.55},\highlight[orange]{.66}\rangle\\
-        \mathbf{e}^{i}_{\mathsf{prod}}=\langle  &\highlight[blue]{.55},\highlight[blue]{.66},\highlight[blue]{.55},\highlight[blue]{.66},\highlight[blue]{.55},\highlight[blue]{.66},\\
-                               &\highlight[blue]{.55},\highlight[blue]{.66}  \rangle
+        \mathbf{e}^{i}_{\mathsf{sum}}= \langle&\highlight[gold6]{.02},\highlight[gold2]{.51},\highlight[gold4]{.2},\highlight[gold4]{.33},\highlight[gold2]{.87},\highlight[gold2]{.11} \rangle\\
+        \mathbf{e}^{i}_{\mathsf{prod}}=\langle&\highlight[petroil6]{.01},\highlight[petroil6]{.013},\highlight[petroil2]{.19},\highlight[petroil2]{.89},\highlight[petroil4]{.27},\highlight[petroil4]{.34},\\
+        &\highlight[petroil2]{.3},\highlight[petroil2]{.44}  \rangle
       \end{align*}
 
   \end{minipage}
@@ -1050,7 +1061,7 @@ $\\
   \framesubtitle{Filtering by scope length}
   \begin{minipage}{0.4\linewidth}
     \begin{center}
-      \includegraphics[width=.86\columnwidth]{figures/spn-eval-emb-II}
+      \includegraphics[width=.86\columnwidth]{figures/spn-emb-eval}
     \end{center}
   \end{minipage}\hfill\begin{minipage}[t]{0.55\linewidth}
     \vspace{-80pt}
@@ -1058,11 +1069,13 @@ $\\
     $$\mathbf{x}^{i}=\langle 0,1,0,1,1,1 \rangle$$
     by evaluating $S(\mathbf{x}^{i})$ and collecting
     inner node activations filtered by scope length
+    \scriptsize
     \begin{align*}
       \mathbf{e}^{i}_{|\mathsf{sc}(n)|=2}=
-      \langle&\highlight[orange]{.55},\highlight[orange]{.66},\highlight[orange]{.55},\highlight[orange]{.66},\highlight[orange]{.55},\\ & \highlight[orange]{.66},\highlight[orange]{.66}\rangle\\
-      \mathbf{e}^{i}_{|\mathsf{sc}(n)|=4}=\langle  &\highlight[blue]{.55},\highlight[blue]{.66},\highlight[blue]{.55},\highlight[blue]{.66} \rangle\\
-      \mathbf{e}^{i}_{|\mathsf{sc}(n)|=6}=\langle  &\highlight[blue]{.55},\highlight[blue]{.66},\highlight[blue]{.55} \rangle
+      \langle&\highlight[gold2]{.51},\highlight[petroil2]{.19},\highlight[petroil2]{.89},\highlight[gold2]{.87},\highlight[gold2]{.11},\\
+      &\highlight[petroil2]{.3},\highlight[petroil2]{.44}  \rangle\\
+      \mathbf{e}^{i}_{|\mathsf{sc}(n)|=4}=\langle&\highlight[gold4]{.2},\highlight[gold4]{.33},\highlight[petroil4]{.27},\highlight[petroil4]{.34} \rangle\\
+      \mathbf{e}^{i}_{|\mathsf{sc}(n)|=6}=\langle&\highlight[gold6]{.02},\highlight[petroil6]{.01},\highlight[petroil6]{.013}\rangle
     \end{align*}
 
   \end{minipage}
@@ -1073,8 +1086,9 @@ $\\
   \framesubtitle{Aggregating by scope}
   \begin{minipage}{0.4\linewidth}
     \begin{center}
-      \only<1>{\includegraphics[width=.85\columnwidth]{figures/spn-eval-emb-III}}
-      \only<2>{\includegraphics[width=.86\columnwidth]{figures/spn-eval-emb-IV}}
+      \only<1>{\includegraphics[width=.95\columnwidth]{figures/spn-emb-aggr-1}}
+      \only<2>{\includegraphics[width=.95\columnwidth]{figures/spn-emb-aggr-2}}
+      \only<3>{\includegraphics[width=.96\columnwidth]{figures/spn-emb-aggr-eval}}
     \end{center}
   \end{minipage}\hfill\begin{minipage}[t]{0.55\linewidth}
     \vspace{-80pt}
@@ -1082,16 +1096,18 @@ $\\
     $$\mathbf{x}^{i}=\langle 0,1,0,1,1,1 \rangle$$
     \only<1>{by adding fictitious \textcolor{red}{sum} nodes over
       unique scopes (as additional roots)}
-    \only<2>{by adding fictitious sum nodes over
+    \only<2-3>{by adding fictitious sum nodes over
       unique scopes (as additional roots), then evaluating $S(\mathbf{x}^{i})$ and collecting they
       activations from  \colorbox{red}{\textcolor{white}{inner}}
-      nodes,  and even \colorbox{purple}{\textcolor{white}{leaves}} 
+      nodes}
+    \only<3>{ and even \colorbox{purple}{\textcolor{white}{leaves}}
+      \scriptsize
       \begin{align*}
         \mathbf{e}^{i}_{\mathsf{w/o-leaves}}=
-        \langle&\highlight[red]{.55},\highlight[red]{.66},\highlight[red]{.55},\highlight[red]{.66}\rangle \\
+        \langle&\highlight[red]{.2},\highlight[red]{.87},\highlight[red]{.51},\highlight[red]{.25}\rangle \\
         \mathbf{e}^{i}_{\mathsf{w-leaves}}=
-        \langle&\highlight[red]{.55},\highlight[red]{.66},\highlight[red]{.55},\highlight[red]{.66}\\
-&\highlight[purple]{.55},\highlight[purple]{.66},\highlight[purple]{.55},\highlight[purple]{.66}\rangle \\
+        \langle&\highlight[red]{.2},\highlight[red]{.87},\highlight[red]{.51},\highlight[red]{.11},
+                 \highlight[purple]{.75},\\ &\highlight[purple]{.25},\highlight[purple]{.6},\highlight[purple]{.47},\highlight[purple]{.17},\highlight[purple]{.82}\rangle \\
       \end{align*}}
   \end{minipage}
 \end{frame}
@@ -1099,6 +1115,32 @@ $\\
 \begin{frame}
   \frametitle{Extracting embeddings}
   \framesubtitle{Random marginal queries}
+  \begin{minipage}{0.4\linewidth}
+    \begin{center}
+      \only<1>{\includegraphics[width=.95\columnwidth]{figures/spn-emb-marg-q-1-alt}}
+      \only<2>{\includegraphics[width=.95\columnwidth]{figures/spn-emb-marg-q-2-alt}}
+    \end{center}
+  \end{minipage}\hfill\begin{minipage}[t]{0.55\linewidth}
+    \vspace{-80pt}
+    To build an embedding $\mathbf{e}^{i}\in\mathbb{R}^{k}$ for sample
+    $$\mathbf{x}^{i}=\langle 0,1,0,1,1,1 \rangle$$
+    
+    for each feature $j=1,\dots ,k$, sample $\mathbf{Q}_{j}\subset
+    \mathbf{X}$ and evaluate
+    $p(\mathbf{Q}_{j}=\mathbf{x}_{\mathbf{Q}_{j}})$.\par
+    E.g.:\par
+    \only<1>{$$\mathbf{Q}_{0}=\{X_{1},X_{2}\}$$
+      \scriptsize
+      \begin{align*}
+        \mathbf{e}^{i}_{\mathsf{rand}}= \langle&\highlight[red]{.13},\dots\rangle \\
+      \end{align*}}
+    \only<2>{$$\mathbf{Q}_{0}=\{X_{1},X_{2}\}$$
+      $$\mathbf{Q}_{1}=\{X_{1},X_{3},X_{4}\}$$
+      \scriptsize
+      \begin{align*}
+        \mathbf{e}^{i}_{\mathsf{rand}}= \langle&\highlight[red]{.13},\highlight[red]{.053}\dots\rangle \\
+      \end{align*}}
+     \end{minipage}
 \end{frame}
 
 
@@ -1123,12 +1165,6 @@ $\\
   Compare them against other tractable PGMs: mixtures of 3, 15, 30
   Chow-Liu trees.
 \end{frame}
-
-\begin{frame}
-  \frametitle{Scope distribution}
-  
-\end{frame}
-
 
 \begin{frame}
   \frametitle{Embeddings (I)}
