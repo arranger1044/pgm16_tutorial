@@ -6,8 +6,7 @@
 \usepackage{ifxetex}
 \usepackage{amsmath}
 \usepackage{mathtools}
-\usepackage[style=authoryear-icomp, maxcitenames=2]{biblatex}
-\usepackage[no-math]{fontspec}
+\usepackage[backend=bibtex,style=authoryear-icomp, maxcitenames=2]{biblatex}
 
 \definecolor{untractable_red}{RGB}{209, 25, 25}
 \definecolor{tractable_green}{RGB}{0, 153, 51}
@@ -34,6 +33,7 @@
   {\colorbox{#1}{\textcolor{white}{$\scriptscriptstyle#2$}}}}%
 
 \addbibresource{../referomnia/referomnia.bib}
+
 
 \title{Learning Sum-Product Networks}
 \author{\small Nicola Di Mauro \and Antonio Vergari}
@@ -240,24 +240,20 @@ $S_{n}(\mathbf{x})$ can be computed as follows:
 \item    $S$ is \emph{decomposable} iff $\forall n\in
   \mathbf S_{\otimes},\forall c_{1}, c_{2}\in \mathsf{ch}(n), c_{1}\neq c_{2}:
   \mathsf{sc}(c_{1})\cap\mathsf{sc}(c_{2})=\emptyset$
-\item    If $S$ is complete and decomposable, then it is \emph{valid}
+\item    If $S$ is complete and decomposable, then it is \emph{valid} \customcite{Darwiche2009}\customcite{Poon2011}
 \end{enumerate}  
 
 Evaluating a valid network corresponds to
 evaluate a joint unnormalized probability distribution
-$p_{\mathbf{X}}$:
+$p_{\mathbf{X}}$: $\forall\mathbf{x},S(\mathbf{x})/Z=p(\mathbf{X = x})$
 \begin{itemize}
-\item $\forall\mathbf{x},S(\mathbf{x})/Z=p(\mathbf{X = x})$, where $Z$ is the
-normalizing \emph{partition} function defined as
+\item $Z$ being the normalizing \emph{partition} function 
 $Z=\sum_{\mathbf{x}\sim \mathbf{X}}S(\mathbf{x})$
 \end{itemize}
 
-Complete and decomposable SPN correctly compiles the
+Valid SPN correctly compiles the
 \emph{extended network polynomial} encoding
 the distribution $p_{\mathbf{X}}$~\customcite{Peharz2015a}.
-
-To satisfy validity, it is sufficient for a network to be
-\emph{complete} and \emph{decomposable}\customcite{Darwiche2009}\customcite{Poon2011}.
 
 \end{frame}
 
@@ -277,29 +273,23 @@ Eq. \ref{eq:eval}.
 %
 Therefore, it is guaranteed to be tractable
 as long as the network size is polynomial in $|\mathbf{X}|$.
-\begin{figure}
-\caption{evaluation}
-\end{figure}
 \end{frame}
 
 \begin{frame}
 \frametitle{Complete evidence}
 \framesubtitle{Example}
+\begin{center}
 \onslide<1-8>{
-  \begin{minipage}[t]{0.49\textwidth}
-    \only<1>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval.pdf}}
-    \only<2-8>{\includegraphics[width=0.65\columnwidth]{figures/spn-eval.pdf}}
-  \end{minipage}
-  \begin{minipage}[t]{0.49\textwidth}
-    \only<2>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval-ev-1.pdf}}
-    \only<3>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval-ev-2.pdf}}
-    \only<4>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval-ev-3.pdf}}
-    \only<5>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval-ev-4.pdf}}
-    \only<6>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval-ev-5.pdf}}
-    \only<7>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval-ev-6.pdf}}
-    \only<8>{\includegraphics[width=0.7\columnwidth]{figures/spn-eval-ev-7.pdf}}
-  \end{minipage}
+    \only<1>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval.pdf}}
+    \only<2>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-ev-1.pdf}}
+    \only<3>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-ev-2.pdf}}
+    \only<4>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-ev-3-s.pdf}}
+    \only<5>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-ev-4-s.pdf}}
+    \only<6>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-ev-5-s.pdf}}
+    \only<7>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-ev-6-s.pdf}}
+    \only<8>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-ev-7-s.pdf}}
 }
+\end{center}
 \end{frame}
 
 
@@ -334,6 +324,22 @@ $Z$
 \end{frame}
 
 \begin{frame}
+\frametitle{Marginal Inference}
+\framesubtitle{Example}
+\begin{minipage}{0.49\textwidth}
+\onslide<1-3>{
+    \only<1-3>{\includegraphics[width=0.6\columnwidth]{figures/spn-eval.pdf}}
+}
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+    \only<2>{\includegraphics[width=0.6\columnwidth]{figures/spn-eval-marg-1-alt.pdf}}
+    \only<3>{\includegraphics[width=0.6\columnwidth]{figures/spn-eval-marg-2-alt.pdf}}
+\end{minipage}
+\end{frame}
+
+
+
+\begin{frame}
   \frametitle{MPE inference}
 An approximation of MPE inference and the computation of an MPE
 assignment can be answered in linear time as
@@ -361,6 +367,31 @@ of a product node\customcite{Poon2011a}, each instance determines a
 \emph{tree} path whose leaves MPE assignments union forms the
 query answer\customcite{Darwiche2009}.
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{MPE Inference}
+\framesubtitle{Example}
+\begin{center}
+\onslide<1-5>{
+    \only<1>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-1.pdf}}
+    \only<2>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-2.pdf}}
+    \only<3>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-3.pdf}}
+    \only<4>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-4-alt.pdf}}
+    \only<5>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-5-alt.pdf}}
+}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Partition function}
+\framesubtitle{Example}
+\begin{center}
+\onslide<1-2>{
+    \only<1>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-part-1.pdf}}
+    \only<2>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-part-2.pdf}}
+}
+\end{center}
 \end{frame}
 
 
@@ -540,7 +571,7 @@ capture all of the interactions among the observable variables
 \end{frame}
 
 \begin{frame}
-  \frametitle{SPNs as NNs (II)}
+  \frametitle{SPNs as NNs (II)\customcite{Vergari2016a}}
   \small
   A classic MLP hidden layer computes the function:
   $$h(\mathbf{x}) =\sigma(\mathbf{W}\mathbf{x}+ \mathbf{b})$$
@@ -563,7 +594,7 @@ capture all of the interactions among the observable variables
       1 &\text{if $i\rightarrow j$}\\
       0& \text{otherwise}
     \end{cases}
-  \end{equation*}\customcite{Vergari2016a}
+  \end{equation*}
 \end{frame}
 
 \begin{frame}
@@ -574,7 +605,7 @@ capture all of the interactions among the observable variables
 \end{frame}
 
 \begin{frame}
-  \frametitle{SPNs as NNs (IV): filters}
+  \frametitle{SPNs as NNs (IV): filters\customcite{Vergari2016a}}
   \small
   Learned features as images maximizing neuron activations\customcite{Erhan2009}:
   $$\mathbf{x}^{*} = \argmax_{\mathbf{x},
@@ -587,7 +618,7 @@ capture all of the interactions among the observable variables
     \vspace{-15pt}
     \includegraphics[width=0.9\linewidth]{figures/filters.jpg}
   \end{center}
-  \customcite{Vergari2016a}
+  
   $\rightarrow$ \emph{scope length} ($|\mathsf{sc}(n)|$) correlates with feature abstraction level
 \end{frame}
 
