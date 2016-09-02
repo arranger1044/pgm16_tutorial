@@ -361,8 +361,7 @@ the distribution $p_{\mathbf{X}}$~\customcite{Peharz2015a}.
 
 \begin{frame}
   \frametitle{MPE inference}
-An approximation of MPE inference can be answered in linear time as
-well\customcite{Peharz2015b}\customcite{Peharz2016}
+
 
 \begin{equation}
 \mathbf{q}^{*}=\argmax_{\mathbf{q}\sim \mathbf{Q}}p(\mathbf{E},
@@ -388,21 +387,74 @@ query answer\customcite{Darwiche2009}
 \end{frame}
 
 \begin{frame}
-\frametitle{MPE Inference}
-\framesubtitle{Example}
-\begin{center}
-\onslide<1-5>{
-    \only<1>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-1.pdf}}
-    \only<2>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-2.pdf}}
-    \only<3>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-3.pdf}}
-    \only<4>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-4-alt.pdf}}
-    \only<5>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-5-alt.pdf}}
-}
-\end{center}
+  \frametitle{MPE inference\customcite{Peharz2016}}
+
+  \begin{minipage}{0.4\linewidth}
+    \vspace{10pt}
+    \begin{center}
+      \only<1>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval}}
+      \only<2>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-mpe-1.pdf}}
+      \only<3>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-mpe-2.pdf}}
+      \only<4>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-mpe-3.pdf}}
+      \only<5>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-mpe-4-alt.pdf}}
+      \only<6>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-mpe-5-alt.pdf}}
+    \end{center}
+  \end{minipage}\hfill\begin{minipage}[t]{0.60\linewidth}
+    \vspace{-80pt}
+    \only<1>{An approximation of MPE inference can be answered in linear time as
+      well
+      $$\mathbf{q}^{*}=\argmax_{\mathbf{q}\sim \mathbf{Q}}p(\mathbf{E},
+      \mathbf{q})$$
+      for some RVs $\mathbf{E}, \mathbf{Q} \subset\mathbf{X},
+      \mathbf{E}\cap\mathbf{Q}=\emptyset,$\par
+      $\mathbf{E}\cup \mathbf{Q}=\mathbf{X}$ }
+    \only<2-6>{An approximation of MPE inference can be answered in linear time as
+      well.\par}
+      \only<2-4>{eg: {\scriptsize $\mathbf{Q}=\{X_{3},X_{4},X_{5}\},\mathbf{E}=\{X_{1},X_{2},X_{6}\}$}}
+      \only<5>{eg:
+        {\scriptsize$\mathbf{Q}=\{$$X_{3},X_{4},X_{5}$$\},\mathbf{E}=\{$\colorbox{black}{\textcolor{white}{$X_{1},X_{2}\}$}}$,X_{6}$}}
+      \only<6>{eg:
+      {\scriptsize$\mathbf{Q}=\{$\colorbox{purple}{\textcolor{white}{$X_{3},X_{4},X_{5}$}}$\},\mathbf{E}=\{$\colorbox{black}{\textcolor{white}{$X_{1},X_{2},X_{6}\}$}}}}
+      
+    \only<2>{\begin{itemize}
+    \item build a \textbf{\color{violet}\emph{Max-Product Network}} $M$ substituting each $n\in \mathbf S_{\oplus}$ for a \textbf{max} node computing
+      $$\max_{c\in\mathsf{ch}(n)}w_{nc}M_{n}$$
+    \end{itemize}}
+    \only<3-6>{\begin{itemize}
+    \item<3-6> build a \textbf{\color{violet}\emph{Max-Product
+          Network}} $M$
+    \item<3-6> evaluate $M$ bottom-up after setting all leaves $n$, $\mathsf{sc}(n)\subseteq
+      \mathbf{Q}$ to 1
+    \item<4-6> a top-down traversal traces back the MPE
+      assignment for each RV in $\mathbf{Q}$, following:
+      \begin{itemize}
+      \item<4-6> only the max output
+        child branch of a max node
+      \item<5-6> all child branches of product nodes
+      \end{itemize}
+    \item<6>{determining a {\color{red}\textbf{path}} whose leaves union forms the
+        MPE assignment}
+    \end{itemize}}
+    
+  \end{minipage}
 \end{frame}
 
+% \begin{frame}
+% \frametitle{MPE Inference}
+% \framesubtitle{Example}
+% \begin{center}
+% \onslide<1-5>{
+%     \only<1>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-1.pdf}}
+%     \only<2>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-2.pdf}}
+%     \only<3>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-3.pdf}}
+%     \only<4>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-4-alt.pdf}}
+%     \only<5>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-5-alt.pdf}}
+% }
+% \end{center}
+% \end{frame}
+
 \begin{frame}
-\frametitle{Partition function}
+\frametitle{Partition function computation}
 \framesubtitle{Example}
 As for ACs, setting all leaf outputs to 1 equals to compute the \emph{partition function} 
 
