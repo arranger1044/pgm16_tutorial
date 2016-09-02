@@ -26,7 +26,7 @@
 \definecolor{gold4} {RGB} {250, 100, 0}
 \definecolor{gold6} {RGB} {245, 90, 0}
 
-\AtEveryCite{\color{violet}}
+\AtEveryCite{\color{violet}\bf}
 
 \newcommand{\argmax}{\operatornamewithlimits{argmax}}
 \newcommand{\highlight}[2][yellow]{\mathchoice%
@@ -44,7 +44,7 @@
  Lugano, Switzerland, 6-9 September 2016}
 \institute{\scriptsize Università degli Studi di Bari}
 \department{Dipartimento di Informatica}
-\laboratory{LACAM}
+\laboratory{\scriptsize LACAM}
 \group{Machine Learning}
 \institutelogo{\includegraphics[width=25pt]{figures/unibaba}}
 \lablogo{\includegraphics[width=35pt]{figures/lacam}}
@@ -55,8 +55,7 @@
 
 \setbeamerfont{footnote}{size=\scriptsize}
 %\addtobeamertemplate{footnote}{}{\vspace{16pt}}
-\newcommand{\customcite}[1]{\footnote{\scriptsize \citeauthor{#1},
-    \citetitle{#1}, \citeyear{#1}}}
+\newcommand{\customcite}[1]{\footnote{\scriptsize \citeauthor{#1}, \citetitle{#1}, \citeyear{#1}}}
 \newcommand{\customcitenomark}[1]{\footnotenomarkleft{\scriptsize \citeauthor{#1}, \citetitle{#1}, \citeyear{#1}}}
 
 \begin{document}
@@ -956,23 +955,27 @@ capture all of the interactions among the observable variables
 
 \begin{frame}
   \frametitle{``Hard'' gradients}
-  \begin{minipage}{0.45\linewidth}
-    
-  \end{minipage}\begin{minipage}{0.55\linewidth}
-    From SPN $S$ to MPN $M$\par\bigskip
-    \
+  \begin{minipage}{0.4\linewidth}
+    \vspace{10pt}
+    \begin{center}
+      \only<1>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-mpe-1}}
+      \only<2>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-mpe-2}}
+      \only<3-4>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-mpe-5}}
+    \end{center}
+  \end{minipage}\hfill\begin{minipage}[t]{0.58\linewidth}
+    \vspace{-80pt}
+    From SPN $S$ to MPN $M$\par
     \begin{itemize}
-    \item forward (bottom-up) prop $\mathbf{x}^{i}$
-    \item backprop as MPE descent
-    \item ``count'' the weights in the path $W_{\mathbf{x}^{i}}$
-      $\nabla_{w_{pc}}
-      \log M(\mathbf{x})=\frac{\sharp\{w_{pc}\in W_{\mathbf{x}}\}}{w_{pc}}$
-    \end{itemize}\bigskip
-
-    Gradient is ``hard'', does not vanishes regardless network
-    depth\par
-    Much fewer parameters get updated/per instance\par
-    $\rightarrow$ slower convergence
+    \item<2-4> forward (bottom-up) prop $\mathbf{x}^{i}$
+    \item<3-4> backprop as MPE descent
+    \item<4> ``count'' the \colorbox{red}{\textcolor{white}{weights}}
+      occurrencies in the path $W_{\mathbf{x}^{i}}$
+      $$\nabla_{w_{pc}}
+      \log M(\mathbf{x})=\frac{\sharp\{w_{pc}\in W_{\mathbf{x}}\}}{w_{pc}}$$
+    \end{itemize}
+    \only<4>{
+      \hspace{15pt}$\rightarrow$ not vanishing (regardless depth)\par
+      \hspace{15pt}$\rightarrow$ slower convergence\par\hspace{27pt}(less updates/instance)}
     
   \end{minipage}
   \customcitenomark{Poon2011}
@@ -1163,6 +1166,23 @@ $\\
     \label{tab:model-accs}
   \end{table}
   \customcitenomark{Rashwan2016}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Other Tendencies in Parameter Learning}
+  \textbf{Jointly learning leaf distributions} parameters while optimizing.\par
+  E.g. deriving EM update rules for leaf distributions~\parencites{Peharz2015,Desana2016}\par\bigskip
+  
+   \textbf{Bayesian learning with continous leaf}
+  distributions. Extending OBMM to tree SPNs with continuous Gaussian
+  leaves~\parencite{Jaini2016}{\color{gold2}\emph{$\rightarrow$
+    PGM'16!}}\par\bigskip
+
+  Non bayesian \textbf{signomial programming approaches} still
+  considering an SPN as a (very large)
+  mixture over tree distributions.\par
+  Multiplicative updates (no projections, like EG, but faster convergence) for Sequential
+  Monomial Approximations (SMA) and Concave-Convex procedure (CCCP)~\parencite{Zhao2016b}\par\bigskip
 \end{frame}
 
 
@@ -1615,7 +1635,7 @@ $\\
 \end{frame}
 
 \begin{frame} [allowframebreaks]
-  \frametitle{bibliography}
+  \frametitle{Bibliography}
   \setbeamertemplate{bibliography item}{}
   \setlength\bibitemsep{2pt}
   \printbibliography
