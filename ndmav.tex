@@ -95,7 +95,7 @@ inference in an intractable model
 \end{frame}
 
 \begin{frame}
-\frametitle{The need for SPN }
+  \frametitle{The need for SPN }
   \framesubtitle{Why should you work on SPNs?}
 
 Sum-Product Networks (SPNs) are a type of probabilistic model\customcite{Poon2011}
@@ -804,20 +804,20 @@ capture all of the interactions among the observable variables
   processes (co-clutering on the data matrix).\par\bigskip
 
   Fast and simple. But both processes never look back and are
-  committed to the choices they take \emph{$\rightarrow$ slow down the two
+  committed to the choices they take \emph{\color{gold2}$\rightarrow$ slow down the two
   processes}\par\bigskip
 
   Online EM does not need to specify the number of clusters $k$ in
   advance. But overcomplex structures are learned by exploding the number of sum
-  node children \emph{$\rightarrow$ look for deeper networks}\par\bigskip
+  node children \emph{\color{gold2}$\rightarrow$ look for deeper networks}\par\bigskip
 
   Tractable leaf estimation. But too strong naive factorization independence
-  assumptions, hard to regularize \emph{$\rightarrow$ learn tree
+  assumptions, hard to regularize \emph{\color{gold2}$\rightarrow$ learn tree
     distributions as leaves}\par\bigskip
 
   ML estimations are effective. But they are not robust to noise, they
   can overfit the training set easily
-  \emph{$\rightarrow$ learn bagged sum nodes}
+  \emph{\color{gold2}$\rightarrow$ learn bagged sum nodes}
 \end{frame}
 
 \begin{frame}
@@ -833,7 +833,7 @@ capture all of the interactions among the observable variables
 
   Structural simplicity as a bias: overcomplex networks may not generalize well.\par\bigskip
   
-  Structure quality desiderata: \textbf{\textbf{smaller}} but \textbf{\textbf{accurate}}, \textbf{\emph{deeper}} but not
+  Structure quality desiderata: \textbf{\textbf{smaller}} but \textbf{\textbf{accurate}}, \textbf{deeper} but not
   wider, SPNs.
 \end{frame}
 
