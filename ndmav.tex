@@ -284,57 +284,47 @@ the distribution $p_{\mathbf{X}}$~\customcite{Peharz2015a}.
   \end{frame}
 }
 
-\begin{frame}
-  \frametitle{SPN evaluation}
-  For each $\mathbf{x}\sim \mathbf{X}$,
-  $S_{n}(\mathbf{x}_{|\mathsf{sc}(n)})$ and $S_{n}(\mathbf{x})$ are
-  the same notation to indicate the output value of node $n$ after
-  $\mathbf{X=x}$ is observed as the network input
 
-  \vskip 10pt
-
-  $S_{n}(\mathbf{x})$ can be computed as follows
-  \begin{equation}
-    \label{eq:eval}
-    S_{n}(\mathbf{x}) = \begin{cases}
-      \phi_{n}( \mathsf{sc}(n) =\mathbf{x}_{|\mathsf{sc}(n)}), & \text{if $n$ is a
-        leaf node} \\
-      \sum_{c\in \mathsf{ch}(n)}w_{nc}S_{c}(\mathbf{x})& \text{if $n$ is a sum node}\\
-      \prod_{c\in \mathsf{ch}(n)}S_{c}(\mathbf{x})& \text{if $n$ is a product node}
-    \end{cases}
-  \end{equation}
-  The value of the whole network, i.e. $S(\mathbf{x})$, corresponds to
-  the value of its root
-\end{frame}
 
 
 \begin{frame}
-\frametitle{Complete evidence}
+\frametitle{Complete evidence inference}
 
-Complete evidence inference consists of a single bottom-up
-(feedforward) evaluation of the network and proceeds according to
-Eq. \ref{eq:eval}.
-%
-Therefore, it is guaranteed to be tractable
-as long as the network size is polynomial in $|\mathbf{X}|$.
+\begin{minipage}{0.4\linewidth}
+  \vspace{10pt}
+  \begin{center}
+    \only<1>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval.pdf}}
+    \only<2>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-ev-1}}
+    \only<3>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-ev-2}}
+    \only<4>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-ev-3-s}}
+    \only<5>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-ev-4-s}}
+    \only<6>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-ev-5-s}}
+    \only<7>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-ev-6-s}}
+    \only<8>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-ev-7-alt-s}}
+  \end{center}
+\end{minipage}\hfill\begin{minipage}[t]{0.58\linewidth}
+  \vspace{-80pt}
+  To compute $p(\mathbf{X}=\mathbf{x})$, evaluate nodes in a bottom-up (feedforward)
+  fashion.\par\bigskip
+  Each node $n$, compute $S_{n}(\mathbf{x}_{|\mathsf{sc}(n)})=S_{n}(\mathbf{x})$:
+  \begin{itemize}
+  \item<2-8> $S_{n}(\mathbf{x}) = \phi_{n}( \mathsf{sc}(n)
+    =\mathbf{x}_{|\mathsf{sc}(n)})$\par if $n$ is a leaf node
+  \item<3-8> $S_{n}(\mathbf{x}) =\prod_{c\in
+      \mathsf{ch}(n)}S_{c}(\mathbf{x})$\par if $n$ is a
+    product node
+  \item<4-8> $S_{n}(\mathbf{x}) =\sum_{c\in
+      \mathsf{ch}(n)}w_{nc}S_{c}(\mathbf{x})$\par
+    if $n$ is a sum node
+  \end{itemize}
+  % \only<5-8>{iteratively traversing children before parents}
+  % \only<6-8>{\dots}\only<7-8>{\dots}\only<8>{ up to the root
+  %   output is
+  %   \colorbox{purple}{\textcolor{white}{$S(\textbf{x})=p(\mathbf{X}=\mathbf{x})$}}}
+  \only<8>{ the root output is \colorbox{purple}{\footnotesize\textcolor{white}{$S(\textbf{x})=p(\mathbf{X}=\mathbf{x})$}}}
+\end{minipage}
 \end{frame}
 
-\begin{frame}
-\frametitle{Complete evidence}
-\framesubtitle{Example}
-\begin{center}
-\onslide<1-8>{
-    \only<1>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval.pdf}}
-    \only<2>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-ev-1.pdf}}
-    \only<3>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-ev-2.pdf}}
-    \only<4>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-ev-3-s.pdf}}
-    \only<5>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-ev-4-s.pdf}}
-    \only<6>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-ev-5-s.pdf}}
-    \only<7>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-ev-6-s.pdf}}
-    \only<8>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-ev-7-s.pdf}}
-}
-\end{center}
-\end{frame}
 
 
 \begin{frame}
