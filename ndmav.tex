@@ -705,13 +705,23 @@ capture all of the interactions among the observable variables
 \end{frame}
 
 \begin{frame}
-  \frametitle{SPNs as BNs I}
-  Zhao and Poupart
-\end{frame}
+  \frametitle{SPNs as BNs}
 
-\begin{frame}
-  \frametitle{SPNs as BNs II}
-  Peharz
+Adopting Algebraic Decision Diagrams (ADDs) for  CPDs,  every  SPN  can  be  converted  into  a  BN  in  linear  time
+and space  complexity  in the  size  of  the SPN
+\begin{itemize}
+\item the  generated  BN has  a  simple  bipartite structure
+\item applying the VE algorithm to the
+generated BN with ADD representation of its CPDs, the original SPN can be
+recovered in linear time and space with respect to the size of the SPN
+\begin{itemize}
+\item the SPN can be viewed as a caching of the VE inference process
+\end{itemize}
+\end{itemize}
+\begin{center}
+  \includegraphics[width=0.7\textwidth]{figures/spn-bn}
+\end{center}
+  Figure from \customcite{Zhao2015}. Construct a BN with CPDs represented by ADDs from an SPN. 
 \end{frame}
 
 \section{Learning}
