@@ -1,12 +1,13 @@
 \documentclass[10pt, t, xcolor={usenames,dvipsnames,svgnames}, compress]{beamer}
 
+\usepackage{hyperref}
 \usepackage{booktabs}
 \usepackage{dcolumn}
 \usepackage{colortbl}
 \usepackage{ifxetex}
 \usepackage{amsmath}
 \usepackage{mathtools}
-\usepackage[backend=bibtex,style=authoryear-icomp, maxcitenames=2]{biblatex}
+\usepackage[backend=bibtex,style=authoryear-icomp, maxcitenames=2,hyperref=true]{biblatex}
 
 \definecolor{untractable_red}{RGB}{209, 25, 25}
 \definecolor{tractable_green}{RGB}{0, 153, 51}
@@ -24,6 +25,8 @@
 \definecolor{gold2} {RGB} {255, 130, 0}
 \definecolor{gold4} {RGB} {250, 100, 0}
 \definecolor{gold6} {RGB} {245, 90, 0}
+
+\AtEveryCite{\color{violet}}
 
 \newcommand{\argmax}{\operatornamewithlimits{argmax}}
 \newcommand{\highlight}[2][yellow]{\mathchoice%
@@ -52,7 +55,9 @@
 
 \setbeamerfont{footnote}{size=\scriptsize}
 %\addtobeamertemplate{footnote}{}{\vspace{16pt}}
-\newcommand{\customcite}[1]{\footnote{\scriptsize \citeauthor{#1}, \citetitle{#1}, \citeyear{#1}}}
+\newcommand{\customcite}[1]{\footnote{\scriptsize \citeauthor{#1},
+    \citetitle{#1}, \citeyear{#1}}}
+\newcommand{\customcitenomark}[1]{\footnotenomarkleft{\scriptsize \citeauthor{#1}, \citetitle{#1}, \citeyear{#1}}}
 
 \begin{document}
 
@@ -673,18 +678,17 @@ capture all of the interactions among the observable variables
 \begin{frame}
 \frametitle{Learning SPNs}
   \textbf{Parameter learning:} estimate $\mathbf{w}$ from data
-  considering an SPN as a
-  latent RV model, or as a NN
+  considering an SPN as a latent RV model, or as a NN.\par\bigskip
 
   \textbf{Structure learning:} build the network from data by assigning
-  scores to tentative structures or by exploiting constraints
+  scores to tentative structures or by exploiting constraints\par\bigskip
 
   How to learn a ``complete'' SPN:
   \begin{itemize}
-  \item handcrafted structure, then parameter learning\customcite{Poon2011}\customcite{Gens2012}
-  \item random structures, then parameter learning\customcite{Rashwan2016}
-  \item structure learning, then parameter learning (fine tuning)\customcite{Zhao2016a}
-  \item learn both weight and structure at the same time\customcite{Gens2013}\customcite{Rooshenas2014}\customcite{Vergari2015}\customcite{Adel2015}\dots  
+  \item handcrafted structure, then parameter learning~\parencite{Poon2011}~\parencite{Gens2012}
+  \item random structures, then parameter learning~\parencite{Rashwan2016}
+  \item structure learning, then parameter learning (fine tuning)~\parencite{Zhao2016a}
+  \item learn both weight and structure at the same time~\parencites{Gens2013,Rooshenas2014,Vergari2015,Adel2015}~\dots  
   \end{itemize}
 \end{frame}
 
@@ -693,7 +697,7 @@ capture all of the interactions among the observable variables
 
   \textbf{Score vs constraint based search.}
   No closed form for likelihood scores, need
-  heuristics\customcite{Rooshenas2014}.\par
+  heuristics~\parencite{Rooshenas2014}.\par
   No need for it by exploiting the inner nodes probabilistic semantics\par\bigskip
   
   \textbf{Learning graph vs tree structures}:
@@ -703,8 +707,8 @@ capture all of the interactions among the observable variables
   \textbf{Top-down vs bottom-up approaches}: iteratively cluster data
   matrix (top-down) or start by the marginal RVs (bottom-up)\par\bigskip
 
-  \textbf{LearnSPN}\customcite{Gens2013} is a \emph{\textbf{greedy}}, \emph{\textbf{top down}}, \emph{\textbf{constraint
-  based}} learner for \emph{\textbf{tree}} SPNs\par
+  \textbf{LearnSPN} is a \emph{\textbf{greedy}}, \emph{\textbf{top down}}, \emph{\textbf{constraint
+      based}} learner for \emph{\textbf{tree}} SPNs~\parencite{Gens2013}\par
   $\rightarrow$ First principled top-down learner, inspired many algorithms and
   variations.
   $\rightarrow$ Surprisingly simple and accurate.
@@ -717,18 +721,17 @@ capture all of the interactions among the observable variables
   Build a tree SPN by recursively split the data matrix:
 
   \begin{itemize}
-  \item splitting columns into pairs by a greedy \textbf{\emph{G Test}}-based
-    procedure with threshold $\rho$:
+  \item splitting columns into pairs by a greedy \textbf{\emph{G Test}} with threshold $\rho$:
     \[
       G(X_i, X_j) =  2\sum_{x_i \sim X_i}\sum_{x_j \sim X_j}c(x_i, x_j)\cdot \log\frac{c(x_i, x_j)\cdot |T|}{c(x_i)c(x_j)}
     \]
-  \item clustering instances into $|C|$ sets with \textbf{\emph{online Hard-EM}} with cluster penalty
-    $\lambda$:
+  \item clustering instances into $|C|$ sets with \textbf{\emph{online
+        Hard-EM}},  estimating weights as cluster proportions with cluster penalty
+    $\lambda$
     \[\begin{array}{cc}
-        Pr(\mathbf{X})= \sum_{C_i \in \mathbf{C}}\prod_{X_j \in \mathbf{X}}Pr(X_j|C_i)Pr(C_i)\\
+        p(\mathbf{X})= \sum_{C_i \in \mathbf{C}}\prod_{X_j \in \mathbf{X}}p(X_j|C_i)p(C_i)\\
         % & Pr(C_i) \propto e^{-\lambda |\mathbf{C}|\cdot |\mathbf{X}|}\\
       \end{array}\]
-    weights are estimated as cluster proportions
   \item if there are less than $m$ instances, put a \textbf{\emph{naive
         factorization}} over leaves
   \item each univariate distribution get \emph{\textbf{ML estimation}} smoothed by $\alpha$  
@@ -804,7 +807,7 @@ capture all of the interactions among the observable variables
   faster inference!\par
   $\rightarrow$ Comparing network sizes is better than comparing inference times\par\bigskip
 
-  Network \emph{\textbf{depth}} influences \emph{expressive efficiency}\customcite{Martens2014}\customcite{Zhao2015}\par\bigskip
+  Network \emph{\textbf{depth}} influences \emph{expressive efficiency}~\parencite{Martens2014}~\parencite{Zhao2015}\par\bigskip
 
   Structural simplicity as a bias: overcomplex networks may not generalize well.\par\bigskip
   
@@ -885,18 +888,18 @@ capture all of the interactions among the observable variables
   search.
   \emph{\textbf{ID-SPN}} best log-likelihood learner (but lots of
   hyperparameters).\par
-  Freely available in the \textsf{Libra}\footnote{http://libra.cs.uoregon.edu/} toolkit\customcite{Rooshenas2014}\par\bigskip
+  Freely available in the \textsf{Libra}\footnote{http://libra.cs.uoregon.edu/} toolkit~\parencite{Rooshenas2014}\par\bigskip
   
   Looking for \textbf{correlations instead of independencies} via matrix
   factorizations.\par
   Splitting matrix rows and columns at the same time: SPN-SVD.\par
-  It can cope with continuous data\customcite{Adel2015}\par\bigskip
+  It can cope with continuous data~\parencite{Adel2015}\par\bigskip
   
   Post-learning \textbf{mergining sub-SPNs} that model ``similar'' distributions.\par
-  Reducing network sizes\customcite{Rahman2016}.\par\bigskip
+  Reducing network sizes~\parencite{Rahman2016}.\par\bigskip
 
   Learning Relational SPNs on \textbf{first order data}
-  represented in Tractable Markov Logic (TML), LearnRSPN\customcite{Nath2015}.
+  represented in Tractable Markov Logic (TML), \emph{LearnRSPN}~\parencite{Nath2015}.
 \end{frame}
 
 \begin{frame}
@@ -904,18 +907,18 @@ capture all of the interactions among the observable variables
   \textbf{Learning deterministic structures} which enable closed form
   log-likelihood and weight estimation.\par
   Selective SPNs, enabling efficient Stochastic Local
-  Search\customcite{Peharz2014b}.\par
+  Search~\parencite{Peharz2014b}.\par
   Mixing latent and deterministic mixtures as sum
   nodes (a Cutset Network is an
-  SPN!)\customcite{Rahman2016}\par\bigskip
+  SPN!)~\parencite{Rahman2016}\par\bigskip
   
   \textbf{Learning DAGs} structures instead of trees.\par
-  Substituting sub-structures with more complex ones by cloning mixtures\customcite{Dennis2015}\par\bigskip
+  Substituting sub-structures with more complex ones by cloning mixtures~\parencite{Dennis2015}\par\bigskip
   
   \textbf{Template learning} for sequence
   models.
   Stochastic local search over well defined constrained structures.
-  Dynamic SPNs\customcite{Melibari2016c}\emph{$\rightarrow$ PGM'16!}\par\bigskip
+  Dynamic SPNs~\parencite{Melibari2016c}\color{gold2}\emph{$\rightarrow$ PGM'16!}\par\bigskip
 \end{frame}
 
 \begin{frame}
@@ -952,7 +955,7 @@ capture all of the interactions among the observable variables
 \end{frame}
 
 \begin{frame}
-  \frametitle{``Hard'' gradients   \customcite{Poon2011}\customcite{Gens2012}}
+  \frametitle{``Hard'' gradients}
   \begin{minipage}{0.45\linewidth}
     
   \end{minipage}\begin{minipage}{0.55\linewidth}
@@ -972,10 +975,12 @@ capture all of the interactions among the observable variables
     $\rightarrow$ slower convergence
     
   \end{minipage}
+  \customcitenomark{Poon2011}
+  \customcitenomark{Gens2012}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Hard/Soft Parameter Updating \customcite{Gens2012}}
+  \frametitle{Hard/Soft Parameter Updating}
   \begin{table}
     \centering
     \begin{tabular}{l c}
@@ -1018,6 +1023,7 @@ capture all of the interactions among the observable variables
 $\\
     \end{tabular}
   \end{table}
+  \customcitenomark{Gens2012}
 \end{frame}
 
 \begin{frame}
@@ -1034,21 +1040,25 @@ $\\
 
   \textbf{Online Bayesian Moment Matching} (OBMM): computing first two
   moments to approximate the intractable posterior, efficiently for
-  tree SPNs\customcite{Rashwan2016}\par\bigskip
+  tree SPNs~\parencite{Rashwan2016}.\par\bigskip
 
   \textbf{Collapse Variational Inference} (CVB-SPN) to optimize a
-  logarithmic lower bound (better than ELBO) efficiently (linear in $|S|$)\customcite{Zhao2016a}.
+  logarithmic lower bound (better than ELBO) efficiently (linear in $|S|$)~\parencite{Zhao2016a}.
   
 \end{frame}
 
 \begin{frame}[t]
   \frametitle{Parameter learning}
+  \vspace{-10pt}
   \begin{table}
     \centering
     \scriptsize
     \setlength{\tabcolsep}{3pt}  
     \begin{tabular}{l r r r r r}
-      & \textsf{CVB-SPN}\customcite{Zhao2016a} & \textsf{OBMM}\customcite{Rashwan2016} & \textsf{SGD}\footnotemark[48] & \textsf{EM}\footnotemark[48] & \textsf{SEG}\footnotemark[48] \\
+      \toprule
+      & \textsf{CVB-SPN}\customcite{Zhao2016a} &
+                                                 \textsf{OBMM}\customcite{Rashwan2016} & \textsf{SGD}\footnotemark[48] & \textsf{EM}\footnotemark[48] & \textsf{SEG}\footnotemark[48] \\
+      \midrule
       \textbf{NLTCS}      & -6.08   & -6.07   & -8.76   & -6.31   & -6.85   \\
       \textbf{MSNBC}      & -6.29   & -6.03   & -6.81   & -6.64   & -6.74   \\
       \textbf{KDDCup2k}   & -2.14   & -2.14   & -44.53  & -2.20   & -2.34   \\
@@ -1077,12 +1087,16 @@ $\\
 
 \begin{frame}[t]
   \frametitle{Parameter learning VS LearnSPN}
+  \vspace{-10pt}
   \begin{table}
     \centering
     \scriptsize
     \setlength{\tabcolsep}{3pt}  
     \begin{tabular}{l r r r r r r r}
-      & \textsf{LearnSPN}\customcite{Gens2013} & \textsf{LearnSPN-b}\customcite{Vergari2015} & \textsf{CVB-SPN}\customcite{Zhao2016a} & \textsf{OBMM}\customcite{Rashwan2016} & \textsf{SGD}\footnotemark[52] & \textsf{EM}\footnotemark[52] & \textsf{SEG}\footnotemark[52] \\
+      \toprule
+      & \textsf{LearnSPN}\customcite{Gens2013} &
+                                                 \textsf{LearnSPN-b}\customcite{Vergari2015} & \textsf{CVB-SPN}\customcite{Zhao2016a} & \textsf{OBMM}\customcite{Rashwan2016} & \textsf{SGD}\footnotemark[52] & \textsf{EM}\footnotemark[52] & \textsf{SEG}\footnotemark[52] \\
+      \midrule
       \textbf{NLTCS}      & -6.11   & -6.05   & -6.08   & -6.07   & -8.76   & -6.31   & -6.85   \\
       \textbf{MSNBC}      & -6.11   & -6.04   & -6.29   & -6.03   & -6.81   & -6.64   & -6.74   \\
       \textbf{KDDCup2k}   & -2.18   & -2.14   & -2.14   & -2.14   & -44.53  & -2.20   & -2.34   \\
@@ -1110,7 +1124,7 @@ $\\
 
 
 \begin{frame}
-  \frametitle{Why learning parameters only\customcite{Rashwan2016}}
+  \frametitle{Why learning parameters only}
   Even if simple, \textsf{LearnSPN} hardly scales on large datasets.\par
   $\rightarrow$ generate a random (but valid) structure, then optimize the weights
   \begin{table}
@@ -1148,7 +1162,50 @@ $\\
     \end{tabular}
     \label{tab:model-accs}
   \end{table}
+  \customcitenomark{Rashwan2016}
 \end{frame}
+
+
+\section{Applications}
+{\setbeamertemplate{headline}{}
+  \begin{frame}[c]
+    \sectionpage
+  \end{frame}
+}
+
+\begin{frame}
+  \frametitle{Applications I: computer vision}
+  
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Applications II: language modeling}
+  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Applications III: activity recognition}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Applications IV: speech}
+  SPNs to model the joint pdf of observed RVs in HMMs (HMM-SPNs).
+  \begin{center}
+    \includegraphics[width=0.35\columnwidth]{figures/peharz2014a-figures/hmm-spn-model}
+  \end{center}\par
+
+  State-of-the-art high frequency reconstruction (MPE inference)
+  \begin{center}
+    \includegraphics[width=0.25\columnwidth]{figures/peharz2014a-figures/orig}
+    \includegraphics[width=0.25\columnwidth]{figures/peharz2014a-figures/hmm-lp}
+    \includegraphics[width=0.25\columnwidth]{figures/peharz2014a-figures/hmm-gmm}
+    \includegraphics[width=0.25\columnwidth]{figures/peharz2014a-figures/hmm-spn}
+  \end{center}
+  
+  \customcitenomark{Peharz2014a}
+\end{frame}
+
 
 \section{Representation Learning}
 {\setbeamertemplate{headline}{}
@@ -1159,7 +1216,7 @@ $\\
 
 \begin{frame}
   \frametitle{Extracting Embeddings}
-  \framesubtitle{From deep neural networks\customcite{Bengio2012}}
+  \framesubtitle{From deep neural networks}
   \begin{minipage}{0.38\linewidth}
     \begin{center}
       \only<1>{\includegraphics[width=.9\columnwidth]{figures/dnn-eval-emb-I}}
@@ -1175,12 +1232,12 @@ $\\
       \end{align*}}
 
   \end{minipage}
-  
+  \customcitenomark{Bengio2012}
 \end{frame}
 
 \begin{frame}
   \frametitle{Extracting Embeddings}
-  \framesubtitle{Exploiting SPNs as feature extractors\customcite{Vergari2016a}  }
+  \framesubtitle{Exploiting SPNs as feature extractors  }
 
   Given an SPN $S$, a filtering criterion $f$, generate a dense vector
   for each sample $\mathbf{x}^{i}$
@@ -1208,6 +1265,7 @@ $\\
   %   \end{itemize}
   % \item from several queries evaluations (root outputs)
   % \end{itemize}
+  \customcitenomark{Vergari2016a}
 \end{frame}
 
 \begin{frame}
@@ -1227,7 +1285,7 @@ $\\
     \colorbox{lacamdarklilac5}{\textcolor{white}{leaves}}) activations
     \scriptsize
     \begin{align*}
-    \mathbf{e}^{i}= \langle&\highlight[gold6]{.02},\highlight[petroil6]{.01},\highlight[petroil6]{.013},\highlight[gold2]{.51},\highlight[gold4]{.2},\highlight[gold4]{.33},\\
+    \mathbf{e}^{i}= \langle&\highlight[gold6]{.02}\highlight[petroil6]{.01}\highlight[petroil6]{.013}\highlight[gold2]{.51}\highlight[gold4]{.2}\highlight[gold4]{.33},\\
                    &\highlight[petroil2]{.19},\highlight[petroil2]{.89},\highlight[petroil4]{.27},\highlight[petroil4]{.34},\highlight[gold2]{.87},\highlight[gold2]{.11},\\
       &\highlight[petroil2]{.3},\highlight[petroil2]{.44}  \rangle
   \end{align*}}
@@ -1306,10 +1364,10 @@ $\\
       \scriptsize
       \begin{align*}
         \mathbf{e}^{i}_{\mathsf{w/o-leaves}}=
-        \langle&\highlight[red]{.2},\highlight[red]{.87},\highlight[red]{.51},\highlight[red]{.25}\rangle \\
+        \langle&\highlight[red]{.2}\highlight[red]{.87}\highlight[red]{.51}\highlight[red]{.25}\rangle \\
         \mathbf{e}^{i}_{\mathsf{w-leaves}}=
-        \langle&\highlight[red]{.2},\highlight[red]{.87},\highlight[red]{.51},\highlight[red]{.11},
-                 \highlight[purple]{.75},\\ &\highlight[purple]{.25},\highlight[purple]{.6},\highlight[purple]{.47},\highlight[purple]{.17},\highlight[purple]{.82}\rangle \\
+        \langle&\highlight[red]{.2}\highlight[red]{.87},\highlight[red]{.51},\highlight[purple]{.11},
+                 \highlight[purple]{.75},\\ &\highlight[red]{.25},\highlight[purple]{.6},\highlight[purple]{.47},\highlight[purple]{.17},\highlight[purple]{.82}\rangle \\
       \end{align*}}
   \end{minipage}
 \end{frame}
@@ -1319,8 +1377,9 @@ $\\
   \framesubtitle{Random marginal queries}
   \begin{minipage}{0.4\linewidth}
     \begin{center}
-      \only<1>{\includegraphics[width=.95\columnwidth]{figures/spn-emb-marg-q-1-alt}}
-      \only<2>{\includegraphics[width=.95\columnwidth]{figures/spn-emb-marg-q-2-alt}}
+      %\only<1>{\includegraphics[width=.85\columnwidth]{figures/spn-emb-eval}}
+      \only<1>{\includegraphics[width=.85\columnwidth]{figures/spn-emb-marg-q-1-alt}}
+      \only<2>{\includegraphics[width=.85\columnwidth]{figures/spn-emb-marg-q-2-alt}}
     \end{center}
   \end{minipage}\hfill\begin{minipage}[t]{0.55\linewidth}
     \vspace{-80pt}
@@ -1369,7 +1428,7 @@ $\\
 \end{frame}
 
 \begin{frame}
-  \frametitle{Embeddings (I)}
+  \frametitle{Embedding accuracies (I)}
   \begin{table}[!t]
     \centering
     \footnotesize
@@ -1387,22 +1446,23 @@ $\\
       % &  & ($d=227$)& ($d=5977$)& ($d=12669$)& & & \\
       \midrule
       \textsf{REC} & 69.28 & 77.31& \textbf{97.77}& 97.66& 94.22& 96.10& 96.36\\
-      \midrule
+      %\midrule
       \textsf{CON} & 53.48 & 67.48& 78.31& \textbf{84.69}& 67.55& 75.37& 79.15\\
-      \midrule
+      %\midrule
       \textsf{OCR} & 75.58 & 82.60& \textbf{89.95}& \textbf{89.94}& 86.07& 87.96& 88.76\\
-      \midrule
+      %\midrule
       \textsf{CAL} & 62.67& 59.17 & 65.19& 66.62& 67.36& \textbf{68.88}& 67.71\\
-      \midrule
+      %\midrule
       \textsf{BMN} & 90.62& 95.15& \textbf{97.66}& 97.59& 96.09& 96.80& 97.47\\
       \bottomrule
     \end{tabular}
     \label{tab:model-accs}
   \end{table}
+  \customcitenomark{Vergari2016a}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Embeddings (II)}
+  \frametitle{Embedding accuracies (II)}
   \begin{table}[!t]
     \centering
     \footnotesize
@@ -1426,24 +1486,25 @@ $\\
       % &  & (227)& (5977)& (12669)& & \\
       \midrule
       \textsf{REC} & 72.46& 62.25& $\mathbf{98.03}^{\blacktriangle}$& $97.06^{\blacktriangle}$& $\mathbf{98.00}^{\blacktriangle}$& $97.04^{\blacktriangle}$ & 88.73&$\mathbf{98.45}^{\blacktriangle}$& 93.91\\
-      \midrule
+      %\midrule
       \textsf{CON} & 62.36& 64.03& $77.13^{\blacktriangle}$& $76.07^{\blacktriangle}$& $\mathbf{83.59}^{\blacktriangle}$& $82.06^{\blacktriangle}$ &$70.51^{\triangledown}$&77.18&$\mathbf{83.32}^{\blacktriangle}$\\
-      \midrule
+      %\midrule
       \textsf{OCR} & 74.19& 81.58& $89.73^{\blacktriangle}$& $88.78^{\blacktriangle}$& $\mathbf{90.02}^{\blacktriangle}$& 89.32 & $87.22^{\triangledown}$& $\mathbf{89.29}^{\blacktriangle}$& $88.19^{\blacktriangle}$\\
       % & (32) & (621)&  (5466)& & & \\
-      \midrule
+      %\midrule
       \textsf{CAL} & 38.19& 56.95& 62.64& 64.80& $\mathbf{66.58}^{\triangledown}$& $66.40^{\triangledown}$& $63.37^{\triangledown}$& $\mathbf{66.23}^{\triangledown}$& $66.10$\\
       % & (554 )& (16483)& (31420)& & & \\
-      \midrule
+      %\midrule
       \textsf{BMN} & 93.50& 94.75& $97.67$& $96.90^{\triangledown}$& \textbf{97.80}& $97.20^{\triangledown}$ & $96.02^{\triangledown}$& $\mathbf{97.42^{\triangledown}}$& 97.38\\
       \bottomrule
     \end{tabular}
     \label{tab:model-filter-accs}
   \end{table}
+  \customcitenomark{Vergari2016a}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Embeddings (III)}
+  \frametitle{Embedding accuracies (III)}
   \begin{table}[!t]
     \centering
     \footnotesize
@@ -1468,34 +1529,30 @@ $\\
       &no-leaves  & leaves& no-leaves& leaves& no-leaves& leaves\\
       \midrule
       \textsf{REC} & 72.47 & $75.92^{\triangledown}$ & $\mathbf{97.94}^{\blacktriangle}$ & $\mathbf{97.99}^{\blacktriangle}$ & $\mathbf{97.94}^{\blacktriangle}$ & $\mathbf{98.02}^{\blacktriangle}$ \\
-      \midrule
+      %\midrule
       \textsf{CON} & 62.35 & $66.49^{\triangledown}$ & $77.21^{\blacktriangle}$ & 78.05 & $\mathbf{83.52}^{\blacktriangle}$ & $\mathbf{83.84}^{\blacktriangle}$ \\
-      \midrule
+      %\midrule
       \textsf{OCR} & 74.32 & 81.85 & $89.71^{\blacktriangle}$ & $89.68^{\blacktriangle}$ & $\mathbf{89.90}^{\blacktriangle}$ & $\mathbf{89.91}^{\blacktriangle}$ \\
-      \midrule
+      %\midrule
       \textsf{CAL} & 38.10 & $63.19^{\triangledown}$  & 62.59 & $62.76^{\triangledown}$ & $\mathbf{66.49}^{\triangledown}$ & $\mathbf{66.58}^{\triangledown}$ \\
-      \midrule
+      %\midrule
       \textsf{BMN} & 93.51 & $94.83^{\triangledown}$ & $97.64^{\blacktriangle}$ & $97.62^{\blacktriangle}$ & $\mathbf{97.80}$ & $\mathbf{97.80}$ \\
       \bottomrule
     \end{tabular}
     \label{tab:model-scope-aggr}
   \end{table}
+  \customcitenomark{Vergari2016a}
 \end{frame}
 
 
 
 \begin{frame}
-  \frametitle{Random Marginal Queries\customcite{Vergari2016a}}
-  Generate embeddings by asking several random queries to a black box
-  density estimator.\par
-  Eg. marginals: $e^{i}_{j}=P_{\theta}(\mathbf{Q}_{j}=\mathbf{x}^{i}_{\mathbf{Q}_{j}})$,
-  according to estimator $\theta$ where $\mathbf{Q}_{j}\subseteq\mathbf{X}, j=\,\dots,k$.
-  \begin{center}
-    \includegraphics[width=1.0\linewidth]{figures/lines-wide}
+  \frametitle{Random Marginal Queries}
+   \begin{center}
+    \includegraphics[width=0.42\linewidth]{figures/lines-rectangles}\includegraphics[width=0.42\linewidth]{figures/lines-convex}\\
+    \includegraphics[width=0.42\linewidth]{figures/lines-ocr_letters}\includegraphics[width=0.42\linewidth]{figures/lines-bmnist}
   \end{center}
-  
-  % Two general extraction schemes: random query construction and random
-  % `patch' estimation
+  \customcitenomark{Vergari2016a}
 \end{frame}
 
 \begin{frame}
@@ -1506,7 +1563,7 @@ $\\
      \item \textbf{decoding} an embedding back into input space by MPE top
       down traversal
   \end{itemize}
-  \footfullcitenomarkleft{Vergari et al. Encoding and Decoding
+  \footnotenomarkleft{Vergari et al. Encoding and Decoding
     Representations with Sum-Product Networks, 2016, to appear}
 
 
@@ -1532,46 +1589,6 @@ $\\
 
 
 
-
-\section{Applications}
-{\setbeamertemplate{headline}{}
-  \begin{frame}[c]
-    \sectionpage
-  \end{frame}
-}
-
-\begin{frame}
-  \frametitle{Applications I: computer vision}
-  
-\end{frame}
-
-
-\begin{frame}
-  \frametitle{Applications II: language modeling}
-  
-\end{frame}
-
-\begin{frame}
-  \frametitle{Applications III: activity recognition}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Applications IV: speech}
-  SPNs to model the joint pdf of observed RVs in HMMs (HMM-SPNs).
-  \begin{center}
-    \includegraphics[width=0.35\columnwidth]{figures/peharz2014a-figures/hmm-spn-model}
-  \end{center}\par\bigskip
-
-  State-of-the-art high frequency reconstruction (MPE inference)
-  \begin{center}
-    \includegraphics[width=0.25\columnwidth]{figures/peharz2014a-figures/orig}
-    \includegraphics[width=0.25\columnwidth]{figures/peharz2014a-figures/hmm-lp}
-    \includegraphics[width=0.25\columnwidth]{figures/peharz2014a-figures/hmm-gmm}
-    \includegraphics[width=0.25\columnwidth]{figures/peharz2014a-figures/hmm-spn}
-  \end{center}
-  
-  \footfullcitenomarkleft{Peharz2014a}
-\end{frame}
 
 
 \begin{frame}
