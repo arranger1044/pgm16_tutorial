@@ -18,6 +18,7 @@
 \setbeamertemplate{headline}{}
 
 \definecolor{lacamdarklilac5} {RGB} {51, 10, 102}
+\definecolor{lacamgold5} {RGB} {255, 87, 0}
 \definecolor{violet} {RGB} {119, 111, 178}
 \definecolor{petroil2} {RGB} {36, 165, 175}
 \definecolor{petroil4} {RGB} {30, 132, 149}
@@ -1247,8 +1248,8 @@ $\\
     Build an embedding $\mathbf{e}^{i}\in\mathbb{R}^{d}$ for sample
     $$\mathbf{x}^{i}=\langle 0,1,0,1,1,1 \rangle$$
     \only<2>{by evaluating the network and collecting the last layer(s) activations
-      \footnotesize\begin{align*}
-        \mathbf{e}^{i}= \langle&\highlight[orange]{-3.5},\highlight[orange]{.55},\highlight[orange]{-4.2},\highlight[orange]{2.01},\highlight[orange]{1.89},\highlight[orange]{-1.5}\rangle
+      \scriptsize\begin{align*}
+                   \mathbf{e}^{i}= \langle&\highlight[lacamgold5]{-3.5},\highlight[lacamgold5]{.55},\highlight[lacamgold5]{-4.2},\highlight[lacamgold5]{2.01},\highlight[lacamgold5]{1.89},\highlight[lacamgold5]{-1.5}\rangle
       \end{align*}}
 
   \end{minipage}
@@ -1305,7 +1306,7 @@ $\\
     \colorbox{lacamdarklilac5}{\textcolor{white}{leaves}}) activations
     \scriptsize
     \begin{align*}
-    \mathbf{e}^{i}= \langle&\highlight[gold6]{.02}\highlight[petroil6]{.01}\highlight[petroil6]{.013}\highlight[gold2]{.51}\highlight[gold4]{.2}\highlight[gold4]{.33},\\
+    \mathbf{e}^{i}= \langle&\highlight[gold6]{.02},\highlight[petroil6]{.01},\highlight[petroil6]{.013},\highlight[gold2]{.51},\highlight[gold4]{.2},\highlight[gold4]{.33},\\
                    &\highlight[petroil2]{.19},\highlight[petroil2]{.89},\highlight[petroil4]{.27},\highlight[petroil4]{.34},\highlight[gold2]{.87},\highlight[gold2]{.11},\\
       &\highlight[petroil2]{.3},\highlight[petroil2]{.44}  \rangle
   \end{align*}}
@@ -1384,9 +1385,9 @@ $\\
       \scriptsize
       \begin{align*}
         \mathbf{e}^{i}_{\mathsf{w/o-leaves}}=
-        \langle&\highlight[red]{.2}\highlight[red]{.87}\highlight[red]{.51}\highlight[red]{.25}\rangle \\
+        \langle&\highlight[red]{.2},\highlight[red]{.87},\highlight[red]{.51},\highlight[red]{.25}\rangle \\
         \mathbf{e}^{i}_{\mathsf{w-leaves}}=
-        \langle&\highlight[red]{.2}\highlight[red]{.87},\highlight[red]{.51},\highlight[purple]{.11},
+        \langle&\highlight[red]{.2},\highlight[red]{.87},\highlight[red]{.51},\highlight[purple]{.11},
                  \highlight[purple]{.75},\\ &\highlight[red]{.25},\highlight[purple]{.6},\highlight[purple]{.47},\highlight[purple]{.17},\highlight[purple]{.82}\rangle \\
       \end{align*}}
   \end{minipage}
@@ -1582,18 +1583,17 @@ $\\
   \item \textbf{encoding} a sample into an inner nodes embedding
      \item \textbf{decoding} an embedding back into input space by MPE top
       down traversal
-  \end{itemize}
+  \end{itemize}\bigskip
   \footnotenomarkleft{Vergari et al. Encoding and Decoding
     Representations with Sum-Product Networks, 2016, to appear}
-
-
+  
   Evaluating in the \emph{Multi Label Classification} MLC case, where
   $\mathbf{X}\rightarrow\mathbf{Y}$ is much harder than
   $\mathbf{X}\rightarrow Y$.\par
   Three proxy performance metrics: jaccard, hamming and exact match
   scores.\par
   Learning with Logistic Regression (LR)
-  and Ridge Regression (RR):
+  and Ridge Regression (RR)\bigskip
   \begin{itemize}
   \item $\mathbf{X}
     \xmapsto{MPN}\mathbf{E}_{\mathbf{X}}\xrightarrow{LR}\mathbf{Y}$:
@@ -1603,7 +1603,7 @@ $\\
     huge improvements
   \item
     $((\mathbf{X}\xmapsto{MPN_{\mathbf{X}}}\mathbf{E}_{\mathbf{X}})\xrightarrow{RR}(\mathbf{Y}\xmapsto{MPN_{\mathbf{Y}}}\mathbf{E}_{\mathbf{Y}}))\xmapsto{MPN_{\mathbf{Y}}}\mathbf{Y}$:
-    harder to predict for RR alone
+    harder
   \end{itemize}
 \end{frame}
 
@@ -1613,10 +1613,17 @@ $\\
 
 \begin{frame}
   \frametitle{Trends \& What to do next}
-  Scalable structure learning
-  Continuous RVs structure learning
+  \textbf{Scalable structure learning} to cope with million instances
+  and RVs. LearnSPN can be tweaked some more, but\dots~\parencite{Krakovna2016}\par\bigskip
+  
+  \textbf{Continuous RVs structure learning}. Is enough to adapt
+  LearnSPN clustering processes to operate on continuous RVs?\par\bigskip
 
-  End-to-end training with hybrid NN architectures
+  \textbf{Compressing and lifting} huge SPN models. Would it be fine
+  to renounce to answer queries of a certain kind in tractable fashion?\par\bigskip
+
+  \textbf{End-to-end learning} with hybrid NN architectures.
+  Deep learning architectures leaped forward recently and on harder tasks\dots\par\bigskip
 \end{frame}
 
 \section{References}
