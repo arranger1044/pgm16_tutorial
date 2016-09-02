@@ -76,14 +76,14 @@ Probabilistic modeling of data aims at
   \item computing their marginals and modes \emph{efficiently} (inference)
   \item learning them \emph{accurately}
 \end{itemize}
-A solution is to use Probabilistic Graphical Models (PGMs).
+A solution is to use Probabilistic Graphical Models (PGMs)
 %$P(X) = \frac{1}{Z}\prod_k \phi_k(x_{\{k\}})$
 %with $Z = \sum_x \prod_k \phi_k(x_{\{k\}})$.
 
 However, PGMs are limited in
 \begin{itemize}
 \item representing compact distributions
-\item having intractable exact inference in the worst case 
+\item having intractable (exponential in their treewidth) exact inference in the worst case 
   \begin{itemize}
   \item falling back on approximate inference
   \end{itemize}
@@ -100,9 +100,13 @@ inference in an intractable model
 
 Sum-Product Networks (SPNs) are a type of probabilistic model\customcite{Poon2011}
 \begin{itemize}
-\item a deep model with multiple layer of hidden variables\\ 
-  \hfill {\color{violet} $\rightarrow$ probabilistic semantics and NN interpretation}
-\item tractable exact inference 
+\item a class of deep probabilistic  models  that  consist  of  many  layers  of
+  hidden variables and can have unbounded treewidth\\ 
+  \hfill {\color{violet} \textbf{$\rightarrow$ probabilistic semantics and NN interpretation}}
+\item inference in SPNs is guaranteed to be tractable
+\begin{itemize}
+\item structure and parameters can be effectively and accurately learned
+\end{itemize}
 \end{itemize}
 SPNs represent probability distributions and a corresponding exact inference
 machine for the represented distribution at the same time 
@@ -142,7 +146,11 @@ variables
 
 \begin{frame}
   \frametitle{(Different kinds of) Inference}
-  Different kinds of queries:
+  Different types of models make different operations tractable
+
+\vskip 10pt
+
+Operations that may be required to be efficient are
   \begin{itemize}
   \item $p(\mathbf{X})$ (evidence)\\
     \hfill {\color{violet} $\rightarrow$ tractable for SPNs, hard in BNs (even approximate)}
@@ -156,7 +164,7 @@ variables
     $\arg\max_{\mathbf{q}\sim\mathbf{Q}}p(\mathbf{q}|\mathbf{E})$
     (MPE assignment)\\
     \hfill {\color{violet} $\rightarrow$ hard for both SPNs and BNs}
-    \item complex queries
+    \item sampling: generate independent samples from the posterior distribution
   \end{itemize}
 \end{frame}
 
@@ -167,12 +175,8 @@ learning probabilistic models for which inference is guaranteed to be tractable
 \begin{itemize}
 \item Graphical models
   \begin{itemize}
-  \item  graphical models with low treewidth and mixtures
+  \item  graphical models with low treewidth and their mixtures
   \item thin junction trees
-  \end{itemize}
-\item Grammars
-  \begin{itemize}
-  \item probabilistic context-free grammars (PCFGs)
   \end{itemize}
 \item Computational graphs from Knowledge Compilation
 \begin{itemize}
