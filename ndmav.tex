@@ -304,11 +304,11 @@ the distribution $p_{\mathbf{X}}$~\customcite{Peharz2015a}.
   \end{center}
 \end{minipage}\hfill\begin{minipage}[t]{0.58\linewidth}
   \vspace{-80pt}
-  To compute $p(\mathbf{X}=\mathbf{x})$, evaluate nodes in a bottom-up (feedforward)
+  To compute $p(\mathbf{X}=\mathbf{x})$, evaluate $S$ in a bottom-up (feedforward)
   fashion.\par\bigskip
   Each node $n$, compute $S_{n}(\mathbf{x}_{|\mathsf{sc}(n)})=S_{n}(\mathbf{x})$:
   \begin{itemize}
-  \item<2-8> $S_{n}(\mathbf{x}) = \phi_{n}( \mathsf{sc}(n)
+  \item<2-8> $S_{n}(\mathbf{x}) = \phi_{n}(\mathsf{sc}(n)
     =\mathbf{x}_{|\mathsf{sc}(n)})$\par if $n$ is a leaf node
   \item<3-8> $S_{n}(\mathbf{x}) =\prod_{c\in
       \mathsf{ch}(n)}S_{c}(\mathbf{x})$\par if $n$ is a
@@ -325,51 +325,39 @@ the distribution $p_{\mathbf{X}}$~\customcite{Peharz2015a}.
 \end{minipage}
 \end{frame}
 
-
-
 \begin{frame}
   \frametitle{Marginal inference}
 
-Exact marginal inference can be computed with the same time complexity if the
-validity property holds\customcite{Poon2011}
-
-To compute a marginal query like $p(\mathbf{Q=q}),
-\mathbf{Q}\subset\mathbf{X}$, one has to evaluate each leaf $n$ as:
-\begin{equation}
-  \label{eq:marg}
-  S_{n}(\mathbf{q}) = \begin{cases}
-    p(\mathsf{sc}(n) =\mathbf{q}_{|\mathsf{sc}(n)}) & \text{if $\mathsf{sc}(n)\subseteq\mathbf{Q}$} \\
-    1 & \text{otherwise}
-  \end{cases}
-\end{equation}
-and then propagate the outputs as before
-
-\begin{itemize}
-\item each sub-network shall output 1 as the probability of marginalizing
-over all the RVs out of its scope
-\end{itemize}
-
-Even conditional probability queries are also computable
-in tractable time
-$$p(\mathbf{Q}|\mathbf{E}) = p(\mathbf{Q}, \mathbf{E})/p(\mathbf{E})$$
-
+  \begin{minipage}{0.4\linewidth}
+    \vspace{10pt}
+    \begin{center}
+      \only<1>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval.pdf}}
+      \only<2>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-marg-1-alt}}
+      \only<3>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval-marg-2}}
+    \end{center}
+  \end{minipage}\hfill\begin{minipage}[t]{0.58\linewidth}
+    \vspace{-80pt}
+    To compute a marginal query like $p(\mathbf{Q=q}),
+    \mathbf{Q}\subset\mathbf{X}$ evaluate $S$ as before (feedforward)\par
+    \only<2>{but evaluate a leaf $n$ as:
+    $$S_{n}(\mathbf{q}) = \begin{cases}
+      p(\mathsf{sc}(n) =\mathbf{q}_{|\mathsf{sc}(n)}) & \text{if $\mathsf{sc}(n)\subseteq\mathbf{Q}$} \\
+      \colorbox{purple}{\textcolor{white}{1.0}} &
+      \text{otherwise}\end{cases}$$}
+  \only<3>{but evaluate a leaf $n$ as:
+    $$S_{n}(\mathbf{q}) = \begin{cases}
+      p(\mathsf{sc}(n) =\mathbf{q}_{|\mathsf{sc}(n)}) & \text{if $\mathsf{sc}(n)\subseteq\mathbf{Q}$} \\
+      1.0 & \text{otherwise}\end{cases}$$}
+  \only<3>{then propagate as before
+    \begin{itemize}
+    \item each sub-network shall output 1 as the probability of
+      marginalizing over all the RVs out of its scope
+    \end{itemize}
+\par
+  Conditionals are tractable as well:\par
+  $p(\mathbf{Q}|\mathbf{E}) = p(\mathbf{Q}, \mathbf{E})/p(\mathbf{E})$}
+  \end{minipage}
 \end{frame}
-
-\begin{frame}
-\frametitle{Marginal Inference}
-\framesubtitle{Example}
-\begin{minipage}{0.49\textwidth}
-\onslide<1-3>{
-    \only<1-3>{\includegraphics[width=0.6\columnwidth]{figures/spn-eval.pdf}}
-}
-\end{minipage}
-\begin{minipage}{0.49\textwidth}
-    \only<2>{\includegraphics[width=0.6\columnwidth]{figures/spn-eval-marg-1-alt.pdf}}
-    \only<3>{\includegraphics[width=0.6\columnwidth]{figures/spn-eval-marg-2-alt.pdf}}
-\end{minipage}
-\end{frame}
-
-
 
 \begin{frame}
   \frametitle{MPE inference}
