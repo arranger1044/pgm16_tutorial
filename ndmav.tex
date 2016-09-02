@@ -360,33 +360,6 @@ the distribution $p_{\mathbf{X}}$~\customcite{Peharz2015a}.
 \end{frame}
 
 \begin{frame}
-  \frametitle{MPE inference}
-
-
-\begin{equation}
-\mathbf{q}^{*}=\argmax_{\mathbf{q}\sim \mathbf{Q}}p(\mathbf{E},
-\mathbf{q})
-\label{eq:mpe-ass}
-\end{equation}
-for some RVs $\mathbf{E}, \mathbf{Q} \subset\mathbf{X},
-\mathbf{E}\cap\mathbf{Q}=\emptyset, \mathbf{E}\cup \mathbf{Q}=\mathbf{X}$
-
-\begin{itemize}
-\item a Max-Product Network $M$ is built by substituting each $n\in \mathbf S_{\oplus}$ for a max node computing
-$\max_{c\in\mathsf{ch}(n)}w_{nc}M_{n}$
-\item $M$ is evaluated bottom-up after setting all leaves $n$, $\mathsf{sc}(n)\subseteq
-\mathbf{Q}$, to output 1
-\item a top-down traversal traces back the MPE
-assignment for each RV in $\mathbf{Q}$
-\item starting from the root and following only the max output
-child branch of a max node and all the child branches
-of a product node\customcite{Poon2011a}, each instance determines a
-\emph{tree} path whose leaves MPE assignments union forms the
-query answer\customcite{Darwiche2009}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
   \frametitle{MPE inference\customcite{Peharz2016}}
 
   \begin{minipage}{0.4\linewidth}
@@ -439,31 +412,16 @@ query answer\customcite{Darwiche2009}
   \end{minipage}
 \end{frame}
 
-% \begin{frame}
-% \frametitle{MPE Inference}
-% \framesubtitle{Example}
-% \begin{center}
-% \onslide<1-5>{
-%     \only<1>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-1.pdf}}
-%     \only<2>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-2.pdf}}
-%     \only<3>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-3.pdf}}
-%     \only<4>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-4-alt.pdf}}
-%     \only<5>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-mpe-5-alt.pdf}}
-% }
-% \end{center}
-% \end{frame}
 
 \begin{frame}
 \frametitle{Partition function computation}
-\framesubtitle{Example}
-As for ACs, setting all leaf outputs to 1 equals to compute the \emph{partition function} 
-
 \begin{center}
 \onslide<1-2>{
-    \only<1>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-part-1.pdf}}
-    \only<2>{\includegraphics[width=0.33\columnwidth]{figures/spn-eval-part-2.pdf}}
+    \only<1>{\includegraphics[width=0.3\columnwidth]{figures/spn-eval-part-1.pdf}}
+    \only<2>{\includegraphics[width=0.3\columnwidth]{figures/spn-eval-part-2.pdf}}
 }
 \end{center}
+As for ACs, setting all leaf outputs to 1 equals to compute the \emph{partition function} 
 \end{frame}
 
 
