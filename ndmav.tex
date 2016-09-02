@@ -123,19 +123,21 @@ machine for the represented distribution at the same time
 \begin{frame}
   \frametitle{Density estimation}
 
-Given a set of iid samples $\{\mathbf x_i\}_{i=1}^N$ the aim is to learn a
-representation of a distribution as normalized product of factors
-$$P(\mathbf X = \mathbf x) = \frac{1}{Z}\prod_k \phi_k(\mathbf x_{\{k\}})$$
-with $Z = \sum_x\prod_k \phi_k(\mathbf x_{\{k\}})$ the partition function
+Given a set of i.i.d. samples $\{\mathbf x_i\}_{i=1}^N$ over RVs $\mathbf{X}$, the aim is to
+learn an estimator for the joint probability distribution  $p_{\mathbf{X}}$
+% representation of a distribution as normalized product of factors
+% $$P(\mathbf X = \mathbf x) = \frac{1}{Z}\prod_k \phi_k(\mathbf x_{\{k\}})$$
+% with $Z = \sum_x\prod_k \phi_k(\mathbf x_{\{k\}})$ the partition function
+\bigskip
+%\vskip 0.5cm
 
-\vskip 0.5cm
-
-{\color{violet} \textbf{Unsupervised learning density estimators}}
+{\color{lacamdarklilac5} \textbf{Unsupervised learning density estimators}}
 \begin{itemize}
   \item Bayesian Networks
   \item Markov Networks
+  \item Kernel Density Estimators
   \item \ldots
-\end{itemize}
+\end{itemize}\bigskip
 
 SPNs have been introduced as a general architecture efficiently encoding an
 unnormalized probability distribution $p_{\mathbf X}$ over a set of random 
@@ -152,18 +154,24 @@ variables
 
 Operations that may be required to be efficient are
   \begin{itemize}
-  \item $p(\mathbf{X})$ (evidence)\\
-    \hfill {\color{violet} $\rightarrow$ tractable for SPNs, hard in BNs (even approximate)}
+  \item $p(\mathbf{X} = \mathbf{x})$ (evidence)\\
+    \hfill {\color{violet} $\rightarrow$ tractable for SPNs, BNs}
   \item $p(\mathbf{E}), \mathbf{E}\subset\mathbf{X}$ (marginals)\\
-    \hfill {\color{violet} $\rightarrow$ tractable for SPNs, hard in BNs}
+    \hfill {\color{violet} $\rightarrow$ tractable for SPNs, hard in
+      BNs (even approximate)}
   \item $p(\mathbf{Q}|\mathbf{E}), \mathbf{Q},
     \mathbf{E}\subset\mathbf{X}, \mathbf{Q}\cap \mathbf{E}=\emptyset$
     (conditionals)\\
-    \hfill \hfill {\color{violet} $\rightarrow$ tractable for SPNs, hard in BNs}
+    \hfill \hfill {\color{violet} $\rightarrow$ tractable for SPNs,
+      hard in BNs (even approximate)}
   \item
     $\arg\max_{\mathbf{q}\sim\mathbf{Q}}p(\mathbf{q}|\mathbf{E})$
     (MPE assignment)\\
     \hfill {\color{violet} $\rightarrow$ hard for both SPNs and BNs}
+  \item $Z =\sum_{\mathbf{x}\sim \mathbf{X}}\phi(\mathbf{x})$
+    (partition function)\\
+    \hfill {\color{violet} $\rightarrow$ tractable for SPNs, hard
+    for MNs}
     \item sampling: generate independent samples from the posterior distribution
   \end{itemize}
 \end{frame}
@@ -181,13 +189,13 @@ learning probabilistic models for which inference is guaranteed to be tractable
 \item Computational graphs from Knowledge Compilation
 \begin{itemize}
 \item Arithmetic Circuits
-\item Sentential Decision Diagrams
+\item Sentential Decision Diagrams\customcite{Darwiche2009}
 \end{itemize}
 \item Neural Networks
 \begin{itemize}
 \item Restricted Boltzmann Forest 
-\item Neural Autoregressive Distribution Estimator (NADE)
-\item Masked Autoencoder Distribution Estimator (MADE)
+\item Neural Autoregressive Distribution Estimator (NADE)\customcite{Larochelle2011}
+\item Masked Autoencoder Distribution Estimator (MADE)\customcite{Germain2015}
 \end{itemize}
 \end{itemize}
 \end{frame}
@@ -196,7 +204,7 @@ learning probabilistic models for which inference is guaranteed to be tractable
   \frametitle{Sum-Product Networks}
   A \emph{Sum-Product Network} $S$ over RVs $\mathbf X$ is a
   rooted weighted DAG consisting of
-  distribution \emph{leaves} (network inputs),  \emph{sum} and \emph{product}
+  distribution \emph{\color{violet}\textbf{leaves}} (network inputs),  \emph{\color{violet}\textbf{sum}} and \emph{\color{violet}\textbf{product}}
   nodes (inner nodes).
 
 \vspace{0.5 cm}
@@ -222,7 +230,7 @@ learning probabilistic models for which inference is guaranteed to be tractable
 \begin{frame}
   \frametitle{Scopes}
 \begin{minipage}{0.55\textwidth}
-  The \emph{scope} of a node $n$ in $S$ is denoted as
+  The \emph{\color{violet}\textbf{scope}} of a node $n$ in $S$ is denoted as
   $\mathsf{sc}(n)\subseteq\mathbf{X}$
 \begin{itemize}
 \item   the scope of a leaf node $n$ is defined as the set of RVs over which
@@ -239,16 +247,53 @@ learning probabilistic models for which inference is guaranteed to be tractable
 \end{minipage}
 \end{frame}
 
+
 \begin{frame}
-\frametitle{SPN evaluation}
+  \frametitle{Structural Properties}
+  Let $S$ be an SPN and let $\mathbf S_{\oplus}$ (resp. $\mathbf S_{\otimes}$) be the set of all sum
+  (resp. product) nodes in $S$
+\begin{enumerate}  
+\item    $S$ is \emph{\color{violet}\textbf{complete}} iff $\forall n\in
+  \mathbf S_{\oplus},\forall c_{1}, c_{2}\in \mathsf{ch}(n):
+  \mathsf{sc}(c_{1})=\mathsf{sc}(c_{2})$
+\item    $S$ is \emph{\color{violet}\textbf{decomposable}} iff $\forall n\in
+  \mathbf S_{\otimes},\forall c_{1}, c_{2}\in \mathsf{ch}(n), c_{1}\neq c_{2}:
+  \mathsf{sc}(c_{1})\cap\mathsf{sc}(c_{2})=\emptyset$
+\item    If $S$ is complete and decomposable, then it is \emph{\color{violet}\textbf{valid}} \customcite{Darwiche2009}\customcite{Poon2011}
+\end{enumerate}  
+
+Evaluating a valid network corresponds to
+evaluate a joint unnormalized probability distribution
+$p_{\mathbf{X}}$: $\forall\mathbf{x},S(\mathbf{x})/Z=p(\mathbf{X = x})$
+\begin{itemize}
+\item $Z$ being the normalizing \emph{partition} function 
+$Z=\sum_{\mathbf{x}\sim \mathbf{X}}S(\mathbf{x})$
+\end{itemize}\bigskip
+
+Valid SPN correctly compiles the
+\emph{extended network polynomial} encoding
+the distribution $p_{\mathbf{X}}$~\customcite{Peharz2015a}.
+
+\end{frame}
+
+
+\section{Inference}
+{\setbeamertemplate{headline}{}
+  \begin{frame}[c]
+    \sectionpage
+  \end{frame}
+}
+
+\begin{frame}
+  \frametitle{SPN evaluation}
   For each $\mathbf{x}\sim \mathbf{X}$,
   $S_{n}(\mathbf{x}_{|\mathsf{sc}(n)})$ and $S_{n}(\mathbf{x})$ are
   the same notation to indicate the output value of node $n$ after
   $\mathbf{X=x}$ is observed as the network input
 
-\vskip 10pt
+  \vskip 10pt
 
-$S_{n}(\mathbf{x})$ can be computed as follows
+  $S_{n}(\mathbf{x})$ can be computed as follows
   \begin{equation}
     \label{eq:eval}
     S_{n}(\mathbf{x}) = \begin{cases}
@@ -262,58 +307,6 @@ $S_{n}(\mathbf{x})$ can be computed as follows
   the value of its root
 \end{frame}
 
-\begin{frame}
-  \frametitle{Structural Properties}
-  Let $S$ be an SPN and let $\mathbf S_{\oplus}$ (resp. $\mathbf S_{\otimes}$) be the set of all sum
-  (resp. product) nodes in $S$
-\begin{enumerate}  
-\item    $S$ is \emph{complete} iff $\forall n\in
-  \mathbf S_{\oplus},\forall c_{1}, c_{2}\in \mathsf{ch}(n):
-  \mathsf{sc}(c_{1})=\mathsf{sc}(c_{2})$
-\item    $S$ is \emph{decomposable} iff $\forall n\in
-  \mathbf S_{\otimes},\forall c_{1}, c_{2}\in \mathsf{ch}(n), c_{1}\neq c_{2}:
-  \mathsf{sc}(c_{1})\cap\mathsf{sc}(c_{2})=\emptyset$
-\item    If $S$ is complete and decomposable, then it is \emph{valid} \customcite{Darwiche2009}\customcite{Poon2011}
-\end{enumerate}  
-
-Evaluating a valid network corresponds to
-evaluate a joint unnormalized probability distribution
-$p_{\mathbf{X}}$: $\forall\mathbf{x},S(\mathbf{x})/Z=p(\mathbf{X = x})$
-\begin{itemize}
-\item $Z$ being the normalizing \emph{partition} function 
-$Z=\sum_{\mathbf{x}\sim \mathbf{X}}S(\mathbf{x})$
-\end{itemize}
-
-Valid SPN correctly compiles the
-\emph{extended network polynomial} encoding
-the distribution $p_{\mathbf{X}}$~\customcite{Peharz2015a}.
-
-\end{frame}
-
-\begin{frame}
-\frametitle{SPNs and other models}
-\begin{itemize}
-\item SPNs are more general than both hierarchical mixture models and thin
-  junction trees
-\begin{itemize}
-\item SPNs can be exponentially more compact (distribution over states of variables
-  with an even number of 1’s, for instance)
-\end{itemize}
-\item SPNs can be viewed as probabilistic, general-purpose convolutional
-  networks, with average-pooling corresponding to marginal inference and
-  max-pooling corresponding to MPE inference 
-\item Like  deep  belief  networks,  SPNs  can  be used for nonlinear
-  dimensionality reduction,  and allow objects to be reconstructed from the
-  reduced representation
-\end{itemize}
-\end{frame}
-
-\section{Inference}
-{\setbeamertemplate{headline}{}
-  \begin{frame}[c]
-    \sectionpage
-  \end{frame}
-}
 
 \begin{frame}
 \frametitle{Complete evidence}
@@ -453,7 +446,7 @@ As for ACs, setting all leaf outputs to 1 equals to compute the \emph{partition 
 
 \begin{frame}
 \frametitle{SPN interpretations}
-{\color{orange}\textbf{Probabilistic model}}
+{\color{lacamdarklilac5}\textbf{Probabilistic model}}
 \begin{itemize}
 \item sum nodes in a valid network are probabilistic mixtures over their
   children distributions whose coefficients are the children weights 
@@ -467,12 +460,34 @@ As for ACs, setting all leaf outputs to 1 equals to compute the \emph{partition 
 \item since product nodes are evaluated as product of probability
 values, they identify factorizations over independent distributions  
 \end{itemize}
-{\color{orange}\textbf{Deep feedforward neural network}}
+{\color{lacamdarklilac5}\textbf{Deep feedforward neural network}}
 \begin{itemize}
 \item SPNs  can  also  be  interpreted  as  a  particular  kind  of  feedforward  deep  Neural
 Networks  (NNs)  with  nonnegative  parameters,  where  the  leaf  distributions
 are input neurons whereas sum and product nodes are the hidden neurons
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{SPNs and other models}
+  \begin{itemize}
+  \item SPNs are more general than both hierarchical mixture models and thin
+    junction trees
+    \begin{itemize}
+    \item SPNs can be exponentially more compact (distribution over states of variables
+      with an even number of 1’s, for instance)
+    \end{itemize}
+  % \item SPNs can be viewed as probabilistic, general-purpose convolutional
+  %   networks, with average-pooling corresponding to marginal inference and
+  %   max-pooling corresponding to MPE inference 
+  % \item Like  deep  belief  networks,  SPNs  can  be used for nonlinear
+  %   dimensionality reduction,  and allow objects to be reconstructed from the
+  %   reduced representation
+  \item SPNs are not classical PGMs
+  \item SPNs are not ``probabilistic, general-purpose convolutional
+    networks, with average-pooling corresponding to marginal inference and
+    max-pooling corresponding to MPE inference''
+  \end{itemize}
 \end{frame}
 
 
@@ -539,9 +554,9 @@ Arithmetic Circuits (ACs)\customcite{Darwiche2003}: inference representation clo
 \end{itemize}
 Properties
 \begin{itemize}
-\item \emph{decomposable}: children of a product node have disjoint scopes
-\item \emph{smooth}: children of a sum node have identical scopes
-\item \emph{deterministic}: children  of  a  sum  node  are  mutually  exclusive
+\item \emph{\color{violet}\textbf{decomposable}}: children of a product node have disjoint scopes
+\item \emph{\color{violet}\textbf{smooth}}: children of a sum node have identical scopes
+\item \emph{\color{violet}\textbf{deterministic}}: children  of  a  sum  node  are  mutually  exclusive
 \begin{itemize}
 \item at most one is non-zero for any complete configuration
 \end{itemize}
@@ -578,7 +593,7 @@ Learning ACs has been made by
   reusing sub-ACs\customcite{Lowd2013}
 \end{itemize}
 
-\item SPN learning algorithms emphasize mixtures
+SPN learning algorithms emphasize mixtures
 \begin{itemize}
 \item results in models that use implicit latent variables to
 capture all of the interactions among the observable variables
@@ -595,24 +610,24 @@ capture all of the interactions among the observable variables
   \frametitle{Arithmetic Circuits (II)}
   \framesubtitle{Differences with SPNs}
 
-{\color{blue}\textbf{probabilistic semantics of SPNs}}
+{\color{lacamdarklilac5}\textbf{probabilistic semantics of SPNs}}
   \begin{itemize}
   \item allows for direct structure learning schemes where the compilation
     process is implicit
   \item allows sampling from their encoded distribution (generative model)
   \end{itemize}
-{\color{blue}\textbf{no shared weights}}
+  {\color{lacamdarklilac5}\textbf{no shared weights}}
 \begin{itemize}
 \item differently from ACs, it is not possible to have the same tied parameter
   for many nodes in SPNs
 \end{itemize}
-{\color{blue}\textbf{generalized SPNs}}
+{\color{lacamdarklilac5}\textbf{generalized SPNs}}
 \begin{itemize}
-\item instead of using IVs to represent the states of discrete RVs, SPNs can be
-  generalized to to continuous RVs and discrete RVs with infinitely many states
+\item instead of using IVs to represent the states of discrete RVs, SPNs have been
+  generalized to continuous RVs and discrete RVs with infinitely many states\customcite{Peharz2015a}
 \begin{itemize}
-\item IVs can be interpreted as discrete distribution assigning all probability
-  mass to a single state
+% \item IVs can be interpreted as discrete distribution assigning all probability
+%   mass to a single state
 \item IVs $\lambda_{X=x}$ are replaced by distributions
 \end{itemize}
 \end{itemize}
@@ -628,14 +643,14 @@ capture all of the interactions among the observable variables
   \textbf{Constrained}: completeness and decomposability determine
   network topology.\par
   \textbf{Fully probabilistic:} each valid sub-SPN is still a
-  valid-SPN.\customcite{Vergari2016a}\par\bigskip
+  valid-SPN.\customcitenomark{Vergari2016a}\par\bigskip
   
   SPNs provide a direct encoding of the input space into a deep
   architecture $\rightarrow$ \emph{\textbf{visualizing representations}} (back) into the \emph{\textbf{input space}}.
 \end{frame}
 
 \begin{frame}
-  \frametitle{SPNs as NNs (II)\customcite{Vergari2016a}}
+  \frametitle{SPNs as NNs (II)}
   \small
   A classic MLP hidden layer computes the function:
   $$h(\mathbf{x}) =\sigma(\mathbf{W}\mathbf{x}+ \mathbf{b})$$
@@ -659,6 +674,7 @@ capture all of the interactions among the observable variables
       0& \text{otherwise}
     \end{cases}
   \end{equation*}
+  \customcitenomark{Vergari2016a}
 \end{frame}
 
 \begin{frame}
@@ -669,7 +685,7 @@ capture all of the interactions among the observable variables
 \end{frame}
 
 \begin{frame}
-  \frametitle{SPNs as NNs (IV): filters\customcite{Vergari2016a}}
+  \frametitle{SPNs as NNs (IV): filters}
   \small
   Learned features as images maximizing neuron activations\customcite{Erhan2009}:
   $$\mathbf{x}^{*} = \argmax_{\mathbf{x},
@@ -683,7 +699,9 @@ capture all of the interactions among the observable variables
     \includegraphics[width=0.9\linewidth]{figures/filters.jpg}
   \end{center}
   
-  $\rightarrow$ \emph{scope length} ($|\mathsf{sc}(n)|$) correlates with feature abstraction level
+  $\rightarrow$ \emph{scope length} ($|\mathsf{sc}(n)|$) correlates
+  with feature abstraction level
+  \customcitenomark{Vergari2016a}
 \end{frame}
 
 \begin{frame}
@@ -694,15 +712,6 @@ capture all of the interactions among the observable variables
 \begin{frame}
   \frametitle{SPNs as BNs II}
   Peharz
-\end{frame}
-
-\begin{frame}
-  \frametitle{Myths about SPNs}
- \textbf{SPNs are PGMs}. false
-
- \textbf{SPNs are convolutional NNs}. false
-
-  SPNs 
 \end{frame}
 
 \section{Learning}
