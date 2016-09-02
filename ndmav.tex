@@ -570,20 +570,25 @@ with fewer or equal nodes and edges
 \item every  SPN  can  be represented as an AC with at most a linear increase in
   the number of edges
 \end{itemize}
-Learning ACs has been made by using PGMs structure learning
-approaches\customcite{Lowd2012}\customcite{Lowd2013} 
+Learning ACs has been made by
 \begin{itemize}
+\item a standard BN structure learner with the complexity of the
+  resulting circuit as the regularizer\customcite{Lowd2012}
+\item learning MNs representable by ACs, but does not
+  reusing sub-ACs\customcite{Lowd2013}
+\end{itemize}
+
 \item SPN learning algorithms emphasize mixtures
 \begin{itemize}
 \item results in models that use implicit latent variables to
 capture all of the interactions among the observable variables
 \end{itemize}
-\item AC learning methods are based on learning  algorithms PGM  without  hidden
-  variables 
-\begin{itemize}
-\item no searching within the sum-product network structure
-\end{itemize}
-\end{itemize}
+%\item AC learning methods are based on learning  algorithms PGM  without  hidden
+%  variables 
+%\begin{itemize}
+%\item no searching within the sum-product network structure
+%\end{itemize}
+
 \end{frame}
 
 \begin{frame}
@@ -600,6 +605,16 @@ capture all of the interactions among the observable variables
 \begin{itemize}
 \item differently from ACs, it is not possible to have the same tied parameter
   for many nodes in SPNs
+\end{itemize}
+{\color{blue}\textbf{generalized SPNs}}
+\begin{itemize}
+\item instead of using IVs to represent the states of discrete RVs, SPNs can be
+  generalized to to continuous RVs and discrete RVs with infinitely many states
+\begin{itemize}
+\item IVs can be interpreted as discrete distribution assigning all probability
+  mass to a single state
+\item IVs $\lambda_{X=x}$ are replaced by distributions
+\end{itemize}
 \end{itemize}
 \end{frame}
 
