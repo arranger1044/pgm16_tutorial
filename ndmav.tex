@@ -712,6 +712,21 @@ recovered in linear time and space with respect to the size of the SPN
   Figure from \customcite{Zhao2015}. Construct a BN with CPDs represented by ADDs from an SPN. 
 \end{frame}
 
+\begin{frame}
+  \frametitle{Discuss}
+  \vspace{25pt}
+  \begin{center}
+    \begin{minipage}{0.22\linewidth}
+      \includegraphics[width=1.0\columnwidth]{figures/spn-eval}
+    \end{minipage}\hspace{35pt}\begin{minipage}{0.215\linewidth}
+      \includegraphics[width=1.0\columnwidth]{figures/spn-eval-mpe-5-alt}      
+    \end{minipage}\hspace{37pt}\begin{minipage}{0.22\linewidth}
+      \includegraphics[width=1.0\columnwidth]{figures/mpe-filters-tall}      
+    \end{minipage}
+  \end{center}
+\end{frame}
+
+
 \section{Learning}
 {\setbeamertemplate{headline}{}
   \begin{frame}[c]
@@ -727,7 +742,7 @@ recovered in linear time and space with respect to the size of the SPN
   \textbf{Structure learning:} build the network from data by assigning
   scores to tentative structures or by exploiting constraints\par\bigskip
 
-  How to learn a ``complete'' SPN:
+  How to learn a ``full'' SPN:
   \begin{itemize}
   \item handcrafted structure, then parameter learning~\parencite{Poon2011}~\parencite{Gens2012}
   \item random structures, then parameter learning~\parencite{Rashwan2016}
@@ -1240,21 +1255,43 @@ $\\
 
 \begin{frame}
   \frametitle{Applications I: computer vision}
+  Image reconstruction and \emph{inpainting}: fill the missing pixels of
+  test samples by the means of efficient MPE inference.\par
+  Fixed (taking spatial autocorrelation into account) or
+  learned structures.\par
+  \par\bigskip
+  \begin{minipage}{0.5\linewidth}
+    \begin{center}
+      \includegraphics[width=1.0\columnwidth]{figures/mpe-faces}
+    \end{center}
+  \end{minipage}\hfill\begin{minipage}[t]{0.45\linewidth}
+    \vspace{-40pt}
+    Reconstructing some simmetries (eyes, but not beards, glasses).\par\bigskip
+    Testing different approximations for MPE inference~\parencite{Peharz2015b}.
+    
+  \end{minipage}
   
-\end{frame}
-
-
-\begin{frame}
-  \frametitle{Applications II: language modeling}
-  
+  \customcitenomark{Poon2011}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Applications III: activity recognition}
+  \frametitle{Applications II: activity recognition}
+  Videos represented as regular grids of points in space and time,
+  described by Bag-of-Words (BoW).\par
+  An SPN structure models a hierarchy of BoW products.\par
+  Inference for activity recognition \emph{and localization}.
+  \begin{center}
+    \includegraphics[width=0.3\columnwidth]{figures/amer-fig-1}\hfill
+    \includegraphics[width=0.2\columnwidth]{figures/amer-fig-2}\hfill
+    \includegraphics[width=0.32\columnwidth]{figures/amer-fig-3}
+  \end{center}
+  {\color{violet}\textbf{Exploiting part based decomposability}} along pixels \emph{and time} (frames).
+  \customcitenomark{Amer2012}
+  \customcitenomark{Amer2015}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Applications IV: speech}
+  \frametitle{Applications III: speech}
   SPNs to model the joint pdf of observed RVs in HMMs (HMM-SPNs).
   \begin{center}
     \includegraphics[width=0.35\columnwidth]{figures/peharz2014a-figures/hmm-spn-model}
@@ -1270,6 +1307,33 @@ $\\
   
   \customcitenomark{Peharz2014a}
 \end{frame}
+
+
+\begin{frame}
+  \frametitle{Applications IV: language modeling}
+  Fixed structure SPN encoding the conditional probability
+  {\footnotesize $p(w_{i}|w_{i-1},\dots,w_{i-n})$} as an $n$-th order language model.\par\bigskip
+  \begin{minipage}{0.4\linewidth}
+    \begin{center}
+      \includegraphics[width=1.0\columnwidth]{figures/cheng-fig}
+    \end{center}
+  \end{minipage}\hfill\begin{minipage}[t]{0.55\linewidth}
+    \vspace{-50pt}
+    One-hot encoding of word vocabulary.\par
+    Windowed representation of size\par\bigskip
+    First \textbf{\color{violet}embedding layer} with size $D$,\par
+    sharing word weights across different\par
+    mixtures (position invariance).
+    
+  \end{minipage}\\[10pt]
+  State-of-the-art \emph{perplexity} on PennTreeBank even for low
+  orders ($n=4$).
+  
+  \customcitenomark{Cheng2014}
+\end{frame}
+
+
+
 
 
 \section{Representation Learning}
@@ -1313,23 +1377,11 @@ $\\
   \item layer-wise extraction may be arbitrary
   \item power law distribution of nodes by scopes
     \item scope lengths as proxy for feature abstraction levels (see filter visualizations)
-    \end{itemize}
+    \end{itemize}\bigskip
 
-    Which filtering criterion to employ?\par
-    Which interpretation for the extracted features?
-  
-  
-  % How to extract embeddings?
-  % \begin{itemize}
-  % \item from node outputs (one query) 
-  %   \begin{itemize}
-  %   \item all (non-leaf) nodes
-  %   \item sum/product nodes only
-  %   \item with a certain scope length
-  %     \item aggregating node outputs by scope
-  %   \end{itemize}
-  % \item from several queries evaluations (root outputs)
-  % \end{itemize}
+    $\rightarrow$ Which filtering criterion to employ?\par
+    $\rightarrow$ Which interpretation for the extracted features?
+
   \customcitenomark{Vergari2016a}
 \end{frame}
 
@@ -1682,7 +1734,21 @@ $\\
   A curated and structured list of resources about SPNs\footnote{Inspired by the
     SPN page {http://spn.cs.washington.edu/} at the Washington  University}.
 
-  \url{https://github.com/arranger1044/awesome-spn}
+  \url{https://github.com/arranger1044/awesome-spn}\par\bigskip
+
+  \only<2>{
+    \textbf{\color{lacamdarklilac5}Thanks to the research teams
+      working on SPNs!}\par\bigskip
+    \textbf{\color{violet}University of Washington}: Domingos, Poon, Gens\par
+    \textbf{\color{violet}University of Graz}: Peharz, Pernkopf, Tschiatschek\par
+    \textbf{\color{violet}University of Waterloo}: Poupart, Zhao, Adel, Melibari, Rashwan, Jaini\par
+    \textbf{\color{violet}University of Oregon}: Lowd, Rooshenas\par
+    \textbf{\color{violet}University of Bari}: DiMauro, Vergari\par
+    \textbf{\color{violet}Oregon State University}: Todorovic, Amer\par
+    \textbf{\color{violet}University of Texas at Dallas}: Gogate,
+    Rahman\par
+    \dots
+  }
 \end{frame}
 
 \begin{frame} [allowframebreaks]
@@ -1690,6 +1756,21 @@ $\\
   \setbeamertemplate{bibliography item}{}
   \setlength\bibitemsep{2pt}
   \printbibliography
+\end{frame}
+
+\begin{frame}
+  \frametitle{Discuss}
+  \vspace{25pt}
+  \begin{center}
+    \begin{minipage}{0.25\linewidth}
+      \includegraphics[width=1.0\columnwidth]{figures/grid-2}
+    \end{minipage}\hspace{35pt}\begin{minipage}{0.215\linewidth}
+      \vspace{12pt}
+      \includegraphics[width=1.0\columnwidth]{figures/mpe-faces-tall}      
+    \end{minipage}\hspace{35pt}\begin{minipage}{0.22\linewidth}
+      \includegraphics[width=1.0\columnwidth]{figures/spn-emb-eval}      
+    \end{minipage}
+     \end{center}
 \end{frame}
 
 
