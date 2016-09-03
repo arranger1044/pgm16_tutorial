@@ -38,7 +38,6 @@
 
 \addbibresource{../referomnia/referomnia.bib}
 
-
 \title{Learning Sum-Product Networks}
 \author{\small Nicola Di Mauro \and Antonio Vergari}
 \date{\scriptsize International Conference on Probabilistic Graphical Models\\
@@ -49,6 +48,66 @@
 \group{Machine Learning}
 \institutelogo{\includegraphics[width=25pt]{figures/unibaba}}
 \lablogo{\includegraphics[width=35pt]{figures/lacam}}
+
+\makeatletter
+\defbeamertemplate*{title page}{custom-enziteto}[1][]
+{
+  \begin{minipage}[t]{0.1\linewidth}
+    \vspace{0pt}
+    % \includegraphics[width=25pt]{Figures/unibaba}
+    \ifdefined\@institutelogo
+    \@institutelogo
+    \fi
+  \end{minipage}
+  \begin{minipage}[t]{0.35\linewidth}
+    \vspace{7pt}
+    \flushleft
+    {\usebeamerfont{institute}\insertinstitute\par}
+    \vspace{2pt}
+    \ifdefined\@department
+    \tiny\@department
+    \fi
+  \end{minipage}
+  \ifdefined\@laboratory
+  %\hspace{10pt}
+  \begin{minipage}[t]{0.12\linewidth}
+    \vspace{0pt}
+    \ifdefined\@lablogo
+    \@lablogo
+    \else
+    \hspace{10pt}
+    \fi
+  \end{minipage}
+  \begin{minipage}[t]{0.40\linewidth}
+    \vspace{7pt}
+    \flushleft
+    \tiny\textbf{\@laboratory}\par
+    \vspace{2pt}
+    \ifdefined\@group
+    \@group
+    \fi
+  \end{minipage}
+  \par
+  \fi
+  \vspace{15pt}
+  
+  \Large\usebeamerfont{title}\textcolor{lacamdarklilac5}{\inserttitle}\par%\textcolor{lacamlilac}{\inserttitle}\par
+  \vspace{5pt}
+  \small\usebeamerfont{subtitle}\textcolor{lacamlilac}{\insertsubtitle}\par
+  \vspace{15pt}
+  \usebeamerfont{author}\insertauthor\par
+  
+  \ifdefined\@gliph
+  \vspace{7pt}
+  \@gliph\par
+  \vspace{7pt}
+  \else
+  \vspace{21pt}
+  \fi
+  \usebeamerfont{date}\insertdate\par
+  
+}
+\makeatother
 
 %\footnotesize \let\small\footnotesize
 
@@ -65,6 +124,24 @@
   \setbeamertemplate{headline}{}
   \setbeamertemplate{footline}{}
   \titlepage
+\end{frame}
+
+\begin{frame}
+  \frametitle{Outline}
+  \bigskip
+  $\rightarrow$ \textcolor{lacamdarklilac5}{\Large\textbf{Representation}}\par
+  \bigskip
+  $\rightarrow$ \textcolor{lacamdarklilac5}{\Large\textbf{Inference}}\par
+  \bigskip
+  $\rightarrow$ \textcolor{lacamdarklilac5}{\Large\textbf{Interpretation}}\par
+  \bigskip
+  $\rightarrow$ \textcolor{lacamdarklilac5}{\Large\textbf{Learning}}\par
+  \bigskip
+  $\rightarrow$ \textcolor{lacamdarklilac5}{\Large\textbf{Applications}}\par
+  \bigskip
+  $\rightarrow$ \textcolor{lacamdarklilac5}{\Large\textbf{Representation Learning}}\par
+  \bigskip
+  $\rightarrow$ \textcolor{lacamdarklilac5}{\Large\textbf{\emph{References}}}\par
 \end{frame}
 
 \begin{frame}
@@ -109,7 +186,11 @@ Sum-Product Networks (SPNs) are a type of probabilistic model\customcite{Poon201
 \end{itemize}
 \end{itemize}
 SPNs represent probability distributions and a corresponding exact inference
-machine for the represented distribution at the same time 
+machine for the represented distribution at the same time\par\bigskip
+
+Simple and effective algorithms to learn them\par\bigskip
+
+Successfully employed in several applications\par\bigskip
 \end{frame}
 
 
@@ -136,12 +217,16 @@ learn an estimator for the joint probability distribution  $p_{\mathbf{X}}$
   \item Bayesian Networks
   \item Markov Networks
   \item Kernel Density Estimators
+  \item Autoregressive Neural Networks
+  \item Sum-Product Networks  
   \item \ldots
 \end{itemize}\bigskip
 
-SPNs have been introduced as a general architecture efficiently encoding an
-unnormalized probability distribution $p_{\mathbf X}$ over a set of random 
-variables
+Once a density estimator is learned, one uses it to answer
+\emph{queries}, i.e. to do \emph{\textbf{\color{violet}inference}}
+% SPNs have been introduced as a general architecture efficiently encoding an
+% unnormalized probability distribution $p_{\mathbf X}$ over a set of random 
+% variables
 
 
 \end{frame}
@@ -508,6 +593,9 @@ are input neurons whereas sum and product nodes are the hidden neurons
   %   dimensionality reduction,  and allow objects to be reconstructed from the
   %   reduced representation
   \item SPNs are not classical PGMs
+    \begin{itemize}
+    \item they are computational graphs, inference machines,\dots
+    \end{itemize}
   \item SPNs are not ``probabilistic, general-purpose convolutional
     networks, with average-pooling corresponding to marginal inference and
     max-pooling corresponding to MPE inference''
@@ -659,8 +747,8 @@ capture all of the interactions among the observable variables
 
 \begin{frame}[t]
   \frametitle{SPNs as NNs (I)}
-  SPNs are a particular kind of \emph{\textbf{labelled}
-    \textbf{constrained} and \textbf{fully probabilistic}}
+  SPNs are a particular kind of \emph{\color{violet}\textbf{labelled}},
+  \emph{\color{violet}\textbf{constrained}} and \emph{\color{violet}\textbf{fully probabilistic}}
   neural networks.\par\bigskip
   
   \textbf{Labelled}: each neuron is associated a \emph{scope}\par
@@ -669,8 +757,8 @@ capture all of the interactions among the observable variables
   \textbf{Fully probabilistic:} each valid sub-SPN is still a
   valid-SPN.\customcitenomark{Vergari2016a}\par\bigskip
   
-  SPNs provide a direct encoding of the input space into a deep
-  architecture $\rightarrow$ \emph{\textbf{visualizing representations}} (back) into the \emph{\textbf{input space}}.
+  SPNs provide a \emph{\textbf{\color{violet}direct encoding}} of the input space into a deep
+  architecture $\rightarrow$ \emph{visualizing representations} (back) into the \emph{input space}.
 \end{frame}
 
 \begin{frame}
@@ -804,9 +892,9 @@ recovered in linear time and space with respect to the size of the SPN
 
   \textbf{LearnSPN} is a \emph{\textbf{greedy}}, \emph{\textbf{top down}}, \emph{\textbf{constraint
       based}} learner for \emph{\textbf{tree}} SPNs~\parencite{Gens2013}\par
-  $\rightarrow$ First principled top-down learner, inspired many algorithms and
-  variations.
-  $\rightarrow$ Surprisingly simple and accurate.
+  \emph{$\rightarrow$ First principled top-down learner, inspired many algorithms and
+  variations}\par
+  \emph{$\rightarrow$ Surprisingly simple and accurate}
 \end{frame}
 
 
@@ -919,13 +1007,13 @@ recovered in linear time and space with respect to the size of the SPN
   nodes to split to the minimum.
   \textsf{LearnSPN-b}, binary splitting $k=2$.\par%\bigskip
 
-  $\rightarrow$ one hyperparameter less, $\lambda$.\par%\bigskip
-  $\rightarrow$ not committing to complex structures too early\par
-  $\rightarrow$ reducing node out fan increases the depth\par
-  $\rightarrow$ same expressive power as LearnSPN structures\par
-  $\rightarrow$ statistically same (or better) accuracy, smaller
-  networks\par%\bigskip
-  \begin{center}
+  \emph{$\rightarrow$ one hyperparameter less}, $\lambda$.\par%\bigskip
+  \emph{$\rightarrow$ not committing to complex structures too early}\par
+  \emph{$\rightarrow$ reducing node out fan increases the depth}\par
+  \emph{$\rightarrow$ same expressive power as LearnSPN structures}\par
+  \emph{$\rightarrow$ statistically same (or better) accuracy, smaller
+  networks}\par%\bigskip
+\begin{center}
     \raisebox{19pt}{\includegraphics[width=0.23\linewidth]{figures/learnspn-1-w.pdf}}
     \raisebox{30pt}{\hspace{20pt}\Huge$=$\hspace{10pt}}
     \includegraphics[width=0.3\linewidth]{figures/learnspn-4-w.pdf}
@@ -1610,7 +1698,8 @@ $\\
       \bottomrule
     \end{tabular}
     \label{tab:model-accs}
-  \end{table}
+  \end{table}\bigskip
+  \emph{$\rightarrow$ comparable or better accuracies than (intractable) RBM embeddings}
   \customcitenomark{Vergari2016a}
 \end{frame}
 
@@ -1619,11 +1708,11 @@ $\\
   \begin{table}[!t]
     \centering
     \footnotesize
-    \caption[datasets]{Test set accuracy scores for the embeddings
-      extracted with \textsf{SPN} models and filtered by node
-      type. Results for \textsf{SPN-III} embeddings filtered by \textsf{S}mall
+    \caption[datasets]{Test set accuracies for embeddings
+      filtered by node
+      type and by \textsf{S}mall
       , \textsf{M}edium and \textsf{L}arge scope
-      lengths are reported in columns 8-10.
+      lengths.
       Bold values denote significantly better scores than all the others.
       $\blacktriangle$ indicates a better score than an RBM embedding
       with greater or equal size. $\triangledown$ indicates worse
@@ -1652,7 +1741,11 @@ $\\
       \bottomrule
     \end{tabular}
     \label{tab:model-filter-accs}
-  \end{table}
+  \end{table}\\[-1pt]
+  \emph{$\rightarrow$ sum nodes only are good compressors for larger
+    models}\par
+  \emph{$\rightarrow$ mid size scope length embeddings provide best
+    discriminative power}
   \customcitenomark{Vergari2016a}
 \end{frame}
 
@@ -1661,12 +1754,9 @@ $\\
   \begin{table}[!t]
     \centering
     \footnotesize
-    \caption[datasets]{Test set accuracy scores for the embeddings
-      extracted with \textsf{SPN} models by aggregating node outputs
-      with the same scope.
-      Results for when leaves are not counted in the aggregarion
-      (\textsf{no-leaves} columns) are reported alongside the case in which they are
-      considered (\textsf{leaves} columns).
+    \caption[datasets]{Test set accuracies for embeddings
+      by aggregating node outputs
+      with the same scope, with and without leaves.
       Bold values denote significantly better scores than all the others
       for each dataset.
       $\blacktriangle$ indicates a better score than an RBM embedding
@@ -1694,6 +1784,9 @@ $\\
     \end{tabular}
     \label{tab:model-scope-aggr}
   \end{table}
+  \\[-1pt]
+  \emph{$\rightarrow$ shorter but still accurate embeddings}\par
+  \emph{$\rightarrow$ leaves greatly contribute for smaller models}
   \customcitenomark{Vergari2016a}
 \end{frame}
 
@@ -1702,9 +1795,11 @@ $\\
 \begin{frame}
   \frametitle{Random Marginal Queries}
    \begin{center}
-    \includegraphics[width=0.42\linewidth]{figures/lines-rectangles}\includegraphics[width=0.42\linewidth]{figures/lines-convex}\\
-    \includegraphics[width=0.42\linewidth]{figures/lines-ocr_letters}\includegraphics[width=0.42\linewidth]{figures/lines-bmnist}
+    \includegraphics[width=0.37\linewidth]{figures/lines-rectangles}\hspace{20pt}\includegraphics[width=0.37\linewidth]{figures/lines-convex}\\
+    \includegraphics[width=0.37\linewidth]{figures/lines-ocr_letters}\hspace{20pt}\includegraphics[width=0.37\linewidth]{figures/lines-bmnist}
   \end{center}
+  \emph{$\rightarrow$ structure learning is meaningful!}\par
+  \emph{$\rightarrow$ an SPN representation power goes beyond single nodes}
   \customcitenomark{Vergari2016a}
 \end{frame}
 
