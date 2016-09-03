@@ -229,20 +229,56 @@ learning probabilistic models for which inference is guaranteed to be tractable
 
 \begin{frame}
   \frametitle{Scopes}
-\begin{minipage}{0.55\textwidth}
+  \begin{minipage}[t]{0.6\textwidth}
+    \vspace{-70pt}
   The \emph{\color{violet}\textbf{scope}} of a node $n$ in $S$ is denoted as
-  $\mathsf{sc}(n)\subseteq\mathbf{X}$
-\begin{itemize}
-\item   the scope of a leaf node $n$ is defined as the set of RVs over which
-  $\phi_{n}$ is defined
-\item the scope of an inner node $n$ is defined as
-  $\mathsf{sc}(n)=\bigcup_{c\in\mathsf{ch}(n)}\mathsf{sc}(c)$
-\item the scope of $S$ is the scope of its root, i.e. $\mathbf{X}$
-\end{itemize}
-\end{minipage}
-\begin{minipage}{0.44\textwidth}
-\begin{center}
-\includegraphics[width=0.7\columnwidth]{figures/spn-eval.pdf}
+  $$\mathsf{sc}(n)\subseteq\mathbf{X}$$\\[-25pt]
+  \only<2>{\begin{itemize}
+    \item the scope of a leaf node $n$ is defined as the set of RVs over which
+      $\phi_{n}$ is defined\par
+      E.g. $\mathsf{sc}(\colorbox{orange}{\textcolor{white}{n}})=\{X_{6}\}$
+    \end{itemize}}
+  \only<3>{\begin{itemize}
+    \item the scope of a leaf node $n$ is the set of RVs over which
+      $\phi_{n}$ is defined\par
+    \item the scope of an inner node $n$ is defined as
+      $\mathsf{sc}(n)=\bigcup_{c\in\mathsf{ch}(n)}\mathsf{sc}(c)$\par
+      E.g. $\mathsf{sc}(\colorbox{orange}{\textcolor{white}{n}})=\{X_{5},X_{6}\}$
+    \end{itemize}}
+  \only<4>{\begin{itemize}
+    \item the scope of a leaf node $n$ is the set of RVs over which
+      $\phi_{n}$ is defined\par
+    \item the scope of an inner node $n$ is defined as
+      $\mathsf{sc}(n)=\bigcup_{c\in\mathsf{ch}(n)}\mathsf{sc}(c)$\par
+      E.g. $\mathsf{sc}(\colorbox{orange}{\textcolor{white}{n}})=\{X_{3},
+      X_{4},X_{5},X_{6}\}$
+    \end{itemize}}
+  \only<5>{\begin{itemize}
+    \item the scope of a leaf node $n$ is the set of RVs over which
+      $\phi_{n}$ is defined\par
+    \item the scope of an inner node $n$ is defined as
+      $\mathsf{sc}(n)=\bigcup_{c\in\mathsf{ch}(n)}\mathsf{sc}(c)$\par
+      E.g.\par$\mathsf{sc}(\colorbox{orange}{\textcolor{white}{n}})=\{X_{1},X_{2},X_{3},
+      X_{4},X_{5},X_{6}\}$
+    \end{itemize}}
+  \only<6>{\begin{itemize}
+    \item the scope of a leaf node $n$ is the set of RVs over which
+      $\phi_{n}$ is defined\par
+    \item the scope of an inner node $n$ is defined as
+      $\mathsf{sc}(n)=\bigcup_{c\in\mathsf{ch}(n)}\mathsf{sc}(c)$
+    \item  the scope of $S$ is the scope of its root, i.e. $\mathbf{X}$\par
+      E.g.\par $\mathsf{sc}(S)= \mathsf{sc}(\colorbox{orange}{\textcolor{white}{n}})=\{X_{1},X_{2},X_{3},
+      X_{4},X_{5},X_{6}\}$
+    \end{itemize}}
+\end{minipage}\hfill\begin{minipage}{0.4\textwidth}
+  \begin{center}
+    \vspace{10pt}
+  \only<1>{\includegraphics[width=0.75\columnwidth]{figures/spn-eval.pdf}}
+  \only<2>{\includegraphics[width=0.75\columnwidth]{figures/spn-scope-1.pdf}}
+  \only<3>{\includegraphics[width=0.75\columnwidth]{figures/spn-scope-2.pdf}}
+  \only<4>{\includegraphics[width=0.75\columnwidth]{figures/spn-scope-3.pdf}}
+  \only<5>{\includegraphics[width=0.75\columnwidth]{figures/spn-scope-4.pdf}}
+  \only<6>{\includegraphics[width=0.75\columnwidth]{figures/spn-scope-5.pdf}}
 \end{center}
 \end{minipage}
 \end{frame}
