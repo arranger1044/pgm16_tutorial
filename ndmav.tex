@@ -1192,7 +1192,7 @@ recovered in linear time and space with respect to the size of the SPN
                       &
                                                     $\frac{\sharp\{w_{pc}\in
                         W_{(\mathbf{y}|\mathbf{x})}\}
-                                                    - \sharp\sharp\{w_{pc}\in
+                        - \sharp\{w_{pc}\in
                         W_{(\mathbf{1}|\mathbf{x})}\}}{w_{pc}}$\\
       \midrule
       \textsf{\textbf{Soft} Posterior}\customcite{Peharz2016} ($p(H_{p}=c|\mathbf{x})$) & $\propto \frac{1}{S(\mathbf{x})}\frac{\partial
@@ -1355,7 +1355,7 @@ $\\
 \begin{frame}
   \frametitle{Other Tendencies in Parameter Learning}
   \textbf{Jointly learning leaf distributions} parameters while optimizing.\par
-  E.g. deriving EM update rules for leaf distributions~\parencites{Peharz2015,Desana2016}\par\bigskip
+  E.g. deriving EM update rules for leaf distributions~\parencites{Peharz2015a,Desana2016}\par\bigskip
   
    \textbf{Bayesian learning with continous leaf}
   distributions. Extending OBMM to tree SPNs with continuous Gaussian
@@ -1741,7 +1741,7 @@ $\\
       \bottomrule
     \end{tabular}
     \label{tab:model-filter-accs}
-  \end{table}\\[-1pt]
+  \end{table}\vspace{-1pt}
   \emph{$\rightarrow$ sum nodes only are good compressors for larger
     models}\par
   \emph{$\rightarrow$ mid size scope length embeddings provide best
@@ -1783,8 +1783,7 @@ $\\
       \bottomrule
     \end{tabular}
     \label{tab:model-scope-aggr}
-  \end{table}
-  \\[-1pt]
+  \end{table}\vspace{-1pt}
   \emph{$\rightarrow$ shorter but still accurate embeddings}\par
   \emph{$\rightarrow$ leaves greatly contribute for smaller models}
   \customcitenomark{Vergari2016a}
