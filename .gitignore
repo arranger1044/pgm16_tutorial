@@ -9,3 +9,7 @@
 *.synctex.gz
 *.out
 *camera-ready.zip
+*.nav
+*.run.xml
+*.snm
+*-blx.bib
